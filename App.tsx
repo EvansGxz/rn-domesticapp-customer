@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Welcome from './src/screens/Welcome';
+import Welcome from './src/screens/auth/Welcome';
 
 const Stack = createNativeStackNavigator();
 
