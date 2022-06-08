@@ -1,10 +1,21 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
+import HomeHero from "../../components/ui/HomeHero";
+import UserHeader from "../../components/ui/UserHeader";
 
 export default function Home() {
     return (
-        <View>
-            <Text>Ola?</Text>
-        </View>
+        <ScrollView style={styles.homeContainer}>
+            <UserHeader />
+            <HomeHero />
+        </ScrollView>
     );
 }
+
+const styles = StyleSheet.create({
+    homeContainer: {
+        flex: 1, 
+        backgroundColor: '#fff',
+        position: 'relative'
+    }
+});

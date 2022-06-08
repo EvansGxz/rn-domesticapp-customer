@@ -11,6 +11,10 @@ export default function BottomNavigation() {
         <SafeAreaView style={style.mainContainer}>
             <Tab.Navigator screenOptions={{ headerShown: false }}>
                 <Tab.Screen name="Home" component={Home} />
+                <Tab.Screen name="Security" component={Home} />
+                <Tab.Screen name="Calendar" component={Home} />
+                <Tab.Screen name="Support" component={Home} />
+                <Tab.Screen name="Profile" component={Home} />
             </Tab.Navigator>
         </SafeAreaView>
     );
