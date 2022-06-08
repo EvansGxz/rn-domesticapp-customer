@@ -6,13 +6,25 @@ const exampleCategory = 'https://domesticapp-api.herokuapp.com//rails/active_sto
 
 export default function ServiceTypeButton() {
     return (
-        <TouchableOpacity>
-            <Image source={{ uri: exampleCategory }} />
-            <Text>Agricultura</Text>
+        <TouchableOpacity style={styles.button}>
+            <Image style={styles.serviceImg} source={{ uri: exampleCategory }} />
+            <Text style={styles.serviceText}>Agricultura</Text>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-
+    button: {
+        width: '45%',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    serviceImg: {
+        width: 115,
+        height: 115,
+    },
+    serviceText: {
+        fontSize: 16,
+        marginTop: 5
+    }
 });

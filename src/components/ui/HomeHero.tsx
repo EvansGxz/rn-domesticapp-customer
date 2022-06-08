@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     },
     heroText: {
         fontSize: 25,
-        marginBottom: -7
+        marginBottom: -7,
+        fontWeight: 'bold',
+        opacity: 0.7,
+        color: '#222'
     }
 });
