@@ -34,19 +34,19 @@ export default function Verification() {
 }
 
 function VerificationPhone({ handler }: any) {
+    
     return (
         <>
-            <Text style={style.title}>Verification</Text>
+            <Text style={style.title}>Verificación</Text>
             <Text>
-                We will send 4 digits code to your phone number for the
-                verification.
+                Enviaremos un codigo de verificación de 6 digitos a tu celular.
             </Text>
-            <OutlinedInput keyboardType="phone-pad" placeholder="Enter Phone Number" />
+            <OutlinedInput keyboardType="phone-pad" placeholder="Ingrese Numero Celular" />
             <Button
                 style={{ backgroundColor: COLORS.primary, padding: 15 }}
                 onPress={handler}
             >
-                Continue
+                Continuar
             </Button>
             <Footer style={{ color: '#222', marginBottom: 15 }} />
         </>
