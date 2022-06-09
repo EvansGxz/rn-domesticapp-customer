@@ -1,10 +1,11 @@
 import React from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+import { SharedStyles } from "../../../styles/shared-styles";
 
 export default function Coupons() {
     return (
-        <View style={styles.screen}>
+        <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Cupones" />
             <ScrollView>
                 <View></View>
@@ -17,5 +18,4 @@ export default function Coupons() {
 }
 
 const styles = StyleSheet.create({
-    screen: { flex: 1, backgroundColor: '#fff' },
 });

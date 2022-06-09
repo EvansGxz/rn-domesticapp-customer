@@ -3,17 +3,16 @@ import { View, Text, ScrollView } from "react-native";
 import TitledHeader from "../../../components/headers/TitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
 
-export default function HelpCenter() { 
+export default function CalendarScreen() { 
     return (
         <ScrollView style={SharedStyles.mainScreen}>
-            <TitledHeader title="Centro de Ayuda" />
+            <TitledHeader title="Mi Calendario" />
             <View style={SharedStyles.mainPadding}>
                 <Text>
-                    Para tu comodidad. Tenemos distintos articulos
-                    donde solucionar tus dudas, o puedes contactar con nuestro
-                    Centro de Soporte y Ayuda.
+                    Recuerda que los reportes deben de realizarse dentro de las
+                    primeras 48 horas.
                 </Text>
-                <Text style={SharedStyles.h2}>Temas de ayuda</Text>
+                <Text style={SharedStyles.h2}>Seleccionar fechas en el calendario:</Text>
             </View>
         </ScrollView>
     );

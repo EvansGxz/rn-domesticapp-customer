@@ -15,12 +15,13 @@ import HistoryIcon from '../../../resources/img/profile-icons/history.svg';
 import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.svg';
 import NewsIcon from '../../../resources/img/profile-icons/newletter.svg';
 import { useNavigation } from '@react-navigation/native';
+import { SharedStyles } from '../../../styles/shared-styles';
 
 export default function UserProfile() {
     const navigation = useNavigation<any>();
 
     return (
-        <ScrollView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <ScrollView style={SharedStyles.mainScreen}>
             <TitledHeader title="Mi Perfil" />
             <UserInfo />
             <View style={styles.menu}>
@@ -37,7 +38,7 @@ export default function UserProfile() {
                     text="Chat de Soporte"
                     icon={SupportIcon}
                 />
-                <Text style={styles.headerText}>Mi Cuenta</Text>
+                <Text style={SharedStyles.h2}>Mi Cuenta</Text>
                 <MenuOptionButton
                     text="Cupones"
                     icon={CouponIcon}
@@ -53,7 +54,7 @@ export default function UserProfile() {
                     icon={NotificationIcon}
                     onPress={() => navigation.navigate('Notifications')}
                 />
-                <Text style={styles.headerText}>Información</Text>
+                <Text style={SharedStyles.h2}>Información</Text>
                 <MenuOptionButton
                     text="Trabaja con Domesticapp"
                     icon={WorkIcon}
@@ -73,7 +74,7 @@ export default function UserProfile() {
                     icon={FingerprintIcon}
                     onPress={() => navigation.navigate('AuthorizationAndData')}
                 />
-                <Text style={styles.headerText}>Labor Social</Text>
+                <Text style={SharedStyles.h2}>Labor Social</Text>
                 <MenuOptionButton
                     text="NewsLetter"
                     icon={NewsIcon}
@@ -87,11 +88,5 @@ export default function UserProfile() {
 const styles = StyleSheet.create({
     menu: {
         padding: 20
-    },
-    headerText: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 20,
-        marginTop: 20
     }
 });
