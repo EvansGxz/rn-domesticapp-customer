@@ -11,6 +11,7 @@ import NotificationIcon from '../../../resources/img/profile-icons/notification.
 import WorkIcon from '../../../resources/img/profile-icons/work.svg';
 import TermsIcon from '../../../resources/img/profile-icons/terms.svg';
 import PolicyIcon from '../../../resources/img/profile-icons/policy.svg';
+import HistoryIcon from '../../../resources/img/profile-icons/history.svg';
 import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.svg';
 import NewsIcon from '../../../resources/img/profile-icons/newletter.svg';
 import { useNavigation } from '@react-navigation/native';
@@ -29,7 +30,8 @@ export default function UserProfile() {
                 />
                 <MenuOptionButton
                     text="Mi Historial de Servicios"
-                    icon={ContractIcon}
+                    icon={HistoryIcon}
+                    onPress={() => navigation.navigate('ServiceHistory')}
                 />
                 <MenuOptionButton
                     text="Chat de Soporte"
@@ -44,10 +46,12 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Direcciones"
                     icon={DirectionIcon}
+                    onPress={() => navigation.navigate('Directions')}
                 />
                 <MenuOptionButton
                     text="Notificaciones"
                     icon={NotificationIcon}
+                    onPress={() => navigation.navigate('Notifications')}
                 />
                 <Text style={styles.headerText}>Información</Text>
                 <MenuOptionButton
@@ -57,19 +61,23 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Terminos y condiciones"
                     icon={TermsIcon}
+                    onPress={() => navigation.navigate('TermsAndConditions')}
                 />
                 <MenuOptionButton
                     text="Politica de Privacidad"
                     icon={PolicyIcon}
+                    onPress={() => navigation.navigate('PrivacyPolicy')}
                 />
                 <MenuOptionButton
                     text="Autorización y tratamientos"
                     icon={FingerprintIcon}
+                    onPress={() => navigation.navigate('AuthorizationAndData')}
                 />
                 <Text style={styles.headerText}>Labor Social</Text>
                 <MenuOptionButton
                     text="NewsLetter"
                     icon={NewsIcon}
+                    onPress={() => navigation.navigate('NewsLetter')}
                 />
             </View>
         </ScrollView>

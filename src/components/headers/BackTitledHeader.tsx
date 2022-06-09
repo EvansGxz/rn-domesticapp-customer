@@ -14,7 +14,7 @@ export default function BackTitledHeader(props: BackTitledHeaderProps) {
             <BackIcon 
                 onPress={() => navigation.canGoBack() ? navigation.goBack() : null} 
             />
-            <Text style={styles.title}>{props.title}</Text>
+            <Text numberOfLines={1} style={styles.title}>{props.title}</Text>
         </View>
     );
 }
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         color: '#82868D',
         fontSize: 24,
         fontWeight: '600',
-        marginLeft: 20
+        marginLeft: 20,
+        flex: 1
     }
 });

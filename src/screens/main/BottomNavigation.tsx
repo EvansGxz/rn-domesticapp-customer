@@ -9,6 +9,7 @@ import CalendarIcon from '../../resources/img/menu/calendar.svg';
 import SupportIcon from '../../resources/img/menu/support.svg';
 import ConfigIcon from '../../resources/img/menu/config.svg';
 import UserProfile from "./profile";
+import Support from "./support";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,7 +35,7 @@ export default function BottomNavigation() {
                 <Tab.Screen 
                     name="Support"
                     options={createTabOptions(SupportIcon)} 
-                    component={Home} 
+                    component={Support} 
                 />
                 <Tab.Screen 
                     name="Contract" 
