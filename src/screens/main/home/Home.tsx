@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
-import { COLORS } from "../../../config";
-import ServiceTypesCatalog from "../../components/services/ServiceTypesCatalog";
-import Button from "../../components/ui/Button";
-import HomeHero from "../../components/ui/HomeHero";
-import UserHeader from "../../components/ui/UserHeader";
+import { COLORS } from "../../../../config";
+import ServiceTypesCatalog from "../../../components/services/ServiceTypesCatalog";
+import Button from "../../../components/ui/Button";
+import HomeHero from "../../../components/ui/HomeHero";
+import UserHeader from "../../../components/headers/UserHeader";
 
 export default function Home() {
     return (

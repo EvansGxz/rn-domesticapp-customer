@@ -6,7 +6,7 @@ import Verification from './src/screens/auth-flow/Verification';
 import Auth from './src/screens/auth-flow/Auth';
 import SplashScreen from './src/screens/SplashScreen';
 import OnBoarding from './src/screens/auth-flow/OnBoarding';
-import MainBottomNavigation from './src/screens/home/BottomNavigation';
+import MainBottomNavigation from './src/screens/main/BottomNavigation';
 
 const Stack = createNativeStackNavigator();
 

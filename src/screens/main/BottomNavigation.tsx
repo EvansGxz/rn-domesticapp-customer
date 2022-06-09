@@ -2,12 +2,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Home from "./Home";
+import Home from "./home";
 import HomeIcon from '../../resources/img/menu/home.svg';
 import ContractIcon from '../../resources/img/menu/contract.svg';
 import CalendarIcon from '../../resources/img/menu/calendar.svg';
 import SupportIcon from '../../resources/img/menu/support.svg';
-import ConfigIcon from '../../resources/img/menu/home.svg';
+import ConfigIcon from '../../resources/img/menu/config.svg';
+import UserProfile from "./profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,47 +18,42 @@ export default function BottomNavigation() {
             <Tab.Navigator screenOptions={{ headerShown: false }}>
                 <Tab.Screen 
                     name="Home" 
-                    options={{ 
-                        tabBarIcon: ({ focused }) =>  <HomeIcon style={{ opacity: focused ? 1 : 0.5 }} />
-                    }} 
+                    options={createTabOptions(HomeIcon)} 
                     component={Home} 
                 />
                 <Tab.Screen 
-                    name="Team" 
-                    options={{ 
-                        tabBarIcon: ({ focused }) =>  <ConfigIcon style={{ opacity: focused ? 1 : 0.5 }} />
-                    }} 
+                    name="Team"
+                    options={createTabOptions(ConfigIcon)} 
                     component={Home} 
                 />
                 <Tab.Screen 
                     name="Calendar" 
-                    options={{ 
-                        
-                        tabBarIcon: ({ focused }) =>  <CalendarIcon style={{ opacity: focused ? 1 : 0.5 }} />
-                    }} 
+                    options={createTabOptions(CalendarIcon)} 
                     component={Home} 
                 />
                 <Tab.Screen 
                     name="Support"
-                    options={{ 
-                        tabBarIcon: ({ focused }) =>  <SupportIcon style={{ opacity: focused ? 1 : 0.5 }} />
-                    }}  
+                    options={createTabOptions(SupportIcon)} 
                     component={Home} 
                 />
                 <Tab.Screen 
                     name="Contract" 
-                    options={{ 
-                        tabBarIcon: ({ focused }) =>  <ContractIcon style={{ opacity: focused ? 1 : 0.5 }} />
-                    }} 
-                    component={Home} 
+                    options={createTabOptions(ContractIcon)} 
+                    component={UserProfile}  
                 />
             </Tab.Navigator>
         </SafeAreaView>
     );
 }
 
-const renderIcon = (Component: any, isFocused) => {
-    
+const createTabOptions = (Component: any) => {
+    return { 
+        tabBarShowLabel: false,
+        tabBarIcon: ({ focused } : any) => (
+            <Component style={{ opacity: focused ? 1 : 0.5 }} />
+        ),
+
+    }
 }
 
 const style = StyleSheet.create({
