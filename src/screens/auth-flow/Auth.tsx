@@ -8,7 +8,7 @@ import Button from "../../components/ui/Button";
 import Footer from "../../components/ui/Footer";
 import LabeledInput from "../../components/ui/LabeledInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -92,7 +92,9 @@ function TabsMenu({ state, descriptors, navigation, position }: MaterialTopTabBa
 }
 
 function LoginTab() {
+    const navigation = useNavigation<any>();
     const secondRef = useRef();
+
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
             <View style={style.centerContainer}>
@@ -121,7 +123,13 @@ function LoginTab() {
                     </KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
-                    <Button textStyle={style.btnTextAction} style={style.btnAction}>Iniciar Sesión</Button>
+                    <Button 
+                        textStyle={style.btnTextAction} 
+                        style={style.btnAction}
+                        onPress={() => navigation.navigate('Verification')}
+                    >
+                        Iniciar Sesión
+                    </Button>
                     <Footer style={style.footerColor} />
                 </View>
             </View>
