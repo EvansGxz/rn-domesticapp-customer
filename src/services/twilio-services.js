@@ -14,5 +14,5 @@ export async function verifyToken(newVerifyToken) {
 
 /* verifyToken({token: "xxxxxx", phone: "+528994466683"}).then((data) => {
       console.log("Phone Verification Success success: ", data);
-      phoneLogin(phone);
+      login({phone: phone}, login_phone);
     }).catch((data) => {console.error("Verification error: ", data);})*/
