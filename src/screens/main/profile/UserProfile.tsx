@@ -28,6 +28,7 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Editar Mi Perfil"
                     icon={ContractIcon}
+                    onPress={() => navigation.navigate('Profile')}
                 />
                 <MenuOptionButton
                     text="Mi Historial de Servicios"

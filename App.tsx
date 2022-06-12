@@ -7,6 +7,7 @@ import Auth from './src/screens/auth-flow/Auth';
 import SplashScreen from './src/screens/SplashScreen';
 import OnBoarding from './src/screens/auth-flow/OnBoarding';
 import MainBottomNavigation from './src/screens/main/BottomNavigation';
+import Profile from './src/screens/shared/Profile';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
               <Stack.Screen name="Welcome" component={Welcome} />
               <Stack.Screen name="Main" component={MainBottomNavigation} />
               <Stack.Screen name="Auth" component={Auth} />
+              <Stack.Screen name="Profile" component={Profile} />
               <Stack.Screen name="Verification" component={Verification} />
               <Stack.Screen name="OnBoarding" component={OnBoarding} />
             </>

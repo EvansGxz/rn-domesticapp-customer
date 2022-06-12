@@ -20,6 +20,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.68.2",
+    "react-native-calendars": "^1.1284.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-pager-view": "5.4.15",
     "react-native-reanimated": "~2.8.0",
@@ -27,7 +28,9 @@
     "react-native-screens": "~3.11.1",
     "react-native-svg": "12.3.0",
     "react-native-tab-view": "^3.1.1",
-    "react-native-web": "0.17.7"
+    "react-native-web": "0.17.7",
+    "react-native-webview": "11.18.1",
+    "use-http": "^1.0.26"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
