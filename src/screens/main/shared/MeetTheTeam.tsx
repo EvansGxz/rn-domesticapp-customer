@@ -1,19 +1,19 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import ServiceStatusCard from "../../../components/cards/ServiceStatusCard";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
 
-export default function ServiceHistory() {
+export default function MeetTheTeam() {
     return (
         <View style={SharedStyles.mainScreen}>
-            <BackTitledHeader title="Tus Ultimos Servicios" />
-            <ScrollView style={styles.scrollView} contentContainerStyle={styles.contentScrollView}>
-                <Text style={SharedStyles.h2}>Servicios en Curso</Text>
+            <BackTitledHeader title="Conoce al equipo" />
+            <ScrollView 
+                style={styles.cardsContainer}
+                contentContainerStyle={styles.contentContainerCards}
+            >
                 <ServiceStatusCard />
                 <ServiceStatusCard />
-                <ServiceStatusCard />
-                <Text style={SharedStyles.h2}>Ultimos Servicios</Text>
                 <ServiceStatusCard />
                 <ServiceStatusCard />
                 <ServiceStatusCard />
@@ -26,11 +26,11 @@ export default function ServiceHistory() {
 }
 
 const styles = StyleSheet.create({
-    scrollView: {
+    cardsContainer: {
         flex: 1,
-    },
-    contentScrollView: {
         padding: 10,
+    },
+    contentContainerCards: {
         paddingBottom: 35
     }
 });

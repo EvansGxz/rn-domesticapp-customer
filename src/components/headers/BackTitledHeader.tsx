@@ -22,14 +22,16 @@ export default function BackTitledHeader(props: BackTitledHeaderProps) {
 const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: '#fff',
-        padding: 20,
+        height: 75,
+        paddingLeft: 20,
+        alignItems: 'center',
         flexDirection: 'row'
     },
     title: {
         color: '#82868D',
         fontSize: 24,
-        fontWeight: '600',
         marginLeft: 20,
-        flex: 1
+        flex: 1,
+        fontFamily: 'Poppins_600SemiBold'
     }
 });

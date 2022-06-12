@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { COLORS } from "../../../config";
 import BackButtonSVG from '../../resources/img/ui/back-button.svg';
+import { SharedStyles } from "../../styles/shared-styles";
 
 export interface MenuOptionButtonProps {
     text: string;
@@ -24,7 +24,7 @@ export default function MenuOptionButton(props: MenuOptionButtonProps) {
                     style={styles.arrowIcon}
                 />
             </TouchableOpacity>
-            <View style={styles.bottomLine} />
+            <View style={SharedStyles.bottomLine} />
         </>
     );
 }
@@ -43,12 +43,6 @@ const styles = StyleSheet.create({
     },
     arrowIcon: {
         transform: [{'rotate': '180deg'}]
-    },
-    bottomLine: {
-        height: 1,
-        backgroundColor: COLORS.primary,
-        opacity: 0.2,
-        width: '100%'
     },
     buttonText: {
         marginLeft: 10,

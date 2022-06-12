@@ -5,8 +5,10 @@ import ServiceTypesCatalog from "../../../components/services/ServiceTypesCatalo
 import Button from "../../../components/ui/Button";
 import HomeHero from "../../../components/ui/HomeHero";
 import UserHeader from "../../../components/headers/UserHeader";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Home() {
+    const nav = useNavigation<any>();
     return (
         <ScrollView style={styles.homeContainer}>
             <UserHeader />
@@ -14,7 +16,12 @@ export default function Home() {
             {/* Center Container */}
             <View style={styles.centerCategories}>
                 <ServiceTypesCatalog />
-                <Button style={styles.button}>Conoce al Equipo</Button>
+                <Button 
+                    style={styles.button}
+                    onPress={() => nav.navigate('MeetTheTeam')}
+                >
+                    Conoce al Equipo
+                </Button>
             </View>
         </ScrollView>
     );

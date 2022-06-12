@@ -2,7 +2,6 @@ import React from "react";
 import { TextStyle } from "react-native";
 import { StyleProp, ViewStyle } from "react-native";
 import { StyleSheet, View, Text, TextInput, TextInputProps } from 'react-native';
-import { COLORS } from "../../../config";
 
 export interface LabeledInputProps {
     label: string;

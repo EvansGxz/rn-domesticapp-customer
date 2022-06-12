@@ -4,7 +4,9 @@ export const COLORS = {
     facebook: '#2174EE',
     google: '#4785ED',
     green: '#28D885',
-    lightGray: '#F6F6F9'
+    lightGray: '#F6F6F9',
+    lightBlue: '#F0FCFF',
+    lightRed: '#FFF1F4'
 }
 
 export const INFO = {
