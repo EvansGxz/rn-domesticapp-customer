@@ -19,7 +19,12 @@ export const SharedStyles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: '#3D4451'
     },
-    mainPadding: { paddingHorizontal: 20 },
+    h3: {
+        fontFamily: 'Montserrat_500Medium',
+        fontSize: 16,
+        fontWeight: '500'
+    },
+    mainPadding: { paddingHorizontal: 20, paddingVertical: 10 },
     bottomLine: {
         height: 1,
         backgroundColor: COLORS.primary,
@@ -51,5 +56,16 @@ export const SharedStyles = StyleSheet.create({
     },
     fill: {
         flex: 1
+    },
+    centerContent: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    backgroundPrimary: {
+        backgroundColor: COLORS.primary
+    },
+    mb: {
+        marginBottom: 25
     }
 });

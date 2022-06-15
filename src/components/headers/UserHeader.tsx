@@ -1,14 +1,19 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
+import useFetch from "use-http";
 import UserImage from "../user/UserImage";
 
 export default function UserHeader() {
+    const { loading, error, data = {} } = useFetch('/profile', {}, []);
+    console.log(data);
+    console.log(loading);
+    console.log(error);
     return (
         <View style={style.headerContainer}>
-            <UserImage />
+            <UserImage src={data.image_url} />
             <View>
-                <Text style={style.mainText}>Hola, <Text style={style.boldText}>John Doe</Text>!</Text>
-                <Text style={style.textEmail}>customer@mail.com</Text>
+                <Text style={style.mainText}>Hola, <Text style={style.boldText}>{data.full_name}</Text>!</Text>
+                <Text style={style.textEmail}>{data.email}</Text>
             </View>
         </View>
     );
