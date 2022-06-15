@@ -1,4 +1,6 @@
+import { AxiosError } from "axios";
 import { useEffect, useMemo, useReducer } from "react"
+import { Alert } from "react-native";
 import { httpClient } from "../controllers/http-client";
 import { retrieveToken, retrieveTokenHeader, saveToken } from "../controllers/tokens";
 
@@ -23,7 +25,7 @@ export const useAuth = () => {
                     await saveToken(token);
                     dispatch({ type: 'SIGN_IN', user });
                 } catch (err) {
-                    console.log(err);
+                    Alert.alert('Error', ((err as AxiosError).response?.data as any).errors);
                 }
             },
             loadSession: async (token: string, user: any) => {

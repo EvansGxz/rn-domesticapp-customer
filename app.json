@@ -33,7 +33,8 @@
         "googleMaps": {
           "apiKey": "AIzaSyBiDrPVhypnkVtJSNrevfqlwaFJjgWE_bA"
         }
-      }
+      },
+      "package": "com.domesticapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"

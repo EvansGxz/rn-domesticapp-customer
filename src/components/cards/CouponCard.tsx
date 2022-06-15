@@ -7,9 +7,9 @@ export default function CouponCard() {
     return (
         <View style={[SharedStyles.card, styles.card]}>
             <View style={SharedStyles.fill}>
-                <Text>Limpieza de Hogar</Text>
+                <Text style={styles.title}>Limpieza de Hogar</Text>
                 <Text>20% de descuento</Text>
-                <Text>Código: <Text>limp20</Text></Text>
+                <Text>Código: <Text style={styles.boldCode}>limp20</Text></Text>
             </View>
             <View>
                 <Button
@@ -29,5 +29,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginBottom: 25,
         alignItems: 'flex-end',
+    },
+    title: {
+        fontFamily: 'Poppins_600SemiBold',
+        fontSize: 18,
+        color: '#3D4451',
+    },
+    boldCode: {
+        fontFamily: 'Poppins_600SemiBold',
+        fontSize: 16,
+        color: '#3D4451',
+    },
+    discountText: {
+        fontFamily: 'Poppins_600SemiBold',
+        fontSize: 14,
+        color: '#3D4451',
     }
 });

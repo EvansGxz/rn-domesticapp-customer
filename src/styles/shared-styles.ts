@@ -19,6 +19,12 @@ export const SharedStyles = StyleSheet.create({
         fontFamily: 'Poppins_600SemiBold',
         color: '#3D4451'
     },
+    h2WithoutMargin: {
+        fontSize: 18,
+        fontWeight: '600',
+        fontFamily: 'Poppins_600SemiBold',
+        color: '#3D4451'
+    },
     h3: {
         fontFamily: 'Montserrat_500Medium',
         fontSize: 16,
@@ -67,5 +73,8 @@ export const SharedStyles = StyleSheet.create({
     },
     mb: {
         marginBottom: 25
+    },
+    pd: {
+        padding: 17
     }
 });
