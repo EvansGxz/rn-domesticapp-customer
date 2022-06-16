@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View, Text, Animated, KeyboardAvoidingViewBase, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { StyleSheet, TouchableOpacity, View, Text, Animated, Alert } from 'react-native';
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
@@ -8,7 +8,10 @@ import Button from "../../components/ui/Button";
 import Footer from "../../components/ui/Footer";
 import LabeledInput from "../../components/ui/LabeledInput";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import { AuthContext } from "../../contexts/auth-context";
+import { httpClient } from "../../controllers/http-client";
+import { AxiosError } from "axios";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -92,8 +95,20 @@ function TabsMenu({ state, descriptors, navigation, position }: MaterialTopTabBa
 }
 
 function LoginTab() {
-    const navigation = useNavigation<any>();
+    const auth = useContext(AuthContext);
     const secondRef = useRef();
+    const [data, setData] = useState(
+        {
+            email: '',
+            password: ''
+        }
+    );
+
+    const login = async () => {
+        await auth.signIn(data);
+    }
+
+    const onChangeText = (name: string, value: string) => setData({ ...data, [name]: value });
 
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
@@ -105,20 +120,26 @@ function LoginTab() {
                                 {
                                     onSubmitEditing: () => { (secondRef.current as any).focus()},
                                     blurOnSubmit: false,
-                                    returnKeyType: 'next'
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none" 
                                 } as any
                             } 
                             style={{ marginTop: 5 }} 
-                            label="Email address" 
+                            label="Correo Electronico" 
                         />
                         <LabeledInput 
                             inputProps={
                                 {
                                     ref: secondRef,
+                                    onChangeText: (value: string) => onChangeText('password', value),
+                                    value: data.password,
+                                    secureTextEntry: true
                                 } as any
                             }
                             style={{ marginTop: 25 }}
-                            label="Password" 
+                            label="Contraseña" 
                         />
                     </KeyboardAwareScrollView>
                 </View>
@@ -126,7 +147,7 @@ function LoginTab() {
                     <Button 
                         textStyle={style.btnTextAction} 
                         style={style.btnAction}
-                        onPress={() => navigation.navigate('Verification')}
+                        onPress={login}
                     >
                         Iniciar Sesión
                     </Button>
@@ -138,7 +159,36 @@ function LoginTab() {
 }
 
 function RegisterTab() {
+    const auth = useContext(AuthContext);
     const secondRef = useRef();
+    const thirdRef = useRef();
+    const [data, setData] = useState(
+        {
+            user_type: 'customer',
+            email: '',
+            password: '',
+            password_confirmation: ''
+        }
+    );
+
+    const register = async () => {
+        try {
+            const { data: { token, ...user } } = await httpClient.post(
+                '/users',
+                data
+            );
+            console.log(token, user);
+            await auth.loadSession(token, user);
+        } catch (err) {
+            console.log(err);
+            console.log((err as AxiosError).response);
+            const errors: any = ((err as AxiosError).response?.data as any).errors;
+            Alert.alert('Error', Object.keys(errors).map((key: string) => errors[key].join(' ')).join(', '));
+        }
+    }
+
+    const onChangeText = (name: string, value: string) => setData({ ...data, [name]: value });
+
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
             <View style={style.centerContainer}>
@@ -149,25 +199,48 @@ function RegisterTab() {
                                 {
                                     onSubmitEditing: () => { (secondRef.current as any).focus()},
                                     blurOnSubmit: false,
-                                    returnKeyType: 'next'
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none" 
                                 } as any
                             } 
                             style={{ marginTop: 5 }} 
-                            label="Email address" 
+                            label="Correo Electronico" 
                         />
                         <LabeledInput 
                             inputProps={
                                 {
                                     ref: secondRef,
+                                    onSubmitEditing: () => { (thirdRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('password', value),
+                                    value: data.password,
+                                    secureTextEntry: true
                                 } as any
                             }
-                            style={{ marginTop: 25 }}
-                            label="Password" 
+                            style={{ marginTop: 10 }}
+                            label="Contraseña" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    ref: thirdRef,
+                                    onChangeText: (value: string) => onChangeText('password_confirmation', value),
+                                    value: data.password_confirmation,
+                                    secureTextEntry: true
+                                } as any
+                            }
+                            style={{ marginTop: 10 }}
+                            label="Confirma tu contraseña" 
                         />
                     </KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
-                    <Button textStyle={style.btnTextAction} style={style.btnAction}>Registrarse</Button>
+                    <Button textStyle={style.btnTextAction} style={style.btnAction} onPress={register}>
+                        Registrarse
+                    </Button>
                     <Footer style={style.footerColor} />
                 </View>
             </View>

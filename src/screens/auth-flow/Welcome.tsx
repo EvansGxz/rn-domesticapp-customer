@@ -7,6 +7,7 @@ import { COLORS } from '../../../config';
 import UnderlinedButton from '../../components/ui/UnderlinedButton';
 import Footer from '../../components/ui/Footer';
 import { useNavigation } from '@react-navigation/native';
+import LineORSeparator from '../../components/ui/LineORSeparator';
 
 export default function Welcome() {
     const navigation = useNavigation<any>();
@@ -25,11 +26,7 @@ export default function Welcome() {
                 <Button style={style.btnFacebook}>Continúa con Facebook</Button>
             </View>
             {/* Separator */}
-            <View style={style.separator}>
-                <View style={style.separatorLine} />
-                <Text style={style.separatorText}>O</Text>
-                <View style={style.separatorLine} />
-            </View>
+            <LineORSeparator />
             {/* Own Login and register */}
             <View style={style.buttons}>
                 <Button 
@@ -97,20 +94,5 @@ const style = StyleSheet.create({
         color: '#fff',
         marginRight: 10,
         fontSize: 15
-    },
-    separator: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '50%',
-        opacity: 0.6
-    },
-    separatorText: {
-        marginHorizontal: 10,
-    },
-    separatorLine: {
-        width: '50%',
-        height: 1,
-        backgroundColor: '#222',
     }
 });

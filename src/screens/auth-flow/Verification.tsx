@@ -59,12 +59,16 @@ function VerificationCode() {
         A: '',
         B: '',
         C: '',
-        D: ''
+        D: '',
+        E: '',
+        F: ''
     });
     const firstInput = useRef();
     const secondInput = useRef();
     const thirdInput = useRef();
     const fourthInput = useRef();
+    const fifthInput = useRef();
+    const sixthInput = useRef();
 
     const isValidNumber = (number: string) => /[0-9]{1}/.test(number);
 
@@ -99,11 +103,30 @@ function VerificationCode() {
 
     const onKeyPressTextD = (value: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
         if (isValidNumber(value.nativeEvent.key)) {
+            (fifthInput.current as unknown as TextInput)?.focus();
             setData({ ...data, D: value.nativeEvent.key });
         } else if (value.nativeEvent.key === 'Backspace') {
             (thirdInput.current as unknown as TextInput)?.focus();
             setData({ ...data, D: '' });
+        } 
+    }
 
+    const onKeyPressTextE = (value: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+        if (isValidNumber(value.nativeEvent.key)) {
+            (sixthInput.current as unknown as TextInput)?.focus();
+            setData({ ...data, E: value.nativeEvent.key });
+        } else if (value.nativeEvent.key === 'Backspace') {
+            (fourthInput.current as unknown as TextInput)?.focus();
+            setData({ ...data, E: '' });
+        } 
+    }
+    
+    const onKeyPressTextF = (value: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+        if (isValidNumber(value.nativeEvent.key)) {
+            setData({ ...data, F: value.nativeEvent.key });
+        } else if (value.nativeEvent.key === 'Backspace') {
+            (fifthInput.current as unknown as TextInput)?.focus();
+            setData({ ...data, F: '' });
         } 
     }
 
@@ -156,6 +179,26 @@ function VerificationCode() {
                     blurOnSubmit={false}
                     onSubmitEditing={() => Keyboard.dismiss()}
                     onKeyPress={onKeyPressTextD}
+                />
+                <OutlinedInput 
+                    style={style.codeInput} 
+                    keyboardType="number-pad" 
+                    maxLength={1}
+                    value={data.E} 
+                    inputRef={fifthInput}
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => Keyboard.dismiss()}
+                    onKeyPress={onKeyPressTextE}
+                />
+                <OutlinedInput 
+                    style={style.codeInput} 
+                    keyboardType="number-pad" 
+                    maxLength={1}
+                    value={data.F} 
+                    inputRef={sixthInput}
+                    blurOnSubmit={false}
+                    onSubmitEditing={() => Keyboard.dismiss()}
+                    onKeyPress={onKeyPressTextF}
                 />
             </View>
             <Button

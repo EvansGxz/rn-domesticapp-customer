@@ -28,6 +28,7 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Editar Mi Perfil"
                     icon={ContractIcon}
+                    onPress={() => navigation.navigate('Profile')}
                 />
                 <MenuOptionButton
                     text="Mi Historial de Servicios"
@@ -37,6 +38,7 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Chat de Soporte"
                     icon={SupportIcon}
+                    onPress={() => navigation.navigate('SupportChat')}
                 />
                 <Text style={SharedStyles.h2}>Mi Cuenta</Text>
                 <MenuOptionButton

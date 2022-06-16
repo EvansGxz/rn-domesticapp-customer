@@ -11,6 +11,7 @@ import ConfigIcon from '../../resources/img/menu/config.svg';
 import UserProfile from "./profile";
 import Support from "./support";
 import CalendarModule from "./calendar";
+import MeetTheTeam from "./shared/MeetTheTeam";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default function BottomNavigation() {
                 <Tab.Screen 
                     name="Team"
                     options={createTabOptions(ConfigIcon)} 
-                    component={Home} 
+                    component={MeetTheTeam} 
                 />
                 <Tab.Screen 
                     name="Calendar" 

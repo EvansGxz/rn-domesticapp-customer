@@ -16,11 +16,13 @@ export default function TitledHeader(props: TitledHeaderProps) {
 const styles = StyleSheet.create({
     headerContainer: {
         backgroundColor: '#fff',
-        padding: 20
+        height: 75,
+        justifyContent: 'center',
+        paddingLeft: 20
     },
     title: {
         color: '#82868D',
         fontSize: 24,
-        fontWeight: '600'
+        fontFamily: 'Poppins_600SemiBold'
     }
 });

@@ -5,6 +5,7 @@ const sourceImage = 'https://eldiariony.com/wp-content/uploads/sites/2/2022/04/G
 
 export interface UserImageProps {
     size?: number;
+    src?: string;
 }
 
 export default function UserImage(props: UserImageProps) {
@@ -12,7 +13,7 @@ export default function UserImage(props: UserImageProps) {
         <ImageBackground
             imageStyle={style.userImageCenter} 
             style={[style.userImage, props.size ? { width: props.size, height: props.size } : {}]} 
-            source={{ uri: sourceImage }} 
+            source={{ uri: props.src || sourceImage }} 
         />
     );
 }
