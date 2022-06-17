@@ -13,5 +13,7 @@ export const INFO = {
     version: '1.0.0',
     year: 2022
 }
- 
+
 export const BASE_URI = "https://domesticapp-api.herokuapp.com";
+
+export const FACEBOOK_APP_ID = '551206009914007';

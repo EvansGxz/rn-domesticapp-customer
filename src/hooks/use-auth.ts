@@ -1,8 +1,9 @@
-import { AxiosError } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios, { AxiosError } from "axios";
 import { useEffect, useMemo, useReducer } from "react"
 import { Alert } from "react-native";
 import { httpClient } from "../controllers/http-client";
-import { retrieveToken, retrieveTokenHeader, saveToken } from "../controllers/tokens";
+import { deleteToken, retrieveToken, retrieveTokenHeader, saveToken } from "../controllers/tokens";
 
 export const useAuth = () => {
     const [user, dispatch] = useReducer(
@@ -28,21 +29,67 @@ export const useAuth = () => {
                     Alert.alert('Error', ((err as AxiosError).response?.data as any).errors);
                 }
             },
+            socialSignIn: async (credentials: any, img: string) => {
+                try {
+                    const { data: { token, ...user }} = await httpClient.post(
+                        '/login_social',
+                        credentials
+                    );
+                    
+                    await saveToken(token);
+                    console.log('logged in')
+
+                    await httpClient.patch(
+                        '/profile',
+                        { image_url: img },
+                        { headers: { Authorization: await retrieveTokenHeader() } }
+                    );
+
+                    console.log('image changed')
+
+                    dispatch({ type: 'SIGN_IN', user });
+                } catch (err) {
+                    console.log(err);
+                    console.log((err as any).message);
+                    Alert.alert('Error', ((err as AxiosError).response?.data as any).errors);
+                }
+            },
+            phoneSignIn: async (credentials: any) => {
+                try {
+                    const { data: { token, ...user }} = await httpClient.post(
+                        '/login_phone',
+                        credentials
+                    );
+                    
+                    await saveToken(token);
+                    console.log('logged in')
+
+                    dispatch({ type: 'SIGN_IN', user });
+                } catch (err) {
+                    console.log(err);
+                    console.log((err as any).message);
+                    Alert.alert('Error', ((err as AxiosError).response?.data as any).errors);
+                }
+            },
             loadSession: async (token: string, user: any) => {
                 await saveToken(token);
                 dispatch({ type: 'SIGN_IN', user });
             },
             signOut: async () => {
                 try {
-                    const logoutResponse = await httpClient.delete(
+                    await httpClient.delete(
                         '/logout',
                         {
                             headers: { Authorization: await retrieveTokenHeader() }
                         }
                     );
-                    console.log(logoutResponse);
+                    
+                    await deleteToken();
+
                     dispatch({ type: 'SIGN_OUT' });
                 } catch (err) {
+                    await deleteToken();
+
                     console.log(err);
                 }
             },
@@ -59,10 +106,20 @@ export const useAuth = () => {
             setTimeout(
                 () => {
                     console.log('Checking token.')
-                    retrieveToken().then((token) => {
-                        console.log('Token: ', token)
-                        if (!token) return dispatch({ type: 'SIGN_OUT' });
-                        dispatch({ type: 'SIGN_IN', user: {} });
+                    retrieveToken().then(async (token) => {
+                        try {
+                            console.log('Token: ', token)
+                            if (!token) return dispatch({ type: 'SIGN_OUT' });
+                            const result = await httpClient.get('/profile',
+                                { headers: { Authorization: await retrieveTokenHeader() } }
+                            );
+                            console.log(result);
+                            dispatch({ type: 'SIGN_IN', user: result });
+                        } catch (err) {
+                            console.log(err);
+                            await AsyncStorage.removeItem('token');
+                            dispatch({ type: 'SIGN_OUT' });
+                        }
                     })
                 }, 
                 1000

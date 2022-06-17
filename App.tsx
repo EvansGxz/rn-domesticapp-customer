@@ -101,6 +101,7 @@ function App() {
 
   if (!fontsLoaded || state.loading) return <SplashScreen />
 
+  console.log(state.user);
   return (
     <Provider 
       url={BASE_URI} 
@@ -122,11 +123,15 @@ function App() {
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {
             state.user ? (
-              <>
+              !state.user.full_name ? (
+                <>
+                  <Stack.Screen name="Main" component={MainBottomNavigation} />
+                  <Stack.Screen name="OnBoarding" component={OnBoarding} />
+                  <Stack.Screen name="Profile" component={Profile} />
+                </>
+              ) : (
                 <Stack.Screen name="Main" component={MainBottomNavigation} />
-                <Stack.Screen name="OnBoarding" component={OnBoarding} />
-                <Stack.Screen name="Profile" component={Profile} />
-              </>
+              )
             ) : (
               <>
                 <Stack.Screen name="Welcome" component={Welcome} />

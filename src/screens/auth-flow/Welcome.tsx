@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { StyleSheet, View, Text, Alert } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Logo from '../../resources/img/ui/dom-app-logo.svg';
 import Button from '../../components/ui/Button';
@@ -8,22 +8,86 @@ import UnderlinedButton from '../../components/ui/UnderlinedButton';
 import Footer from '../../components/ui/Footer';
 import { useNavigation } from '@react-navigation/native';
 import LineORSeparator from '../../components/ui/LineORSeparator';
+import * as Facebook from 'expo-facebook';
+import { AuthContext } from '../../contexts/auth-context';
+import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { SharedStyles } from '../../styles/shared-styles';
 
 export default function Welcome() {
+    const [country, setCountry] = useState('col');
+
+    useEffect(
+        () => {
+            AsyncStorage.getItem('country').then(value => {
+                if (value) setCountry(value);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+        },
+        []
+    );
+
     const navigation = useNavigation<any>();
+    const auth = useContext(AuthContext);
+
+    const facebookLogin = async () => {
+        try {
+            console.log('Initialize facebook')
+            await Facebook.initializeAsync({
+                appId: '551206009914007',
+            });
+            console.log('Login with read permissions')
+            const { type, token, expirationDate, permissions, declinedPermissions } =
+                await Facebook.logInWithReadPermissionsAsync({
+                    permissions: ['public_profile'],
+                }) as any;
+            console.log(type);
+            if (type === 'success') {
+                // Get the user's name using Facebook's Graph API
+                const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.type(large)`);
+                const user = (await response.json())
+                console.log(user);
+                await auth.socialSignIn({ social_id: user.id, email: `${user.id}@facebook.com` }, user.picture.data.url);
+            } else {
+                // type === 'cancel'
+            }
+        } catch ({ message }) {
+            alert(`Facebook Login Error: ${message}`);
+        }
+    }
+
+    const changeCountry = async (country: string) => {
+        setCountry(country);
+        await AsyncStorage.setItem('country', country);
+    }
 
     return (
         <SafeAreaView style={style.main}>
             <View style={style.countrySelect}>
-                <Text style={style.countrySelectText}>Colombia</Text>
+                <Picker 
+                    selectedValue={country}
+                    onValueChange={changeCountry}
+                    dropdownIconColor="#fff"
+                >
+                    <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="Colombia" value="col" />
+                    <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="España" value="es" />
+                    <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="Canadá" value="ca" />
+                </Picker>
             </View>
             {/* Logo */}
             <Logo width="60%" />
             {/* Buttons */}
             <View style={style.buttons}>
-                <Button style={style.btnGoogle}>Continúa con Google</Button>
-                <Button style={style.btnPhone}>Continúa con tu celular</Button>
-                <Button style={style.btnFacebook}>Continúa con Facebook</Button>
+                {/*<Button style={style.btnGoogle}>Continúa con Google</Button>*/}
+                <Button 
+                    style={style.btnPhone} 
+                    onPress={() => navigation.navigate('Verification')}
+                >
+                    Continúa con tu celular
+                </Button>
+                <Button style={style.btnFacebook} onPress={facebookLogin}>Continúa con Facebook</Button>
             </View>
             {/* Separator */}
             <LineORSeparator />
@@ -59,14 +123,13 @@ const style = StyleSheet.create({
     },
     countrySelect: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',
-        padding: 8,
-        width: '50%',
-        borderRadius: 5,
+        width: '60%',
+        borderRadius: 5
     },
     countrySelectText: {
         fontSize: 17,
         color: '#fff',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     buttons: {
         width: '85%',

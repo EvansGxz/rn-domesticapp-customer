@@ -26,37 +26,49 @@ export default function FaqsMenuScreen() {
                     size={58} 
                     icon={ServicesSVG} 
                     text="Mis Servicios" 
-                    onPress={() => navigation.navigate('FaqsDetail')}
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 1 })}
                 />
                 <MenuOption 
                     size={58} 
                     icon={ContractSVG} 
                     text="Mi cuenta" 
-                    onPress={() => navigation.navigate('FaqsDetail')}
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 2 })}
                 />
                 <MenuOption 
                     size={58} 
                     icon={EmployeeSVG} 
                     text="Empleados" 
-                    onPress={() => navigation.navigate('FaqsDetail')}
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 3 })}
                 />
                 <MenuOption 
                     size={58} 
                     icon={PaymentsSVG} 
                     text="Pagos" 
-                    onPress={() => navigation.navigate('FaqsDetail')}
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 4 })}
                 />
                 <MenuOption 
                     size={58} 
                     icon={CovidSVG} 
                     text="Con la COVID-19" 
-                    onPress={() => navigation.navigate('FaqsDetail')}
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 5 })}
                 />
                 <MenuOption 
                     size={58} 
                     icon={BarsSVG} 
-                    text="Con Mi Dotación" 
-                    onPress={() => navigation.navigate('FaqsDetail')}
+                    text="Mi Dotación" 
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 6 })}
+                />
+                <MenuOption 
+                    size={58} 
+                    icon={BarsSVG} 
+                    text="Beneficios" 
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 7 })}
+                />
+                <MenuOption 
+                    size={58} 
+                    icon={BarsSVG} 
+                    text="Devoluciones" 
+                    onPress={() => navigation.navigate('FaqsDetail', { id: 8 })}
                 />
             </ScrollView>
         </View>

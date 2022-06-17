@@ -1,17 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import useFetch from "use-http";
 import UserImage from "./UserImage";
 
 
 
 export default function UserInfo() {
+    const { loading, error, data = {} } = useFetch('/profile', {}, []);
+    console.log(data);
+    console.log(loading);
+    console.log(error);
     return (
         <View style={styles.container}>
             <View style={styles.directionRow}>
                 <UserImage size={65} />
-                <Text style={styles.textName}>María Heugenia Zaldívar</Text>
+                <Text style={styles.textName}>{data.full_name}</Text>
             </View>
-            <Text style={styles.servicesCount}>325 Servicios Solicitados</Text>
+            {/*<Text style={styles.servicesCount}>325 Servicios Solicitados</Text>*/}
         </View>
     );
 }

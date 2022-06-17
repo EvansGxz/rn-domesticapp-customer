@@ -1,34 +1,44 @@
+import { useRoute } from "@react-navigation/core";
 import React from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../../config";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+import { FAQS } from "../../../constants/faqs";
 import { SharedStyles } from "../../../styles/shared-styles";
 
 export default function FaqsDetail() {
+    const route = useRoute<any>();
+    const id = String(route.params?.id as number);
     return (
         <View style={SharedStyles.mainScreen}>
-            <BackTitledHeader title="PQR Servicios" />
+            <BackTitledHeader title={FAQS[id].title} />
             <ScrollView style={SharedStyles.mainScreen} contentContainerStyle={SharedStyles.mainPadding}>
-                <Text style={styles.faqsTitle}>1.1 FAQS RELACIONADAS CON MIS SERVICIOS</Text>
-                <Faq />
-                <Faq />
-                <Faq />
-                <Faq />
+                <Text style={styles.faqsTitle}>{FAQS[id].legend}</Text>
+                {
+                    FAQS[id].preguntas.map((question: any) => (
+                        <Faq 
+                            key={`question-${question.id}`}
+                            question={question.pregunta}
+                            answer={question.respuesta}
+                        />
+                    ))
+                }
             </ScrollView>
         </View>
     );
 }
 
-export function Faq() {
+export function Faq(props: any) {
     return (
-        <View>
-            <View style={[SharedStyles.card, SharedStyles.mb, SharedStyles.pd, { marginTop: 50 }]}>
-                <Text style={[SharedStyles.h2WithoutMargin, { fontSize: 14 }]}>1.1.1 ¿Cómo puedo programar/cancelar o reagendar un servicio en Domesticapp?</Text>
+        <View style={{ marginBottom: 15 }}>
+            <View style={[SharedStyles.card, SharedStyles.pd, { marginTop: 20, marginBottom: 10 }]}>
+                <Text style={[SharedStyles.h2WithoutMargin, { fontSize: 14 }]}>
+                    {props.question}    
+                </Text>
             </View>
-            <View style={SharedStyles.card}>
+            <View style={[SharedStyles.card]}>
                 <Text style={[SharedStyles.p, { fontSize: 14 }]}>
-                    Descarga el aplicativo móvil de Domesticapp para Colombia, España y Canadá. Accede al manejo
-                    de tus servicios en tiempo real. Conoce a tus asistentes, calificalos y goza de multiples beneficios.
+                    {props.answer}    
                 </Text>
             </View>
         </View>

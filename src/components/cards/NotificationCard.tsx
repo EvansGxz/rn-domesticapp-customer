@@ -6,6 +6,7 @@ import TrashSVG from '../../resources/img/profile-icons/trash-icon.svg';
 
 export interface NotificationCardProps {
     color: 'primary' | 'secondary';
+    notification: any;
 }
 
 export default function NotificationCard(props: NotificationCardProps) {
@@ -14,15 +15,15 @@ export default function NotificationCard(props: NotificationCardProps) {
             <View style={styles.cardTopBody}>
                 <MailSVG style={styles.mailIcon}/>
                 <View style={styles.textContent}>
-                    <Text style={styles.title}>¡Nuevas regiones en Colombia!</Text>
+                    <Text style={styles.title}>{props.notification.name}</Text>
                     <Text style={styles.descriptionText}>
-                        {`Dos nuevas regiones disponibles:\n- Andina\n- Caribe\nAhora puedes solicitar servicios o trabajar en estás regiones`}
+                        {props.notification.body}
                     </Text>
                 </View>
             </View>
             <View style={styles.cardBottomBody}>
-                <Text style={styles.dateText}>12/05/2022 22:28</Text>
-                <TrashSVG />
+                <Text style={styles.dateText}>{props.notification.created_at}</Text>
+                {/*<TrashSVG />*/}
             </View>
         </View>
     );

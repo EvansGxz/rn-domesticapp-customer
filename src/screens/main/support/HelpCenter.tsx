@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, ScrollView, View } from "react-native";
+import * as Linking from 'expo-linking';
 import TitledHeader from "../../../components/headers/TitledHeader";
 import MenuOption from "../../../components/ui/MenuOption";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -27,13 +28,13 @@ export default function HelpCenter() {
                     size={58} 
                     icon={SupportChatSVG} 
                     text="Chat de Soporte" 
-                    onPress={() => navigation.navigate('SupportChat')}
+                    onPress={() => Linking.openURL('https://wa.me/18444684329')}
                 />
                 <MenuOption 
                     size={58} 
                     icon={LocationSVG} 
                     text="¿Necesitas ayuda con tu ultimo servicio?" 
-                    onPress={() => navigation.navigate('')}
+                    onPress={() => Linking.openURL('https://wa.me/18444684329?text=Necesito ayuda')}
                 />
                 <MenuOption 
                     size={58} 

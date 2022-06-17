@@ -27,13 +27,13 @@ export default function ServiceTypeButton(props: ServiceTypeButtonProps) {
 
 const styles = StyleSheet.create({
     button: {
-        width: '45%',
+        width: '30%',
         alignItems: 'center',
         marginBottom: 20
     },
     serviceImg: {
-        width: 115,
-        height: 115,
+        width: 60,
+        height: 60,
     },
     serviceText: {
         fontSize: 16,

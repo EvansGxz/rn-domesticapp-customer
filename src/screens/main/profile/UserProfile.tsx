@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import * as Linking from 'expo-linking';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
 import TitledHeader from '../../../components/headers/TitledHeader';
 import MenuOptionButton from '../../../components/ui/MenuOptionButton';
@@ -16,9 +17,11 @@ import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.sv
 import NewsIcon from '../../../resources/img/profile-icons/newletter.svg';
 import { useNavigation } from '@react-navigation/native';
 import { SharedStyles } from '../../../styles/shared-styles';
+import { AuthContext } from '../../../contexts/auth-context';
 
 export default function UserProfile() {
     const navigation = useNavigation<any>();
+    const authContext = useContext(AuthContext);
 
     return (
         <ScrollView style={SharedStyles.mainScreen}>
@@ -38,7 +41,7 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Chat de Soporte"
                     icon={SupportIcon}
-                    onPress={() => navigation.navigate('SupportChat')}
+                    onPress={() => Linking.openURL('https://wa.me/18444684329?text=Necesito ayuda')}
                 />
                 <Text style={SharedStyles.h2}>Mi Cuenta</Text>
                 <MenuOptionButton
@@ -60,6 +63,7 @@ export default function UserProfile() {
                 <MenuOptionButton
                     text="Trabaja con Domesticapp"
                     icon={WorkIcon}
+                    onPress={() => Linking.openURL('https://domesticapp.com.co/vacantes-laborales-domesticapp/')}
                 />
                 <MenuOptionButton
                     text="Terminos y condiciones"
@@ -81,6 +85,12 @@ export default function UserProfile() {
                     text="NewsLetter"
                     icon={NewsIcon}
                     onPress={() => navigation.navigate('NewsLetter')}
+                />
+                <Text style={SharedStyles.h2}>Otros</Text>
+                <MenuOptionButton
+                    text="Cerrar Sesión"
+                    icon={NewsIcon}
+                    onPress={() => authContext.signOut()}
                 />
             </View>
         </ScrollView>

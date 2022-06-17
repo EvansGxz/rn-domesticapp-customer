@@ -1,17 +1,20 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
-import { StyleSheet, View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData, Keyboard } from 'react-native';
+import { AxiosError } from "axios";
+import React, { useContext, useRef, useState } from "react";
+import { StyleSheet, View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData, Keyboard, Alert } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
 import Button from "../../components/ui/Button";
 import Footer from "../../components/ui/Footer";
 import OutlinedInput from "../../components/ui/OutlinedInput";
+import { AuthContext } from "../../contexts/auth-context";
+import { httpClient } from "../../controllers/http-client";
 import PhoneVerificationVector from '../../resources/img/ui/phone-verification.svg';
 
 export default function Verification() {
-    const [isPhone, setPhone] = useState(true);
+    const [phone, setPhone] = useState(null);
     
-    const toggleScreen = () => setPhone(!isPhone);
+    const requestToken = (_phone: any) => setPhone(_phone)
 
     return (
         <SafeAreaView style={style.mainContainer}>
@@ -21,10 +24,10 @@ export default function Verification() {
             <View style={style.content}>
                 <View style={style.centerContainer}>
                     {
-                        isPhone ? (
-                            <VerificationPhone handler={toggleScreen} />
+                        !phone ? (
+                            <VerificationPhone handler={requestToken} />
                         ) : (
-                            <VerificationCode />
+                            <VerificationCode phone={phone} />
                         )
                     }
                 </View>
@@ -34,17 +37,39 @@ export default function Verification() {
 }
 
 function VerificationPhone({ handler }: any) {
+    const [phone, setPhone] = useState('');
+    // {via: "sms", phone: "+528994466683"}
+    const requestVerify = async () => {
+        try {
+            console.log('verifying phone: ', phone);
+            const result = await httpClient.post(
+                '/api/verification/start', 
+                { via: "sms", phone: "+528994466683" }
+            );
+            console.log(result);
     
+            handler(phone);
+        } catch (err) {
+            console.log((err as AxiosError).response?.data);
+            Alert.alert('Error', ((err as AxiosError).response?.data as any).errors)
+        }
+    }
+
     return (
         <>
             <Text style={style.title}>Verificación</Text>
             <Text>
                 Enviaremos un codigo de verificación de 6 digitos a tu celular.
             </Text>
-            <OutlinedInput keyboardType="phone-pad" placeholder="Ingrese Numero Celular" />
+            <OutlinedInput 
+                keyboardType="phone-pad" 
+                placeholder="Ingrese Número Celular"
+                onChangeText={setPhone}
+                value={phone} 
+            />
             <Button
                 style={{ backgroundColor: COLORS.primary, padding: 15 }}
-                onPress={handler}
+                onPress={requestVerify}
             >
                 Continuar
             </Button>
@@ -53,8 +78,8 @@ function VerificationPhone({ handler }: any) {
     );
 }
 
-function VerificationCode() {
-    const navigation = useNavigation<any>();
+function VerificationCode({ phone } : any) {
+    const auth = useContext(AuthContext);
     const [data, setData] = useState({
         A: '',
         B: '',
@@ -130,11 +155,23 @@ function VerificationCode() {
         } 
     }
 
+    const verify = async () => {
+        const result = await httpClient.post(
+            '/api/verification/verify',
+            { 
+                token: `${data.A}${data.B}${data.C}${data.D}${data.E}${data.F}`,
+                phone: phone 
+            }
+        ); 
+        console.log(result);
+        await auth.phoneSignIn({ phone });
+    }
+
     return (
         <>
-            <Text style={style.title}>Verification Code</Text>
+            <Text style={style.title}>Código de Verificación</Text>
             <Text style={{ textAlign: 'center' }}>
-                Enter the 4 digits that you received on your phone.
+                Ingrese Numero Celular
             </Text>
             <View style={style.codeInputsContainer}>
                 <OutlinedInput 
@@ -203,7 +240,7 @@ function VerificationCode() {
             </View>
             <Button
                 style={{ backgroundColor: COLORS.primary, padding: 15 }}
-                onPress={() => navigation.navigate('Main')}
+                onPress={verify}
             >
                 Continue
             </Button>
