@@ -2,14 +2,15 @@ import React from "react";
 import { View, Text, ScrollView, StyleSheet } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { COLORS } from "../../../../config";
-import TitledHeader from "../../../components/headers/TitledHeader";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
 import { SharedStyles } from "../../../styles/shared-styles";
+import ServiceStatusCard from "../../../components/cards/ServiceStatusCard";
 
-export default function CalendarScreen() { 
+export default function CalendarScreen() {
     return (
         <View style={SharedStyles.mainScreen}>
-            <TitledHeader title="Mi Calendario" />
+            <BackTitledHeader title="Mi Calendario" />
             <ScrollView  style={SharedStyles.fill} contentContainerStyle={SharedStyles.mainPadding}>
                 <Text style={SharedStyles.p}>
                     Recuerda que los reportes deben de realizarse dentro de las
@@ -19,6 +20,7 @@ export default function CalendarScreen() {
                 <Calendar />
                 {/* Card */}
                 <DayCard />
+                <DayCardService />
             </ScrollView>
             <View style={[SharedStyles.centerContent, SharedStyles.mainPadding]}>
                 <Button style={SharedStyles.backgroundPrimary}>Ir a Proximo Servicio</Button>
@@ -32,6 +34,15 @@ export function DayCard() {
         <View style={style.card}>
             <Text style={style.cardTitle}>Jueves, 11 de Mayo</Text>
             <Text style={style.text}>No se han añadido servicios</Text>
+        </View>
+    );
+}
+export function DayCardService() {
+    return (
+        <View style={style.card}>
+            <Text style={style.cardTitle}>Jueves, 12 de Mayo</Text>
+            <Text style={style.text}>No se han añadido servicios</Text>
+            <ServiceStatusCard />
         </View>
     );
 }

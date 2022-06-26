@@ -14,13 +14,13 @@ export default function ServiceRecurrentSelection() {
     });
     const navigation = useNavigation<any>();
     const route = useRoute();
-    
+    console.log(recurrencyData.date)
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="RECURRENCIA" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={{ paddingHorizontal: 35, paddingTop: 20 }}>
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Repetir cita</Text>
-                <Picker 
+                <Picker
                     selectedValue={recurrency}
                     onValueChange={(itemValue) => setSelectedValue(itemValue)}
                     style={[SharedStyles.card, SharedStyles.mb]}
@@ -32,7 +32,7 @@ export default function ServiceRecurrentSelection() {
                     recurrency ? (
                         <>
                             <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Frecuencia</Text>
-                            <Picker 
+                            <Picker
                                 selectedValue={recurrency}
                                 onValueChange={(itemValue) => setSelectedValue(itemValue)}
                                 style={[SharedStyles.card, SharedStyles.mb]}
@@ -43,9 +43,9 @@ export default function ServiceRecurrentSelection() {
                                 <Picker.Item label="Mensual" value="3" />
                             </Picker>
                             <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Fecha limite</Text>
-                            <DateOutlinedButton 
+                            <DateOutlinedButton
                                 onChangeText={(date) => setRecurrencyData({ ...recurrencyData, date })} 
-                                value={recurrencyData.date} 
+                                value={recurrencyData.date}
                             />
                         </>
                     ) : null

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import BackIcon from '../../resources/img/ui/back-button.svg';
 import { useNavigation } from "@react-navigation/native";
 
@@ -11,9 +11,12 @@ export default function BackTitledHeader(props: BackTitledHeaderProps) {
     const navigation = useNavigation();
     return (
         <View style={styles.headerContainer}>
-            <BackIcon 
-                onPress={() => navigation.canGoBack() ? navigation.goBack() : null} 
-            />
+            <TouchableOpacity style={styles.containerButton} onPress={() => navigation.canGoBack() ? navigation.goBack() : null}>
+                <Text style={styles.backIcon}>{"<"}</Text>
+            </TouchableOpacity>
+            {/* <BackIcon
+                onPress={() => navigation.canGoBack() ? navigation.goBack() : null}
+            /> */}
             <Text numberOfLines={1} style={styles.title}>{props.title}</Text>
         </View>
     );
@@ -29,9 +32,18 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#82868D',
-        fontSize: 24,
+        fontSize: 20,
         marginLeft: 20,
+        paddingTop: 9,
         flex: 1,
         fontFamily: 'Poppins_600SemiBold'
+    },
+    containerButton: {
+        alignItems: 'center',
+        justifyContent:"center",
+    },
+    backIcon: {
+        fontSize: 30,
+        color: '#0BBBEF',
     }
 });

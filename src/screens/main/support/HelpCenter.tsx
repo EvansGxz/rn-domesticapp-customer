@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, ScrollView, View } from "react-native";
 import * as Linking from 'expo-linking';
-import TitledHeader from "../../../components/headers/TitledHeader";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import MenuOption from "../../../components/ui/MenuOption";
 import { SharedStyles } from "../../../styles/shared-styles";
 import SupportChatSVG from '../../../resources/img/support-icons/chat-icon.svg';
@@ -16,7 +16,7 @@ export default function HelpCenter() {
 
     return (
         <View style={SharedStyles.mainScreen}>
-            <TitledHeader title="Centro de Ayuda" />
+            <BackTitledHeader title="Centro de Ayuda" />
             <ScrollView style={SharedStyles.mainPadding} contentContainerStyle={{ paddingBottom: 100 }}>
                 <Text style={SharedStyles.p}>
                     Para tu comodidad. Tenemos distintos articulos

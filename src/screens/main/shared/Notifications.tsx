@@ -5,6 +5,7 @@ import NotificationCard from "../../../components/cards/NotificationCard";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { AuthContext } from "../../../contexts/auth-context";
 import { SharedStyles } from "../../../styles/shared-styles";
+import { WebView } from 'react-native-webview';
 
 export default function Notifications() {
     const auth = useContext(AuthContext);
@@ -12,7 +13,14 @@ export default function Notifications() {
     console.log(data);
     console.log(loading);
     console.log(error);
-    
+
+    const pdfComponent = () => {
+       /*  <WebView
+        source={{
+          uri: `https://drive.google.com/viewerng/viewer?embedded=true&url=${pdfUrl}`,
+        }}
+      /> */
+    }
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Notificaciones" />

@@ -31,8 +31,8 @@ export default function BottomNavigation() {
                 />
                 <Tab.Screen 
                     name="Calendar" 
-                    options={createTabOptions(CalendarIcon)} 
-                    component={CalendarModule} 
+                    options={createTabOptions(CalendarIcon)}
+                    component={CalendarModule}
                 />
                 <Tab.Screen 
                     name="Support"
@@ -42,7 +42,7 @@ export default function BottomNavigation() {
                 <Tab.Screen 
                     name="Contract" 
                     options={createTabOptions(ContractIcon)} 
-                    component={UserProfile}  
+                    component={UserProfile}
                 />
             </Tab.Navigator>
         </SafeAreaView>

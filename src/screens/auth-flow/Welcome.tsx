@@ -66,10 +66,10 @@ export default function Welcome() {
     return (
         <SafeAreaView style={style.main}>
             <View style={style.countrySelect}>
-                <Picker 
+                <Picker
                     selectedValue={country}
                     onValueChange={changeCountry}
-                    dropdownIconColor="#fff"
+                    dropdownIconColor="#000"
                 >
                     <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="Colombia" value="col" />
                     <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="España" value="es" />
@@ -81,7 +81,7 @@ export default function Welcome() {
             {/* Buttons */}
             <View style={style.buttons}>
                 {/*<Button style={style.btnGoogle}>Continúa con Google</Button>*/}
-                <Button 
+                <Button
                     style={style.btnPhone} 
                     onPress={() => navigation.navigate('Verification')}
                 >
@@ -128,7 +128,7 @@ const style = StyleSheet.create({
     },
     countrySelectText: {
         fontSize: 17,
-        color: '#fff',
+        color: '#000',
         textAlign: 'center',
     },
     buttons: {

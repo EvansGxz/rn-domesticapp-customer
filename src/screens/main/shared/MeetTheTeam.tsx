@@ -15,7 +15,7 @@ export default function MeetTheTeam() {
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Conoce al equipo" />
-            <ScrollView 
+            <ScrollView
                 style={styles.cardsContainer}
                 contentContainerStyle={styles.contentContainerCards}
             >

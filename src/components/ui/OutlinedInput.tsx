@@ -8,7 +8,7 @@ export interface OutlinedInputProps extends TextInputProps {
 
 export default function OutlinedInput(props: OutlinedInputProps) {
     return (
-        <TextInput 
+        <TextInput
             {...props}
             ref={props.inputRef}
             style={[style.input, props.style]}

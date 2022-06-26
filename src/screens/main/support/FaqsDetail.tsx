@@ -5,6 +5,8 @@ import { COLORS } from "../../../../config";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { FAQS } from "../../../constants/faqs";
 import { SharedStyles } from "../../../styles/shared-styles";
+import Button from "../../../components/ui/Button";
+import * as Linking from 'expo-linking';
 
 export default function FaqsDetail() {
     const route = useRoute<any>();
@@ -16,7 +18,7 @@ export default function FaqsDetail() {
                 <Text style={styles.faqsTitle}>{FAQS[id].legend}</Text>
                 {
                     FAQS[id].preguntas.map((question: any) => (
-                        <Faq 
+                        <Faq
                             key={`question-${question.id}`}
                             question={question.pregunta}
                             answer={question.respuesta}
@@ -24,6 +26,9 @@ export default function FaqsDetail() {
                     ))
                 }
             </ScrollView>
+            <View style={[SharedStyles.centerContent, SharedStyles.mainPadding]}>
+                <Button style={SharedStyles.backgroundPrimary} onPress={() => Linking.openURL('https://wa.me/18444684329?text=Necesito ayuda')}>Conectar con soporte</Button>
+            </View>
         </View>
     );
 }

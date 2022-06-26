@@ -7,12 +7,12 @@ export default function SearchDirectionMap() {
     return (
         <View style={styles.container}>
             <View style={styles.inputContainer}>
-                <OutlinedInput 
+                <OutlinedInput
                     style={styles.input}
                     placeholder="Ingresa dirección a laboral"
                 />
             </View>
-            <MapView 
+            <MapView
                 style={styles.map}
                 provider={PROVIDER_GOOGLE}
                 initialRegion={{
