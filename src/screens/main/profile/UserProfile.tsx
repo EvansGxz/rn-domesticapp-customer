@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import * as Linking from 'expo-linking';
 import { View, StyleSheet, ScrollView, Text } from 'react-native';
-import TitledHeader from '../../../components/headers/TitledHeader';
+import BackTitledHeader from '../../../components/headers/BackTitledHeader';
 import MenuOptionButton from '../../../components/ui/MenuOptionButton';
 import UserInfo from '../../../components/user/UserInfo';
 import ContractIcon from '../../../resources/img/menu/contract.svg';
@@ -25,7 +25,7 @@ export default function UserProfile() {
 
     return (
         <ScrollView style={SharedStyles.mainScreen}>
-            <TitledHeader title="Mi Perfil" />
+            <BackTitledHeader title="Mi Perfil" />
             <UserInfo />
             <View style={styles.menu}>
                 <MenuOptionButton

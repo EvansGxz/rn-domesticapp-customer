@@ -16,7 +16,7 @@ export default function Home() {
             {/* Center Container */}
             <View style={styles.centerCategories}>
                 <ServiceTypesCatalog />
-                <Button 
+                <Button
                     style={styles.button}
                     onPress={() => nav.navigate('MeetTheTeam')}
                 >

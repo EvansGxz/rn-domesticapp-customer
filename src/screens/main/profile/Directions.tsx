@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import React, { useContext, useState } from "react";
+import { ScrollView, StyleSheet, View, Text, Button } from 'react-native';
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import MenuOption from "../../../components/ui/MenuOption";
 import OutlinedInput from "../../../components/ui/OutlinedInput";
@@ -15,12 +15,21 @@ export default function Directions() {
     console.log('Direction', data);
     console.log(loading);
     console.log(error);
-    
+
+    const [dataChange, setDataChange] = useState(data);
+    const [dataList, setDataList] = useState([]);
+    console.log(dataChange);
+
+    const addData = () => {
+        
+    }
+
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Direcciones" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={SharedStyles.mainPadding}>
-                <OutlinedInput style={styles.input} placeholder="Ingresa direccion a laborar" />
+                <OutlinedInput style={styles.input} placeholder="Ingresa direccion a laborar" value={dataChange} onChangeText={setDataChange}/>
+                
                 <View style={{ marginTop: 20 }}>
                     {
                         loading ? (
@@ -30,7 +39,7 @@ export default function Directions() {
                         ) : (
                             data.map(
                                 (direction: any) => (
-                                    <MenuOption 
+                                    <MenuOption
                                         key={`direction-${direction.id}`}
                                         icon={CheckSVG}
                                         size={30}

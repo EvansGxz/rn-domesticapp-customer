@@ -5,15 +5,22 @@ import { SharedStyles } from "../../styles/shared-styles";
 import UserImage from "../user/UserImage";
 
 export default function ServiceStatusCard(props: any) {
+    const status = {
+        "employee":{
+            full_name: "Maria del refugio",
+            active: "Activo"
+        },
+    }
+    // console.log("img"+status.image_url)
     return (
         <>
             <View style={styles.container}>
-                <UserImage size={60} src={props.status.employee.image_url} />
+               <UserImage size={60} sourceImage />
                 <View style={styles.rightSide}>
-                    <Text style={styles.name}>{props.status.employee.full_name}</Text>
+                    <Text style={styles.name}>{status.employee.full_name}</Text>
                     <Text numberOfLines={1}>Limpieza de ropa, Doblado de Ropa</Text>
                     <View style={styles.statusContainer}>
-                        <Text style={styles.statusText}>{props.status.active ? 'Activo' : 'No Activo'}</Text>
+                        <Text style={styles.statusText}>{status.employee.active ? 'Activo' : 'No Activo'}</Text>
                     </View>
                 </View>
             </View>

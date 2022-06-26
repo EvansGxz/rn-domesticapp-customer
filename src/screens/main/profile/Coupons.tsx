@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
 import { COLORS } from "../../../../config";
 import CouponCard from "../../../components/cards/CouponCard";
@@ -8,22 +8,53 @@ import UnderlinedInput from "../../../components/ui/UnderlinedInput";
 import { SharedStyles } from "../../../styles/shared-styles";
 
 export default function Coupons() {
+    const [isValid, setIsValid] = useState(false);
+    const [cupon, setCupon] = useState("");
+    const [isPress, setIsPress] = useState(false);
+
+    const dataCupon = "limp20";
+    const validate = () => {
+        setIsPress(true);
+        setTimeout(() =>{
+            setIsPress(false);
+        },2500)
+        if (cupon == dataCupon) {
+            console.log("Cupon valido")
+            setIsValid(true)
+        } else {
+            console.log("Cupon invalido")
+            setIsValid(false)
+        }
+    }
+    console.log(cupon);
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Cupones" />
             <ScrollView contentContainerStyle={styles.container}>
                 <View style={[SharedStyles.card, styles.couponValidation]}>
-                    <UnderlinedInput 
-                        style={styles.input} 
+                    <UnderlinedInput
+                        style={styles.input}
                         placeholder="Ingresa tu cupon"
+                        value={cupon}
+                        onChangeText={setCupon}
                     />
                     <Button
-                        textStyle={SharedStyles.smallButtonText} 
+                        textStyle={SharedStyles.smallButtonText}
                         style={SharedStyles.smallButton}
+                        onPress={validate}
                     >
                         Validar
                     </Button>
                 </View>
+                 <View style={styles.validation}>
+                    {
+                        isPress ? (
+                            isValid ? (
+                                <Text style={styles.textValidateTrue}>¡Cupón válido!</Text>
+                            ):(<Text style={styles.textValidateFalse}>¡Cupón inválido!</Text>)
+                        ): <View></View>
+                    }
+                    </View>
                 <Text style={SharedStyles.h2}>Mis cupones</Text>
                 <View>
                     <CouponCard />
@@ -52,5 +83,16 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         padding: 10
+    },
+    validation: {
+        top: 10,
+        left: "10%",
+        textAlignVertical: "center",
+    },
+    textValidateTrue: {
+        color: "green"
+    },
+    textValidateFalse: {
+        color: "red"
     }
 });

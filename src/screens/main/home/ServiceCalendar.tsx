@@ -13,10 +13,10 @@ export default function ServiceCalendar() {
     const navigation = useNavigation<any>();
     const route = useRoute();
     const [markedDates, setMarkedDates] = useState({});
-    
+
     return (
         <View style={SharedStyles.mainScreen}>
-            <BackTitledHeader title="APUNTALO EN MI AGENDA" />
+            <BackTitledHeader title="Apuntalo en mi agenda" />
             <View style={[SharedStyles.mainPadding, SharedStyles.fill]}>
                 <Calendar 
                     markingType="dot"
@@ -27,22 +27,29 @@ export default function ServiceCalendar() {
                     markedDates={markedDates}
                 />
                 <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Hora de inicio</Text>
-                <Picker 
+                <Picker
                     selectedValue={selectedValue}
                     onValueChange={(itemValue) => setSelectedValue(itemValue)}
                     style={[SharedStyles.card]}
                 >
-                    <Picker.Item label="11:00" value="1" />
-                    <Picker.Item label="12:00" value="2" />
-                    <Picker.Item label="13:00" value="3" />
+                    <Picker.Item label="07:00" value="1" />
+                    <Picker.Item label="08:00" value="2" />
+                    <Picker.Item label="09:00" value="3" />
+                    <Picker.Item label="10:00" value="4" />
+                    <Picker.Item label="11:00" value="5" />
+                    <Picker.Item label="12:00" value="6" />
+                    <Picker.Item label="01:00" value="7" />
+                    <Picker.Item label="02:00" value="8" />
+                    <Picker.Item label="03:00" value="9" />
+                    <Picker.Item label="04:00" value="10" />
                 </Picker>
             </View>
             <View style={SharedStyles.mainPadding}>
-                <Button 
+                <Button
                     style={SharedStyles.backgroundPrimary}
                     onPress={
                         () => navigation.navigate(
-                            'ServiceRecurrentSelection', 
+                            'ServiceRecurrentSelection',
                             { ...route.params, workingDayType: selectedValue  }
                         )
                     }

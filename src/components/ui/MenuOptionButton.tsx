@@ -20,9 +20,9 @@ export default function MenuOptionButton(props: MenuOptionButtonProps) {
                     <props.icon />
                     <Text style={styles.buttonText}>{props.text}</Text>
                 </View>
-                <BackButtonSVG 
-                    style={styles.arrowIcon}
-                />
+                <View style={styles.containerButton}>
+                    <Text style={styles.backIcon}>{">"}</Text>
+                </View>
             </TouchableOpacity>
             <View style={SharedStyles.bottomLine} />
         </>
@@ -46,8 +46,16 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         marginLeft: 10,
-        fontSize: 18,
+        fontSize: 16,
         color: '#3D4451',
         fontWeight: '600'
+    },
+    containerButton: {
+        alignItems: 'center',
+        justifyContent:"center",
+    },
+    backIcon: {
+        fontSize: 30,
+        color: '#0BBBEF',
     }
 });

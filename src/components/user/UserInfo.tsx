@@ -7,7 +7,7 @@ import UserImage from "./UserImage";
 
 export default function UserInfo() {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
-    console.log(data);
+    console.log("UserInfo = "+data);
     console.log(loading);
     console.log(error);
     return (
