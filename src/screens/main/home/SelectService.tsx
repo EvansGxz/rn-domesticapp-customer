@@ -33,7 +33,7 @@ export default function SelectService() {
       <View style={[SharedStyles.mainPadding, SharedStyles.centerContent]}>
         <Button
           style={SharedStyles.backgroundPrimary}
-          onPress={() => console.log("clic")}
+          onPress={() => navigation.navigate("EmployeeProfile")}
         >
           Seleccionar empleado
         </Button>
