@@ -14,6 +14,7 @@ export const INFO = {
     year: 2022
 }
 
-export const BASE_URI = "https://domesticapp-api.herokuapp.com";
+export const BASE_URI = "https://domesticapp.herokuapp.com";
+export const MAPBOX_URI = "https://api.mapbox.com/geocoding/v5/mapbox.places"
 
 export const FACEBOOK_APP_ID = '551206009914007';

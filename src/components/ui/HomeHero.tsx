@@ -5,7 +5,7 @@ import HomeHeroSVG from '../../resources/img/ui/home-hero.svg';
 export default function HomeHero() {
     return (
         <View style={styles.heroContainer}>
-            <HomeHeroSVG width="100%" />
+            <HomeHeroSVG width="100%"   />
             <View
                 style={styles.heroTextContainer}
             >

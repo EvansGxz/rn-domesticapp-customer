@@ -20,7 +20,7 @@ export default function Profile(props: DateOutlinedInputProps) {
     const [calendarData, setCalendarData] = useState("");
     const [isModalOpened, setIsModalOpened] = useState(false);
     const toggleModal = () => setIsModalOpened(!isModalOpened);
-    console.log('selected day', calendarData);
+    
 
     const onChangeText = (val: string) => {
         if (val.length > 10) return;

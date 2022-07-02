@@ -6,8 +6,8 @@ import UserImage from "../user/UserImage";
 export default function UserHeader() {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
     console.log(data);
-    console.log(loading);
-    console.log(error);
+    // console.log(loading);
+    // console.log(error);
     return (
         <View style={style.headerContainer}>
             <UserImage src={data.image_url} />
@@ -24,7 +24,7 @@ const style = StyleSheet.create({
         width: '100%',
         backgroundColor: '#fff',
         zIndex: 1,
-        height: 70,
+        height: 60,
         flexDirection: 'row',
         alignItems: 'center',
         shadowColor: "#000",

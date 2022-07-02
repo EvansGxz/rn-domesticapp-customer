@@ -9,9 +9,9 @@ import { SharedStyles } from "../../../styles/shared-styles";
 export default function MeetTheTeam() {
     const auth = useContext(AuthContext);
     const { loading, error, data = [] } = useFetch('/order_details/'+auth.getState().user.id, {}, []);
-    console.log(data);
-    console.log(loading);
-    console.log(error);
+    // console.log(data);
+    // console.log(loading);
+    // console.log(error);
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Conoce al equipo" />

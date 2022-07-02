@@ -14,7 +14,7 @@ export default function ServiceRecurrentSelection() {
     });
     const navigation = useNavigation<any>();
     const route = useRoute();
-    console.log(recurrencyData.date)
+    
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="RECURRENCIA" />

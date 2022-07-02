@@ -14,6 +14,9 @@ export default function ServiceCalendar() {
     const route = useRoute();
     const [markedDates, setMarkedDates] = useState({});
 
+   
+   
+    
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Apuntalo en mi agenda" />
@@ -22,7 +25,7 @@ export default function ServiceCalendar() {
                     markingType="dot"
                     style={SharedStyles.mb} 
                     onDayPress={day => {
-                        setMarkedDates({ [day.dateString]: { selectedColor: COLORS.primary, selected: true } })
+                        setMarkedDates({ date:[day.dateString],[day.dateString]: { selectedColor: COLORS.primary, selected: true } })
                     }}
                     markedDates={markedDates}
                 />
@@ -50,7 +53,7 @@ export default function ServiceCalendar() {
                     onPress={
                         () => navigation.navigate(
                             'ServiceRecurrentSelection',
-                            { ...route.params, workingDayType: selectedValue  }
+                            { ...route.params, workingHour: selectedValue, working: markedDates }
                         )
                     }
                 >

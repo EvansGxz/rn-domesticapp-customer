@@ -8,17 +8,35 @@ import ContractIcon from '../../resources/img/menu/contract.svg';
 import CalendarIcon from '../../resources/img/menu/calendar.svg';
 import SupportIcon from '../../resources/img/menu/support.svg';
 import ConfigIcon from '../../resources/img/menu/config.svg';
+import Group from '../../resources/img/menu/group.svg';
 import UserProfile from "./profile";
 import Support from "./support";
 import CalendarModule from "./calendar";
 import MeetTheTeam from "./shared/MeetTheTeam";
+import { COLORS } from "../../../config";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomNavigation() {
     return (
         <SafeAreaView style={style.mainContainer}>
-            <Tab.Navigator screenOptions={{ headerShown: false }}>
+            <Tab.Navigator 
+            screenOptions={({route}) => ({
+                headerShown: false,
+                tabBarItemStyle:{
+                    borderRadius:200, 
+                    width:2,
+                    backgroundColor:route.name === 'Calendar' ? COLORS.primary : 'white',
+                    borderWidth:4,
+                    borderColor:route.name === 'Calendar' ? '#e2f8fd' : 'white',
+                    
+                },             
+                tabBarStyle:{height:67},
+                tabBarIconStyle:{opacity:route.name === 'Calendar' ? 1 : 0.9}
+                
+            })}
+            
+            >
                 <Tab.Screen 
                     name="Home" 
                     options={createTabOptions(HomeIcon)} 
@@ -26,13 +44,14 @@ export default function BottomNavigation() {
                 />
                 <Tab.Screen 
                     name="Team"
-                    options={createTabOptions(ConfigIcon)} 
+                    options={createTabOptions(Group)} 
                     component={MeetTheTeam} 
                 />
                 <Tab.Screen 
                     name="Calendar" 
                     options={createTabOptions(CalendarIcon)}
                     component={CalendarModule}
+
                 />
                 <Tab.Screen 
                     name="Support"
@@ -50,12 +69,23 @@ export default function BottomNavigation() {
 }
 
 const createTabOptions = (Component: any) => {
+    const item = Component()
+    
+    
+    
     return { 
         tabBarShowLabel: false,
         tabBarIcon: ({ focused } : any) => (
-            <Component style={{ opacity: focused ? 1 : 0.5 }} />
+            <Component 
+            
+            style={{ 
+                opacity: focused ? 1 : 0.5 ,
+                
+            }} 
+            
+            />
         ),
-
+        
     }
 }
 

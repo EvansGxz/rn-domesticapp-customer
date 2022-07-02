@@ -101,7 +101,7 @@ function App() {
 
   if (!fontsLoaded || state.loading) return <SplashScreen />
 
-  console.log(state.user);
+  
   return (
     <Provider 
       url={BASE_URI} 
