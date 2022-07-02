@@ -14,6 +14,6 @@ export const INFO = {
     year: 2022
 }
 
-export const BASE_URI = "https://domesticapp-api.herokuapp.com";
+export const BASE_URI = "https://domesticapp.herokuapp.com";
 
 export const FACEBOOK_APP_ID = '551206009914007';

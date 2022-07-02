@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextInput, Modal, TextInputProps, StyleSheet, View, StyleProp, ViewStyle, TouchableOpacity } from "react-native";
+import { TextInput, Modal, TextInputProps, StyleSheet, View, StyleProp, ViewStyle, TouchableOpacity, Pressable } from "react-native";
 import { COLORS } from "../../../config";
 import CalendarSVG from '../../resources/img/menu/calendar.svg';
 import { Calendar } from "react-native-calendars";
@@ -10,33 +10,32 @@ export interface DateOutlinedInputProps extends TextInputProps {
     containerStyle?: StyleProp<ViewStyle>;
 }
 
+const formatDate = (date: Date) => {
+    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    const month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`
+}
+
 export default function DateOutlinedButton(props: DateOutlinedInputProps) {
     const [isModalOpened, setIsModalOpened] = useState(false);
 
     const toggleModal = () => setIsModalOpened(!isModalOpened);
 
-    const onChangeText = (val: string) => {
-        if (val.length > 10) return;
-        if (val.length === 2 || val.length === 5)
-            return (props.onChangeText || ((val) => {}))(val + '/');
-        (props.onChangeText || ((val) => {}))(val);
-    }
-
     return (
         <>
-            <View style={[style.container]}>
+            <Pressable style={[style.container]} onPress={toggleModal}>
                 <TextInput 
                     {...props}
                     ref={props.inputRef}
                     style={[props.style, style.input]}
                     keyboardType="numeric"
                     placeholder="dd/mm/aaaa"
-                    onChangeText={onChangeText}
                 />
-                <TouchableOpacity style={style.icon} onPress={toggleModal}>
+                <View style={style.icon}>
                     <CalendarSVG />
-                </TouchableOpacity>
-            </View>
+                </View>
+            </Pressable>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -44,9 +43,10 @@ export default function DateOutlinedButton(props: DateOutlinedInputProps) {
             >
                 <View style={[SharedStyles.fill, SharedStyles.centerContent, { position: 'relative' }]}>
                     <TouchableOpacity onPress={toggleModal} style={[SharedStyles.fill, style.backdrop]}></TouchableOpacity>
-                    <Calendar 
-                        style={[SharedStyles.card, { minWidth: '90%' }]}
-                    />
+                    <Calendar style={[SharedStyles.card, { minWidth: '90%' }]} onDayPress={(date) => {
+                        toggleModal();
+                        props.onChangeText && props.onChangeText(formatDate(new Date(date.timestamp)))
+                    } } />
                 </View>
             </Modal>
         </>

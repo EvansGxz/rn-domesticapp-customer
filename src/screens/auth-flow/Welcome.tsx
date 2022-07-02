@@ -15,19 +15,22 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SharedStyles } from '../../styles/shared-styles';
 
 export default function Welcome() {
-    const [country, setCountry] = useState('col');
+    const [country, setCountry] = useState('');
 
-    useEffect(
-        () => {
-            AsyncStorage.getItem('country').then(value => {
-                if (value) setCountry(value);
-            })
-            .catch(err => {
-                console.log(err);
-            })
-        },
-        []
-    );
+    const getCountry = () => {
+        AsyncStorage.getItem('country').then(value => {
+            if (value){
+                setCountry(value);
+            }else{
+                AsyncStorage.setItem('country', 'col');
+                setCountry('col');
+            };
+        })
+    }
+
+    useEffect(() => {
+        getCountry();
+    }, [] );
 
     const navigation = useNavigation<any>();
     const auth = useContext(AuthContext);
@@ -63,6 +66,11 @@ export default function Welcome() {
         await AsyncStorage.setItem('country', country);
     }
 
+    const CountryOptions = [
+        { label: "Colombia", value: "col" },
+        { label: "España", value: "esp" },
+        // { label: "Canadá", value: "can" },
+    ]
     return (
         <SafeAreaView style={style.main}>
             <View style={style.countrySelect}>
@@ -71,9 +79,9 @@ export default function Welcome() {
                     onValueChange={changeCountry}
                     dropdownIconColor="#000"
                 >
-                    <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="Colombia" value="col" />
-                    <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="España" value="es" />
-                    <Picker.Item fontFamily="Poppins_400Regular" style={style.countrySelectText} label="Canadá" value="ca" />
+                    { CountryOptions.map( o => (
+                        <Picker.Item key={Math.random()} fontFamily="Poppins_400Regular" style={style.countrySelectText} label={o.label} value={o.value} />
+                    ) ) }
                 </Picker>
             </View>
             {/* Logo */}

@@ -1,8 +1,12 @@
+import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Picker } from '@react-native-picker/picker';
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { AxiosError } from "axios";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { Alert, Animated, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { Alert, Animated, Image, LogBox, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
@@ -12,15 +16,14 @@ import LabeledInput from "../../components/ui/LabeledInput";
 import { AuthContext } from "../../contexts/auth-context";
 import { httpClient } from "../../controllers/http-client";
 import DomIcon from '../../resources/img/ui/dom-app-icon.svg';
-import { FontAwesome } from '@expo/vector-icons';
-import * as ImagePicker from 'expo-image-picker';
+import DropDownPicker from 'react-native-dropdown-picker';
 
-const Tab = createMaterialTopTabNavigator();
+const Tab: any = createMaterialTopTabNavigator();
 
 export default function Auth() {
     return (
         <SafeAreaView style={style.mainContainer}>
-            <Tab.Navigator tabBar={(props) => <TabsMenu {...props} />}>
+            <Tab.Navigator tabBar={(props: any) => <TabsMenu {...props} />}>
                 <Tab.Screen name="Login" options={{ tabBarLabel: 'Iniciar Sesión' }} component={LoginTab} />
                 <Tab.Screen name="Register" options={{ tabBarLabel: 'Registrarse' }} component={RegisterTab} />
             </Tab.Navigator>
@@ -111,12 +114,12 @@ function LoginTab() {
     }
 
     const onChangeText = (name: string, value: string) => setData({ ...data, [name]: value });
-
+    const _KeyboardAwareScrollView: any = KeyboardAwareScrollView
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
             <View style={style.centerContainer}>
                 <View style={{ width: '100%' }}>
-                    <KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={style.inputsContainer}>
+                    <_KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={style.inputsContainer}>
                         <LabeledInput 
                             inputProps={
                                 {
@@ -143,7 +146,7 @@ function LoginTab() {
                             style={{ marginTop: 25 }}
                             label="Contraseña" 
                         />
-                    </KeyboardAwareScrollView>
+                    </_KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
                     <Button 
@@ -165,30 +168,83 @@ const IMAGE_CONFIG: ImagePicker.ImagePickerOptions = {
     quality: 0.3,
   };
 
+const dateFormat = (value: string) => {
+    const cleanString = value.replace(/\D/g, '');
+    const replaced = cleanString.replace(/(\d{2})(\d{2})(\d{4})/g, '$1/$2/$3');
+    return replaced;
+}
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested'])
+
 function RegisterTab() {
     const auth = useContext(AuthContext);
-    const secondRef = useRef();
-    const thirdRef = useRef();
+
+    const refMap = [
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+        useRef<TextInput>(null),
+    ]
+
     const [data, setData] = useState({
         user_type: 'customer',
+        full_name: '',
+        document_type: '',
+        document_string: '',
+        birth_date: '',
+        company: '',
+        cod_refer: '',
+        client_type: '',
+        region: '',
+        country: '',
+        cc_nit: '',
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
     });
 
     const register = async () => {
         try {
-            const { data: { token, ...user } } = await httpClient.post(
-                '/users',
-                data
-            );
-            console.log(token, user);
-            await auth.loadSession(token, user);
+            const formData = new FormData();
+            
+            formData.append('user_type', data.user_type);
+            formData.append('full_name', data.full_name);
+            formData.append('document_type', data.document_type);
+            formData.append('document_string', data.document_string);
+            formData.append('birth_date', data.birth_date);
+            formData.append('company', data.company);
+            formData.append('cod_refer', data.cod_refer);
+            formData.append('client_type', data.client_type);
+            formData.append('region', data.region);
+            formData.append('country', data.country);
+            formData.append('cc_nit', data.cc_nit);
+            formData.append('email', data.email);
+            formData.append('password', data.password);
+            formData.append('password_confirmation', data.password_confirmation);
+            if( photoUrl !== '' ){
+                formData.append('cover', {
+                    uri: photoUrl,
+                    type: 'image/jpeg',
+                    name: `coverimage.jpg`,
+                } as any);
+            }
+            const resp = await httpClient.post('/users', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
+            await auth.loadSession(resp.data.token, resp.data);
         } catch (err) {
             console.log(err);
-            console.log((err as AxiosError).response);
-            const errors: any = ((err as AxiosError).response?.data as any).errors;
-            Alert.alert('Error', Object.keys(errors).map((key: string) => errors[key].join(' ')).join(', '));
+            console.log((err as AxiosError).response?.data);
+            // const errors: any = ((err as AxiosError).response?.data as any).errors;
+            // Alert.alert('Error', Object.keys(errors).map((key: string) => errors[key].join(' ')).join(', '));
         }
     }
 
@@ -221,35 +277,72 @@ function RegisterTab() {
 
     const handleAlertPicture = () => {
         Alert.alert('Origen de la Foto', 'De donde va a obter la foto?', [
+            { text: 'Cancelar' },
             { text: 'Camara', onPress: () => handleGetImage(true) },
-            { text: 'Galeria', onPress: () => handleGetImage(false) }
+            { text: 'Galeria', onPress: () => handleGetImage(false) },
         ])
     }
+    const _KeyboardAwareScrollView: any = KeyboardAwareScrollView;
+    const _FontAwesome: any = FontAwesome;
 
+    const [country, setCountry] = useState<string | null>(null)
+    useFocusEffect( useCallback( () => {
+        AsyncStorage.getItem('country').then( resp => {
+            setCountry(resp);
+        } )
+    }, [] ) )
+
+    const docTypes = [
+        // Colombia
+        { country: 'col', value: 'cc', label: 'Cédula de Ciudadanía'},
+        { country: 'col', value: 'nit', label: 'Número de Identificación Tributaria'},
+        { country: 'col', value: 'ce', label: 'Cédula de Extranjería'},
+        { country: 'col', value: 'pas', label: 'Pasaporte'},
+        // Espanha
+        { country: 'esp', value: 'dni', label: 'Documento Nacional de Identidad' },
+        { country: 'esp', value: 'te', label: 'Tarjeta de Extranjería' },
+        { country: 'esp', value: 'pes', label: 'Pasaporte Español' },
+        { country: 'esp', value: 'sch', label: 'Visado "Schengen"' },
+        { country: 'esp', value: 'rue', label: 'Permiso de Residencia de la UE.' },
+    ]
+
+    const clientTypeOptions = [
+        { value: 'Persona', label: 'Persona' },
+        { value: 'Empresa', label: 'Empresa' },
+    ]
+    const [openModals, setModalOpen] = useState({
+        docType: false,
+        clientType: false,
+    })
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
             <View style={style.centerContainer}>
                 <View style={{ width: '100%' }}>
-                    <KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={style.inputsContainer}>
+                    <_KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={style.inputsContainer}>
                         <Pressable style={style.pressableImage} onPress={handleAlertPicture}>
                             {
                                 !photoUrl ?
                                     <View style={style.imagePlaceholder}>
-                                        <FontAwesome name="camera" style={style.iconCamera} />
+                                        <_FontAwesome name="camera" style={style.iconCamera} />
                                         <Text style={style.textAddImage}>Agregar Imagen</Text>
                                     </View>
                                 :
-                                <Image source={{ uri: photoUrl }} style={style.imagePhoto} />
+                                <View>
+                                    <Image source={{ uri: photoUrl }} style={style.imagePhoto} />
+                                    <Pressable style={style.buttonErase} onPress={() => setPhotoUrl('')}>
+                                        <_FontAwesome name="close" style={style.iconErase} />
+                                    </Pressable>
+                                </View>
                             }
                             </Pressable>
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    onSubmitEditing: () => refMap[0].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    onChangeText: (value: string) => onChangeText('full_name', value),
+                                    value: data.full_name,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded
                                 } as any
@@ -257,29 +350,34 @@ function RegisterTab() {
                             style={style.labelForInput} 
                             label="Nombre Completo / Empresa" 
                         />
+                        {
+                            country?.length &&
+                            <View style={{ marginBottom: 10, zIndex: 10 }}>
+                                <Text style={[style.pickerLabel, style.labelForInput]}>Tipo de Documento</Text>  
+                                <DropDownPicker
+                                    open={openModals.docType}
+                                    setOpen={(value: boolean) => setModalOpen({
+                                        clientType: false,
+                                        docType: value
+                                    })}
+                                    setValue={(value) => onChangeText('document_type', value())}
+                                    style={style.picker}
+                                    placeholder='Selecione um elemento'
+                                    textStyle={style.textPicker}
+                                    items={docTypes.filter( dt => dt.country === country )}
+                                    value={data.document_type}
+                                />
+                            </View>
+                        }
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[0],
+                                    onSubmitEditing: () => refMap[1].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
-                                    autoCapitalize: "none",
-                                    style: style.inputBlueRounded
-                                } as any
-                            } 
-                            style={style.labelForInput} 
-                            label="Tipo de Documento" 
-                        />
-                        <LabeledInput 
-                            inputProps={
-                                {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
-                                    blurOnSubmit: false,
-                                    returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    onChangeText: (value: string) => onChangeText('document_string', value),
+                                    value: data.document_string,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded
                                 } as any
@@ -290,11 +388,14 @@ function RegisterTab() {
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[1],
+                                    onSubmitEditing: () => refMap[2].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    keyboardType:'number-pad',
+                                    maxLength: 10,
+                                    onChangeText: (value: string) => onChangeText('birth_date', dateFormat(value)),
+                                    value: data.birth_date,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded 
                                 } as any
@@ -305,11 +406,12 @@ function RegisterTab() {
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[2],
+                                    onSubmitEditing: () => refMap[3].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    onChangeText: (value: string) => onChangeText('company', value),
+                                    value: data.company,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded 
                                 } as any
@@ -320,11 +422,12 @@ function RegisterTab() {
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[3],
+                                    onSubmitEditing: () => refMap[4].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    onChangeText: (value: string) => onChangeText('cod_refer', value),
+                                    value: data.cod_refer,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded 
                                 } as any
@@ -332,40 +435,76 @@ function RegisterTab() {
                             style={style.labelForInput} 
                             label="Código Referido" 
                         />
+                        <View style={{ marginBottom: 10 }}>
+                            <Text style={[style.pickerLabel, style.labelForInput]}>Tipo de Cliente</Text>  
+                            <DropDownPicker
+                                closeOnBackPressed
+                                open={openModals.clientType}
+                                setOpen={(value: boolean) => setModalOpen({
+                                    docType: false,
+                                    clientType: value
+                                })}
+                                setValue={(value) => onChangeText('client_type', value())}
+                                style={style.picker}
+                                placeholder='Selecione um elemento'
+                                textStyle={style.textPicker}
+                                items={clientTypeOptions}
+                                value={data.client_type}
+                            />
+                        </View>
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[4],
+                                    onSubmitEditing: () => refMap[5].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    onChangeText: (value: string) => onChangeText('region', value),
+                                    value: data.region,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded 
                                 } as any
                             } 
                             style={style.labelForInput} 
-                            label="Tipo de Cliente" 
+                            label="Región" 
                         />
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[5],
+                                    onSubmitEditing: () => refMap[6].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
-                                    onChangeText: (value: string) => onChangeText('email', value),
-                                    value: data.email,
+                                    onChangeText: (value: string) => onChangeText('country', value),
+                                    value: data.country,
                                     autoCapitalize: "none",
                                     style: style.inputBlueRounded 
                                 } as any
                             } 
                             style={style.labelForInput} 
-                            label="Dirección" 
+                            label="Pais" 
                         />
                         <LabeledInput 
                             inputProps={
                                 {
-                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    ref: refMap[6],
+                                    onSubmitEditing: () => refMap[7].current?.focus(),
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('cc_nit', value),
+                                    value: data.cc_nit,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="CC / NIT" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    ref: refMap[7],
+                                    onSubmitEditing: () => refMap[8].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
                                     onChangeText: (value: string) => onChangeText('email', value),
@@ -380,8 +519,8 @@ function RegisterTab() {
                         <LabeledInput 
                             inputProps={
                                 {
-                                    ref: secondRef,
-                                    onSubmitEditing: () => { (thirdRef.current as any).focus()},
+                                    ref: refMap[8],
+                                    onSubmitEditing: () => refMap[9].current?.focus(),
                                     blurOnSubmit: false,
                                     returnKeyType: 'next',
                                     onChangeText: (value: string) => onChangeText('password', value),
@@ -396,7 +535,7 @@ function RegisterTab() {
                         <LabeledInput 
                             inputProps={
                                 {
-                                    ref: thirdRef,
+                                    ref: refMap[9],
                                     onChangeText: (value: string) => onChangeText('password_confirmation', value),
                                     value: data.password_confirmation,
                                     secureTextEntry: true,
@@ -407,7 +546,7 @@ function RegisterTab() {
                             label="Confirma tu contraseña" 
                         />
                         <View style={style.extraSpace} />
-                    </KeyboardAwareScrollView>
+                    </_KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
                     <Button textStyle={style.btnTextAction} style={style.btnAction} onPress={register}>
@@ -506,7 +645,7 @@ const style = StyleSheet.create({
     labelForInput: {
         fontSize: 17,
         fontFamily: 'Poppins_500Medium',
-        color: '#787B82'
+        color: '#787B82',
     },
     pressableImage: {
         marginBottom: 20,
@@ -526,6 +665,10 @@ const style = StyleSheet.create({
         fontSize: 42,
         color: '#838383'
     },
+    iconErase: {
+        fontSize: 20,
+        color: '#FFF'
+    },
     textAddImage: {
         color: '#838383',
         fontFamily: 'Poppins_500Medium',
@@ -535,5 +678,32 @@ const style = StyleSheet.create({
         height: 144,
         width: 144,
         borderRadius: 72
+    },
+    buttonErase: {
+        position: "absolute",
+        bottom: 0,
+        right: 0,
+        backgroundColor: '#F00',
+        borderRadius: 15,
+        justifyContent: "center",
+        alignItems: "center",
+        height: 25,
+        width: 25,
+    },
+    picker: {
+        borderWidth: 2,
+        borderBottomWidth: 2,
+        borderColor: '#0BBBEF',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 13,
+        height: 45,
+        justifyContent: 'center',
+    },
+    pickerLabel: {
+        opacity: 0.4,
+        marginBottom: 5
+    },
+    textPicker: {
+        fontFamily: 'Poppins_500Medium',
     }
 });

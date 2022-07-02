@@ -5,7 +5,7 @@ import UserImage from "../user/UserImage";
 
 export default function UserHeader() {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
-    console.log(data);
+    console.log({data});
     console.log(loading);
     console.log(error);
     return (
