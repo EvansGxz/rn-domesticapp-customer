@@ -1,17 +1,19 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Text, Animated, Alert } from 'react-native';
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
+import { useRoute } from "@react-navigation/native";
+import { AxiosError } from "axios";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Alert, Animated, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
-import DomIcon from '../../resources/img/ui/dom-app-icon.svg';
 import Button from "../../components/ui/Button";
 import Footer from "../../components/ui/Footer";
 import LabeledInput from "../../components/ui/LabeledInput";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { useRoute } from "@react-navigation/native";
 import { AuthContext } from "../../contexts/auth-context";
 import { httpClient } from "../../controllers/http-client";
-import { AxiosError } from "axios";
+import DomIcon from '../../resources/img/ui/dom-app-icon.svg';
+import { FontAwesome } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -113,8 +115,8 @@ function LoginTab() {
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
             <View style={style.centerContainer}>
-                <View style={{ flex: 1, width: '100%' }}>
-                    <KeyboardAwareScrollView enableOnAndroid keyboardShouldPersistTaps="handled" extraScrollHeight={80} contentContainerStyle={style.inputsContainer}>
+                <View style={{ width: '100%' }}>
+                    <KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={style.inputsContainer}>
                         <LabeledInput 
                             inputProps={
                                 {
@@ -158,18 +160,21 @@ function LoginTab() {
     );
 }
 
+const IMAGE_CONFIG: ImagePicker.ImagePickerOptions = {
+    aspect: [1, 1],
+    quality: 0.3,
+  };
+
 function RegisterTab() {
     const auth = useContext(AuthContext);
     const secondRef = useRef();
     const thirdRef = useRef();
-    const [data, setData] = useState(
-        {
-            user_type: 'customer',
-            email: '',
-            password: '',
-            password_confirmation: ''
-        }
-    );
+    const [data, setData] = useState({
+        user_type: 'customer',
+        email: '',
+        password: '',
+        password_confirmation: ''
+    });
 
     const register = async () => {
         try {
@@ -188,12 +193,55 @@ function RegisterTab() {
     }
 
     const onChangeText = (name: string, value: string) => setData({ ...data, [name]: value });
+    const [photoUrl, setPhotoUrl] = useState('');
+
+    const handleGetImage = async (takeFromCamera: boolean ) => {
+        let permission: ImagePicker.CameraPermissionResponse;
+        let pickerResult: ImagePicker.ImagePickerResult;
+      
+        if (takeFromCamera) {
+          permission = await ImagePicker.requestCameraPermissionsAsync();
+        } else {
+          permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        }
+        if (permission.granted === false) {
+            Alert.alert('Ocorreu um erro', `É necessária a permissão de acesso à ${takeFromCamera ? 'Camera' : 'Galería'} para continuar`,)
+            return;
+        }
+        if (takeFromCamera) {
+          pickerResult = await ImagePicker.launchCameraAsync(IMAGE_CONFIG);
+        } else {
+          pickerResult = await ImagePicker.launchImageLibraryAsync(IMAGE_CONFIG);
+        }
+
+        if (!pickerResult.cancelled) {
+            setPhotoUrl(pickerResult.uri)
+        }
+    };
+
+    const handleAlertPicture = () => {
+        Alert.alert('Origen de la Foto', 'De donde va a obter la foto?', [
+            { text: 'Camara', onPress: () => handleGetImage(true) },
+            { text: 'Galeria', onPress: () => handleGetImage(false) }
+        ])
+    }
 
     return (
         <View style={[style.mainContainer, style.tabScreenContainer]}>
             <View style={style.centerContainer}>
-                <View style={{ flex: 1, width: '100%' }}>
-                    <KeyboardAwareScrollView enableOnAndroid keyboardShouldPersistTaps="handled" extraScrollHeight={80} contentContainerStyle={style.inputsContainer}>
+                <View style={{ width: '100%' }}>
+                    <KeyboardAwareScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled" contentContainerStyle={style.inputsContainer}>
+                        <Pressable style={style.pressableImage} onPress={handleAlertPicture}>
+                            {
+                                !photoUrl ?
+                                    <View style={style.imagePlaceholder}>
+                                        <FontAwesome name="camera" style={style.iconCamera} />
+                                        <Text style={style.textAddImage}>Agregar Imagen</Text>
+                                    </View>
+                                :
+                                <Image source={{ uri: photoUrl }} style={style.imagePhoto} />
+                            }
+                            </Pressable>
                         <LabeledInput 
                             inputProps={
                                 {
@@ -202,11 +250,132 @@ function RegisterTab() {
                                     returnKeyType: 'next',
                                     onChangeText: (value: string) => onChangeText('email', value),
                                     value: data.email,
-                                    autoCapitalize: "none" 
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded
                                 } as any
                             } 
-                            style={{ marginTop: 5 }} 
-                            label="Correo Electronico" 
+                            style={style.labelForInput} 
+                            label="Nombre Completo / Empresa" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Tipo de Documento" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Número de Documento" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Fecha de Nacimiento" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Compañía" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Código Referido" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Tipo de Cliente" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Dirección" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    onSubmitEditing: () => { (secondRef.current as any).focus()},
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    onChangeText: (value: string) => onChangeText('email', value),
+                                    value: data.email,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Correo Electrónico" 
                         />
                         <LabeledInput 
                             inputProps={
@@ -217,10 +386,11 @@ function RegisterTab() {
                                     returnKeyType: 'next',
                                     onChangeText: (value: string) => onChangeText('password', value),
                                     value: data.password,
-                                    secureTextEntry: true
+                                    secureTextEntry: true,
+                                    style: style.inputBlueRounded
                                 } as any
                             }
-                            style={{ marginTop: 10 }}
+                            style={style.labelForInput} 
                             label="Contraseña" 
                         />
                         <LabeledInput 
@@ -229,12 +399,14 @@ function RegisterTab() {
                                     ref: thirdRef,
                                     onChangeText: (value: string) => onChangeText('password_confirmation', value),
                                     value: data.password_confirmation,
-                                    secureTextEntry: true
+                                    secureTextEntry: true,
+                                    style: style.inputBlueRounded
                                 } as any
                             }
-                            style={{ marginTop: 10 }}
+                            style={style.labelForInput} 
                             label="Confirma tu contraseña" 
                         />
+                        <View style={style.extraSpace} />
                     </KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
@@ -268,6 +440,8 @@ const style = StyleSheet.create({
     buttonContainer: {
         width: '100%',
         alignItems: 'center',
+        position: "absolute",
+        bottom: 10,
     },
     btnAction: {
         marginBottom: 15,
@@ -275,10 +449,10 @@ const style = StyleSheet.create({
         backgroundColor: COLORS.primary
     },
     btnTextAction: {
-        fontSize: 24
+        fontSize: 18,
+        fontFamily: 'Montserrat_600SemiBold',
     },
     inputsContainer: {
-        flex: 1,
         width: '100%',
         justifyContent: 'flex-start'
     },
@@ -315,7 +489,51 @@ const style = StyleSheet.create({
         height: 3,
         width: '100%'
     },
-    iconContainer: {
-
+    extraSpace: {
+        height: 100
+    },
+    inputBlueRounded: {
+        borderWidth: 2,
+        borderBottomWidth: 2,
+        borderColor: '#0BBBEF',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 13,
+        height: 45,
+        paddingHorizontal: 15,
+        fontFamily: 'Poppins_500Medium',
+        marginBottom: 5,
+    },
+    labelForInput: {
+        fontSize: 17,
+        fontFamily: 'Poppins_500Medium',
+        color: '#787B82'
+    },
+    pressableImage: {
+        marginBottom: 20,
+        height: 144,
+        width: 144,
+        alignSelf: "center",
+    },
+    imagePlaceholder: {
+        height: 144,
+        width: 144,
+        backgroundColor: '#D9D9D9',
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 72
+    },
+    iconCamera: {
+        fontSize: 42,
+        color: '#838383'
+    },
+    textAddImage: {
+        color: '#838383',
+        fontFamily: 'Poppins_500Medium',
+        fontSize: 12
+    },
+    imagePhoto: {
+        height: 144,
+        width: 144,
+        borderRadius: 72
     }
 });
