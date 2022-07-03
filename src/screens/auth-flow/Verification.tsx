@@ -41,10 +41,10 @@ function VerificationPhone({ handler }: any) {
     // {via: "sms", phone: "+528994466683"}
     const requestVerify = async () => {
         try {
-            console.log('verifying phone: ', phone);
+            console.log('verifying phone: ', '+52' + phone);
             const result = await httpClient.post(
                 '/api/verification/start', 
-                { via: "sms", phone: "+528994466683" }
+                { via: "sms", phone: '+52' + phone }
             );
             console.log(result);
     

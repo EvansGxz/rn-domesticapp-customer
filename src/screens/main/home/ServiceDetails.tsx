@@ -7,16 +7,57 @@ import OutlinedInput from "../../../components/ui/OutlinedInput";
 import Button from "../../../components/ui/Button";
 import SearchDirectionMap from "../../../components/maps/SearchDirectionMap";
 import Checkbox from 'expo-checkbox';
+import { httpClient } from "../../../controllers/http-client";
+import { useAuth } from "../../../hooks/use-auth";
+import { useNavigation } from "@react-navigation/native";
+import useFetch from "use-http";
 
-export default function ServiceDetails() {
+export default function ServiceDetails(props:any) {
+    const { loading, error, data = {} } = useFetch('/profile', {}, []);
+    const navigation = useNavigation<any>();
     const [isChecked, setChecked] = useState(false);
     const [recurrency, setSelectedValue] = useState(false);
-    const [data, setData] = useState({
+    const [datas, setDatas] = useState({
         ccNit: 'CC',
         food: '1',
         specifyTasks: false
     });
+    // console.log(props?.route?.params);
+    
 
+    // console.log(data);
+    
+    
+    const saveService = async () => {
+        const {working,recurrency,recurrencyData,workingDayType,workingHour} = props?.route?.params;
+  
+        console.log({
+            ...datas,
+            working,recurrency,recurrencyData,workingDayType,workingHour
+        });
+        
+        // console.log(working.date[0]);
+                    
+
+        const response = await httpClient.post(`/order_details/`,{
+            body: {
+                address: "calle 43",
+                start_date: "2022-06-27",
+                service_time: "12:00",
+                discount: "7",
+                workday: "Media",
+                supply_food: "No",
+                category_id: 1,
+                employee_id: 3,
+                customer_id: 2
+            }
+        });
+
+        // console.log(response);
+        
+    }
+    
+    
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="DETALLES" />
@@ -26,7 +67,7 @@ export default function ServiceDetails() {
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Tipo de identificación</Text>
                 <Picker
                     selectedValue={data.ccNit}
-                    onValueChange={(itemValue) => setData({ ...data, ccNit: itemValue})}
+                    onValueChange={(itemValue) => setDatas({ ...data, ccNit: itemValue})}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
                     <Picker.Item label="CC" value="CC" />
@@ -48,7 +89,7 @@ export default function ServiceDetails() {
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Especificar labores</Text>
                 <Picker
                     selectedValue={data.specifyTasks&&recurrency}
-                    onValueChange={(itemValue) => {setData({ ...data, specifyTasks: itemValue });  setSelectedValue(itemValue)}}
+                    onValueChange={(itemValue) => {setDatas({ ...data, specifyTasks: itemValue });  setSelectedValue(itemValue)}}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
                     <Picker.Item label="No" value={false} />
@@ -64,8 +105,13 @@ export default function ServiceDetails() {
                         </>
                     ) : null
                 }
-                <SearchDirectionMap />
-                <Button style={SharedStyles.backgroundPrimary}>Continuar</Button>
+                <SearchDirectionMap setData={setDatas} data={datas} />
+                <Button 
+                style={SharedStyles.backgroundPrimary}
+                onPress={saveService}
+                >
+                    Continuar
+                </Button>
             </ScrollView>
         </View>
     );

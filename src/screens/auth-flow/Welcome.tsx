@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import { StyleSheet, View, Text, Alert,LogBox } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Logo from '../../resources/img/ui/dom-app-logo.svg';
 import Button from '../../components/ui/Button';
@@ -13,9 +13,35 @@ import { AuthContext } from '../../contexts/auth-context';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SharedStyles } from '../../styles/shared-styles';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
+import SplashScreen from '../SplashScreen';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
+WebBrowser.maybeCompleteAuthSession();
+
 
 export default function Welcome() {
+<<<<<<< HEAD
     const [country, setCountry] = useState('');
+=======
+    const navigation = useNavigation<any>();
+    const auth = useContext(AuthContext);
+    const [country, setCountry] = useState('col');
+    const [request, response, promptAsync] = Google.useAuthRequest({
+        expoClientId: '209825335616-o96lqfffbrdsspmigjbdb5902h6hgdv4.apps.googleusercontent.com',
+      
+        redirectUri: 'https://auth.expo.io/@marioe92/rn-domesticapp-customer',
+    });
+    const [accessToken, setAccessToken] = useState<any>();
+    const [userInfo, setUserInfo] = useState<any>();
+    const [isLoading, setIsLoading] = useState(false);
+
+    
+    
+>>>>>>> 4f13e9690d746db129b465d53da5cc8cc768d229
 
     const getCountry = () => {
         AsyncStorage.getItem('country').then(value => {
@@ -32,8 +58,23 @@ export default function Welcome() {
         getCountry();
     }, [] );
 
-    const navigation = useNavigation<any>();
-    const auth = useContext(AuthContext);
+    
+    useEffect(() => {
+        // setMessage(JSON.stringify(response));
+        if (response?.type === "success") {
+            setAccessToken(response?.authentication?.accessToken);   
+        }
+       
+    }, [response]);
+   
+    useEffect(() => {
+        if (accessToken) {
+            getDataUserGoogle(); 
+        }
+    }, [accessToken])
+    
+
+    
 
     const facebookLogin = async () => {
         try {
@@ -61,16 +102,62 @@ export default function Welcome() {
         }
     }
 
+    const google_login_ButtonClick = async() => {
+        promptAsync({useProxy: true})
+
+    }
+
+    const getDataUserGoogle =async () => {
+        setIsLoading(true)
+        
+        let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+            headers: { Authorization: `Bearer ${accessToken}`}
+          });
+      
+        userInfoResponse.json().then(data => {
+            setUserInfo(data);
+        });
+
+
+    }
+
+    const googleSocial =async () => {
+        await auth.socialSignIn({ social_id: userInfo?.id, email: `${userInfo?.email}` }, userInfo?.picture);
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        if (userInfo) {
+            googleSocial();
+        }
+      
+    }, [userInfo])
+    
+    
     const changeCountry = async (country: string) => {
         setCountry(country);
         await AsyncStorage.setItem('country', country);
     }
 
+<<<<<<< HEAD
     const CountryOptions = [
         { label: "Colombia", value: "col" },
         { label: "España", value: "esp" },
         // { label: "Canadá", value: "can" },
     ]
+=======
+    
+    
+    
+    
+
+    if (isLoading) {
+        return(
+            <SplashScreen/>
+        )
+    }
+
+>>>>>>> 4f13e9690d746db129b465d53da5cc8cc768d229
     return (
         <SafeAreaView style={style.main}>
             <View style={style.countrySelect}>
@@ -88,7 +175,12 @@ export default function Welcome() {
             <Logo width="60%" />
             {/* Buttons */}
             <View style={style.buttons}>
-                {/*<Button style={style.btnGoogle}>Continúa con Google</Button>*/}
+                <Button 
+                style={style.btnGoogle}
+                onPress={() => google_login_ButtonClick()}
+                >
+                    Continúa con Google
+                </Button>
                 <Button
                     style={style.btnPhone} 
                     onPress={() => navigation.navigate('Verification')}
@@ -127,7 +219,7 @@ const style = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 25
+        paddingHorizontal:25,
     },
     countrySelect: {
         backgroundColor: 'rgba(0, 0, 0, 0.2)',

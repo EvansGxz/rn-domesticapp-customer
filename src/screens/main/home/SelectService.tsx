@@ -12,6 +12,9 @@ export default function SelectService() {
     const navigation = useNavigation<any>();
     const route = useRoute();
     
+  
+    
+
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="ELIGE TU SERVICIO" />
