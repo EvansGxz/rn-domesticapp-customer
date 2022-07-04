@@ -209,7 +209,10 @@ function RegisterTab() {
         password_confirmation: '',
     });
 
+    const [loading, setLoading]= useState(false);
+
     const register = async () => {
+        setLoading(true);
         try {
             const formData = new FormData();
             
@@ -239,12 +242,14 @@ function RegisterTab() {
                     'Content-Type': 'multipart/form-data',
                 }
             });
+            setLoading(false);
             await auth.loadSession(resp.data.token, resp.data);
         } catch (err) {
+            setLoading(false);
             console.log(err);
             console.log((err as AxiosError).response?.data);
-            // const errors: any = ((err as AxiosError).response?.data as any).errors;
-            // Alert.alert('Error', Object.keys(errors).map((key: string) => errors[key].join(' ')).join(', '));
+            const errors: any = ((err as AxiosError).response?.data as any).errors;
+            Alert.alert('Error', Object.keys(errors).map((key: string) => `[${key}] ` + errors[key].join(' ')).join(', '));
         }
     }
 
@@ -359,7 +364,7 @@ function RegisterTab() {
                                     setOpen={(value: boolean) => setModalOpen({
                                         clientType: false,
                                         docType: value
-                                    })}
+                                    }) as any}
                                     setValue={(value) => onChangeText('document_type', value())}
                                     style={style.picker}
                                     placeholder='Selecione um elemento'
@@ -549,8 +554,8 @@ function RegisterTab() {
                     </_KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
-                    <Button textStyle={style.btnTextAction} style={style.btnAction} onPress={register}>
-                        Registrarse
+                    <Button disabled={loading} textStyle={style.btnTextAction} style={[style.btnAction, loading && { backgroundColor: '#CCC' }]} onPress={() => loading ? null : register()}>
+                        {loading ? 'Cargando...' : 'Registrarse'}
                     </Button>
                     <Footer style={style.footerColor} />
                 </View>

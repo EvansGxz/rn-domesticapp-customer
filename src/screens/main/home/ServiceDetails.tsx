@@ -57,7 +57,7 @@ export default function ServiceDetails(props:any) {
         
     }
     
-    
+    const _Picker: any = Picker;
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="DETALLES" />
@@ -65,36 +65,36 @@ export default function ServiceDetails(props:any) {
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Correo de Notificación</Text>
                 <OutlinedInput style={styles.input} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Tipo de identificación</Text>
-                <Picker
+                <_Picker
                     selectedValue={data.ccNit}
-                    onValueChange={(itemValue) => setDatas({ ...data, ccNit: itemValue})}
+                    onValueChange={(itemValue: any) => setDatas({ ...data, ccNit: itemValue})}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
-                    <Picker.Item label="CC" value="CC" />
-                    <Picker.Item label="NIT" value="NIT" />
-                </Picker>
+                    <_Picker.Item label="CC" value="CC" />
+                    <_Picker.Item label="NIT" value="NIT" />
+                </_Picker>
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Celular</Text>
                 <OutlinedInput style={styles.input} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
                 <OutlinedInput style={styles.input} />
                 {/*
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
-                <Picker
+                <_Picker
                     selectedValue={data.ccNit}
-                    onValueChange={(itemValue) => setData({ ...data, food: itemValue })}
+                    onValueChange={(itemValue: any) => setData({ ...data, food: itemValue })}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
-                    <Picker.Item label="Opción 1" value="1" />
-                </Picker>*/}
+                    <_Picker.Item label="Opción 1" value="1" />
+                </_Picker>*/}
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Especificar labores</Text>
-                <Picker
+                <_Picker
                     selectedValue={data.specifyTasks&&recurrency}
-                    onValueChange={(itemValue) => {setDatas({ ...data, specifyTasks: itemValue });  setSelectedValue(itemValue)}}
+                    onValueChange={(itemValue: any) => {setDatas({ ...data, specifyTasks: itemValue });  setSelectedValue(itemValue)}}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
-                    <Picker.Item label="No" value={false} />
-                    <Picker.Item label="Sí" value={true} />
-                </Picker>
+                    <_Picker.Item label="No" value={false} />
+                    <_Picker.Item label="Sí" value={true} />
+                </_Picker>
                 {
                     recurrency ? (
                         <>

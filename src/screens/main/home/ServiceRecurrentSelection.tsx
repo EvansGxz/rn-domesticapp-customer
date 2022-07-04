@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, Pressable } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -14,34 +14,34 @@ export default function ServiceRecurrentSelection() {
     });
     const navigation = useNavigation<any>();
     const route = useRoute();
-    
+    const _Picker: any = Picker;
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="RECURRENCIA" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={{ paddingHorizontal: 35, paddingTop: 20 }}>
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Repetir cita</Text>
-                <Picker
+                <_Picker
                     selectedValue={recurrency}
-                    onValueChange={(itemValue) => setSelectedValue(itemValue)}
+                    onValueChange={(itemValue: any) => setSelectedValue(itemValue)}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
-                    <Picker.Item label="No" value={false} />
-                    <Picker.Item label="Sí" value={true} />
-                </Picker>
+                    <_Picker.Item label="No" value={false} />
+                    <_Picker.Item label="Sí" value={true} />
+                </_Picker>
                 {
                     recurrency ? (
                         <>
                             <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Frecuencia</Text>
-                            <Picker
+                            <_Picker
                                 selectedValue={recurrency}
-                                onValueChange={(itemValue) => setSelectedValue(itemValue)}
+                                onValueChange={(itemValue: any) => setSelectedValue(itemValue)}
                                 style={[SharedStyles.card, SharedStyles.mb]}
                             >
-                                <Picker.Item label="Diario" value="0" />
-                                <Picker.Item label="Semanal" value="1" />
-                                <Picker.Item label="Quincenal" value="2" />
-                                <Picker.Item label="Mensual" value="3" />
-                            </Picker>
+                                <_Picker.Item label="Diario" value="0" />
+                                <_Picker.Item label="Semanal" value="1" />
+                                <_Picker.Item label="Quincenal" value="2" />
+                                <_Picker.Item label="Mensual" value="3" />
+                            </_Picker>
                             <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Fecha limite</Text>
                             <DateOutlinedButton
                                 editable={false}

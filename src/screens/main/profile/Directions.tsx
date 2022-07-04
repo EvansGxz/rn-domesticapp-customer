@@ -61,6 +61,9 @@ export default function Directions() {
    
     
     return (
+        <View>
+            <ScrollView>
+        
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Direcciones" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={SharedStyles.mainPadding}>

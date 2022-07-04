@@ -15,6 +15,7 @@ export default function ServiceCalendar() {
     const route = useRoute();
     const [markedDates, setMarkedDates] = useState({});
 
+    const _DatePicker: any = DatePicker;
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Apuntalo en mi agenda" />
@@ -29,7 +30,7 @@ export default function ServiceCalendar() {
                 />
                 <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Hora de inicio</Text>
                 <View style={{ height: 50, overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
-                    <DatePicker androidVariant='iosClone' dividerHeight={0}  mode='time' date={selectedValue} onDateChange={setSelectedValue} />
+                    <_DatePicker androidVariant='iosClone' dividerHeight={0}  mode='time' date={selectedValue} onDateChange={setSelectedValue} />
                 </View>
             </View>
             <View style={SharedStyles.mainPadding}>
