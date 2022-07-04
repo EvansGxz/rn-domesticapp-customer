@@ -7,7 +7,7 @@ import ServiceCalendar from './ServiceCalendar';
 import ServiceRecurrentSelection from './ServiceRecurrentSelection';
 import ServiceDetails from './ServiceDetails';
 
-const Stack = createNativeStackNavigator();
+const Stack: any = createNativeStackNavigator();
 
 export default function HomeNavigator() {
     return (

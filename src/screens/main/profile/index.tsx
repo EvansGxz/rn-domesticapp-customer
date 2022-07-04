@@ -11,7 +11,7 @@ import PrivacyPolicy from './PrivacyPolicy';
 import AuthorizationAndData from './AuthorizationAndData';
 import SupportChat from '../support/SupportChat';
 
-const Stack = createNativeStackNavigator();
+const Stack: any = createNativeStackNavigator();
 
 export default function HomeNavigator() {
     return (

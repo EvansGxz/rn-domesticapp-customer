@@ -6,7 +6,7 @@ import TrashSVG from '../../resources/img/profile-icons/trash-icon.svg';
 
 export interface NotificationCardProps {
     color: 'primary' | 'secondary';
-    notification: any;
+    notification?: any;
 }
 
 export default function NotificationCard(props: NotificationCardProps) {

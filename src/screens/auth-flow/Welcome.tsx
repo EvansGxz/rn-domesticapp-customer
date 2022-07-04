@@ -24,9 +24,6 @@ WebBrowser.maybeCompleteAuthSession();
 
 
 export default function Welcome() {
-<<<<<<< HEAD
-    const [country, setCountry] = useState('');
-=======
     const navigation = useNavigation<any>();
     const auth = useContext(AuthContext);
     const [country, setCountry] = useState('col');
@@ -41,7 +38,6 @@ export default function Welcome() {
 
     
     
->>>>>>> 4f13e9690d746db129b465d53da5cc8cc768d229
 
     const getCountry = () => {
         AsyncStorage.getItem('country').then(value => {
@@ -139,13 +135,11 @@ export default function Welcome() {
         await AsyncStorage.setItem('country', country);
     }
 
-<<<<<<< HEAD
     const CountryOptions = [
         { label: "Colombia", value: "col" },
         { label: "España", value: "esp" },
         // { label: "Canadá", value: "can" },
     ]
-=======
     
     
     
@@ -157,7 +151,6 @@ export default function Welcome() {
         )
     }
 
->>>>>>> 4f13e9690d746db129b465d53da5cc8cc768d229
     return (
         <SafeAreaView style={style.main}>
             <View style={style.countrySelect}>

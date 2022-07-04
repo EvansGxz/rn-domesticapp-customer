@@ -7,7 +7,7 @@ import FaqsDetail from './FaqsDetail';
 import Notifications from '../shared/Notifications';
 import Reports from './Reports';
 
-const Stack = createNativeStackNavigator();
+const Stack: any = createNativeStackNavigator();
 
 export default function HomeNavigator() {
     return (

@@ -5,15 +5,9 @@ import UserImage from "../user/UserImage";
 
 export default function UserHeader() {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
-<<<<<<< HEAD
     console.log({data});
     console.log(loading);
     console.log(error);
-=======
-    console.log(data);
-    // console.log(loading);
-    // console.log(error);
->>>>>>> 4f13e9690d746db129b465d53da5cc8cc768d229
     return (
         <View style={style.headerContainer}>
             <UserImage src={data.image_url} />

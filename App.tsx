@@ -56,7 +56,7 @@ import { Provider } from 'use-http';
 import { BASE_URI } from './config';
 import { retrieveToken } from './src/controllers/tokens';
 
-const Stack = createNativeStackNavigator();
+const Stack: any = createNativeStackNavigator();
 
 function App() {
   let [fontsLoaded] = useFonts({
