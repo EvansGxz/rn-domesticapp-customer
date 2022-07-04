@@ -1,12 +1,12 @@
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Picker } from '@react-native-picker/picker';
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { AxiosError } from "axios";
 import * as ImagePicker from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Alert, Animated, Image, LogBox, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Image, LogBox, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
@@ -16,7 +16,6 @@ import LabeledInput from "../../components/ui/LabeledInput";
 import { AuthContext } from "../../contexts/auth-context";
 import { httpClient } from "../../controllers/http-client";
 import DomIcon from '../../resources/img/ui/dom-app-icon.svg';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 const Tab: any = createMaterialTopTabNavigator();
 
@@ -198,6 +197,7 @@ function RegisterTab() {
         document_type: '',
         document_string: '',
         birth_date: '',
+        phone: '',
         company: '',
         cod_refer: '',
         client_type: '',
@@ -221,6 +221,7 @@ function RegisterTab() {
             formData.append('document_type', data.document_type);
             formData.append('document_string', data.document_string);
             formData.append('birth_date', data.birth_date);
+            formData.append('phone', data.phone);
             formData.append('company', data.company);
             formData.append('cod_refer', data.cod_refer);
             formData.append('client_type', data.client_type);
@@ -242,8 +243,14 @@ function RegisterTab() {
                     'Content-Type': 'multipart/form-data',
                 }
             });
+            const resp2 = await httpClient.patch('/profile', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Token token=${resp.data.token}`
+                }
+            });
             setLoading(false);
-            await auth.loadSession(resp.data.token, resp.data);
+            await auth.loadSession(resp2.data.token, resp2.data);
         } catch (err) {
             setLoading(false);
             console.log(err);
@@ -389,6 +396,22 @@ function RegisterTab() {
                             } 
                             style={style.labelForInput} 
                             label="Número de Documento" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    keyboardType:'number-pad',
+                                    maxLength: 10,
+                                    onChangeText: (value: string) => onChangeText('phone', value),
+                                    value: data.phone,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Telefono" 
                         />
                         <LabeledInput 
                             inputProps={
