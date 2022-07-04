@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
+
 import { Text, View } from "react-native";
 import { Calendar } from "react-native-calendars";
 import DatePicker from 'react-native-date-picker';
@@ -14,9 +15,6 @@ export default function ServiceCalendar() {
     const route = useRoute();
     const [markedDates, setMarkedDates] = useState({});
 
-   
-   
-    
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Apuntalo en mi agenda" />
@@ -48,5 +46,6 @@ export default function ServiceCalendar() {
                 </Button>
             </View>
         </View>
-    );
+    
+  );
 }
