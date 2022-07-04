@@ -26,6 +26,7 @@ export default function ServiceTypeButton(props: ServiceTypeButtonProps) {
 }
 
 const styles = StyleSheet.create({
+
   button: {
     width: "30%",
     alignItems: "center",
@@ -42,3 +43,4 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
   },
 });
+

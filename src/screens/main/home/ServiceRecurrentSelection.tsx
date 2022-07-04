@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Pressable } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -14,7 +14,7 @@ export default function ServiceRecurrentSelection() {
     });
     const navigation = useNavigation<any>();
     const route = useRoute();
-    console.log(recurrencyData.date)
+    
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="RECURRENCIA" />
@@ -44,6 +44,7 @@ export default function ServiceRecurrentSelection() {
                             </Picker>
                             <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Fecha limite</Text>
                             <DateOutlinedButton
+                                editable={false}
                                 onChangeText={(date) => setRecurrencyData({ ...recurrencyData, date })} 
                                 value={recurrencyData.date}
                             />

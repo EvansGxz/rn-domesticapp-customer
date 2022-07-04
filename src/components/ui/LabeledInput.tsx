@@ -5,7 +5,7 @@ import { StyleSheet, View, Text, TextInput, TextInputProps } from 'react-native'
 
 export interface LabeledInputProps {
     label: string;
-    style?: StyleProp<ViewStyle>;
+    style?: StyleProp<ViewStyle | TextStyle>;
     textStyle?: StyleProp<TextStyle>;
     inputProps?: TextInputProps; 
 }
