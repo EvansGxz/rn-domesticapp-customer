@@ -4,7 +4,7 @@ import useFetch from "use-http";
 import ServiceTypeButton from "./ServiceTypeButton";
 
 export default function ServiceTypesCatalog() {
-  const { loading, error, data = [] } = useFetch("/categories", {}, []);
+  const { loading, error, data = [] } = useFetch("/categories/70", {}, []);
   console.log(data);
   console.log(loading);
   console.log(error);

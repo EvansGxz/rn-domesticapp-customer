@@ -1,5 +1,5 @@
-import React, { useContext, useState, useRef } from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import React, { useContext, useState, useRef, useEffect } from "react";
+import { ScrollView, StyleSheet, View, Text, Alert } from "react-native";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import MenuOption from "../../../components/ui/MenuOption";
 import OutlinedInput from "../../../components/ui/OutlinedInput";
@@ -10,21 +10,27 @@ import useFetch from "use-http";
 import { AuthContext } from "../../../contexts/auth-context";
 import Button from "../../../components/ui/Button";
 import { createAddress, showAddress } from "../../../services/address-services";
+import { httpClient } from "../../../controllers/http-client";
+import { AxiosError } from "axios";
 
 export default function Directions() {
   const auth = useContext(AuthContext);
   const {
     loading,
     error,
-    response,
-    post,
     data = [],
   } = useFetch("/address/" + auth.getState().user.id, {}, []);
 
-  const [dataChange, setDataChange] = useState(data);
+  useEffect(() => {
+    auth.getState().user.id;
+  }, [auth.getState().user.id]);
+
+  const [dataChange, setDataChange] = useState([] as any);
+  const [datos, setDatos] = useState([] as any);
+
   const [dataList, setDataList] = useState({
-    customer_id: "",
     address: "",
+    customer_id: auth.getState().user.id,
   });
 
   const onChangeText = (name: string, value: string) => {
@@ -37,16 +43,25 @@ export default function Directions() {
     if (dataChange === "") {
       return;
     }
-    /* const getAddress = await post("/address/", {
-      customer_id: auth.getState().user.id,
-      address: dataChange,
-    });
-    if (response.ok) data[getAddress]; */
+    try {
+      const getAddress = await httpClient.post("/address", dataList);
+      setDatos([...datos, getAddress]);
+    } catch (err) {
+      console.log(err);
+      console.log((err as AxiosError).response);
+      const errors: any = ((err as AxiosError).response?.data as any).errors;
+      Alert.alert(
+        "Error",
+        Object.keys(errors)
+          .map((key: string) => errors[key].join(" "))
+          .join(", ")
+      );
+    }
+
     /* createAddress(getAddress).then(() => {
         // window.location.reload();
         console.log("add")
-      });
-      console.log(error) */
+      }); */
   };
 
   console.log("Direction", data);
