@@ -28,9 +28,11 @@ export default function ServiceTypeButton(props: ServiceTypeButtonProps) {
 const styles = StyleSheet.create({
 
   button: {
-    width: "30%",
+    // width: "50%",
     alignItems: "center",
-    marginBottom: 20,
+    marginVertical: 5,
+    marginHorizontal:10,
+ 
   },
   serviceImg: {
     width: 60,
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
   },
   serviceText: {
     textAlign: "center",
-    fontSize: 13,
+    fontSize: 9,
     marginTop: 5,
     fontFamily: "Poppins_400Regular",
   },
