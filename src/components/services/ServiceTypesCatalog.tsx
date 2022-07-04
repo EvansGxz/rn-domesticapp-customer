@@ -7,6 +7,7 @@ import ServiceTypeButton from "./ServiceTypeButton";
 
 
 export default function ServiceTypesCatalog() {
+
     const { loading, error, data = [] } = useFetch('/categories', {}, []);
     const [dataRecort, setDataRecort] = useState<any>({
         data1:null,

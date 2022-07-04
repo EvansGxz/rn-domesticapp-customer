@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Home from "./home";
 import HomeIcon from '../../resources/img/menu/home.svg';
@@ -18,6 +18,7 @@ import { COLORS } from "../../../config";
 const Tab = createBottomTabNavigator();
 
 export default function BottomNavigation() {
+
     return (
         <SafeAreaView style={style.mainContainer}>
             <Tab.Navigator 
@@ -90,7 +91,28 @@ const createTabOptions = (Component: any) => {
 }
 
 const style = StyleSheet.create({
-    mainContainer: {
-        flex: 1,
-    }
+  mainContainer: {
+    flex: 1,
+  },
+  tabCalendar: {
+    backgroundColor: "#ffff",
+    /* borderWidth: 1,
+    borderColor: COLORS.blue, */
+    width: 55,
+    height: 55,
+    borderRadius: 100,
+    alignItems: "center",
+    justifyContent: "center",
+    top: -5,
+  },
+  shadow: {
+    shadowColor: "#7f5df4",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.5,
+    elevation: 5,
+  },
 });

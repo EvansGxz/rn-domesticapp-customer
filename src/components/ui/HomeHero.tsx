@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import HomeHeroSVG from '../../resources/img/ui/home-hero.svg';
+import React from "react";
+import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+// import DashImg from "../../resources/img/ui/dashboard-img.png";
 
 export default function HomeHero() {
     return (
@@ -17,20 +17,12 @@ export default function HomeHero() {
 }
 
 const styles = StyleSheet.create({
-    heroContainer: {
-        position: 'relative',
-        marginTop: -20
-    },
-    heroTextContainer: {
-        position: 'absolute',
-        left: 15,
-        top: 28,
-    },
-    heroText: {
-        fontSize: 25,
-        marginBottom: -7,
-        fontWeight: 'bold',
-        opacity: 0.7,
-        color: '#222'
-    }
+  heroContainer: {
+    width: "100%",
+  },
+  stretch: {
+    height: 310,
+    width: "100%",
+    marginVertical: -15,
+  },
 });

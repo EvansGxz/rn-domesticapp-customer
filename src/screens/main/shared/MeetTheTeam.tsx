@@ -1,12 +1,14 @@
-import React, { useContext } from "react";
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import React, { useContext, useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import useFetch from "use-http";
 import ServiceStatusCard from "../../../components/cards/ServiceStatusCard";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { AuthContext } from "../../../contexts/auth-context";
 import { SharedStyles } from "../../../styles/shared-styles";
+import { showOrderDetail } from "../../../services/order-details-services";
 
 export default function MeetTheTeam() {
+
     const auth = useContext(AuthContext);
     const { loading, error, data = [] } = useFetch('/order_details/'+auth.getState().user.id, {}, []);
     // console.log(data);
@@ -38,11 +40,11 @@ export default function MeetTheTeam() {
 }
 
 const styles = StyleSheet.create({
-    cardsContainer: {
-        flex: 1,
-        padding: 10,
-    },
-    contentContainerCards: {
-        paddingBottom: 35
-    }
+  cardsContainer: {
+    flex: 1,
+    padding: 10,
+  },
+  contentContainerCards: {
+    paddingBottom: 35,
+  },
 });

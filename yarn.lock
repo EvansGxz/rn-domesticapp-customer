@@ -1775,6 +1775,14 @@
   dependencies:
     nanoid "^3.1.23"
 
+"@rneui/theming@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@rneui/theming/-/theming-0.1.1.tgz#730d5a2cf040140739e97a601b988a37cc0d7a63"
+  integrity sha512-4+/g+wwmOKNnfoTUbVhLTPU6NZppz0gmRWrBm8gu+pnCJjHH5TUvZBNff/69kSnaIMuvwl22bXQifQASnY86dQ==
+  dependencies:
+    deepmerge "^4.2.2"
+    hoist-non-react-statics "^3.3.2"
+
 "@segment/loosely-validate-event@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@segment/loosely-validate-event/-/loosely-validate-event-2.0.0.tgz#87dfc979e5b4e7b82c5f1d8b722dfd5d77644681"
@@ -4145,7 +4153,7 @@ hermes-profile-transformer@^0.0.6:
   dependencies:
     source-map "^0.7.3"
 
-hoist-non-react-statics@^3.3.1:
+hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==

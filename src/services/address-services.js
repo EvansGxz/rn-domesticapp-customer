@@ -9,6 +9,5 @@ export async function showAddress(AddressID) {
 }
 
 export async function createAddress(newAddress) {
-  return await apiFetch('address/', { body: newAddress });
-   
+  return await apiFetch("address/", { body: newAddress });
 }
