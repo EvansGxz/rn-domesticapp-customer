@@ -1,16 +1,15 @@
-import React, { useState, useEffect,useRef } from "react";
-import { View, StyleSheet,Text } from "react-native";
-import MapView, { PROVIDER_GOOGLE, Marker } from "react-native-maps";
 import * as Location from "expo-location";
-
-import OutlinedInput from "../ui/OutlinedInput";
-import axios from "axios";
-import { Button } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import MapView, { Marker } from "react-native-maps";
 import { apiMapBox } from "../../controllers/http-client";
+import { getCalendarContext } from "../../screens/main/home";
+import OutlinedInput from "../ui/OutlinedInput";
 import ListLocationMap from './ListLocationMap';
 
 
-export default function SearchDirectionMap(props:any) {
+
+const SearchDirectionMap = (props:any) => {
     const [location, setLocation] = useState<any>(false);
     const [errorMsg, setErrorMsg] = useState<any>(null);
     const [searchText, setSearchText] = useState<any>("");
@@ -40,10 +39,11 @@ export default function SearchDirectionMap(props:any) {
   
     
 
+    const { setaddress } = getCalendarContext();
     const selectLocation = async (d:any) => {
        
-        // console.log(data.place_name);
-        
+        console.log(d.place_name);
+        setaddress(d.place_name);
         setData({
             ...data,
             address:d.place_name
@@ -90,11 +90,6 @@ export default function SearchDirectionMap(props:any) {
         }
 
     }, [ubicaciones]);
-
-   
-    
-
-
     return (
         <View style={styles.container}>
             <View style={styles.inputContainer}>
@@ -124,26 +119,19 @@ export default function SearchDirectionMap(props:any) {
             {location?.latitude && (
                 <MapView
                     style={styles.map}
-                    provider={PROVIDER_GOOGLE}
                     initialRegion={{
                         longitude: location.longitude,
                         latitude: location.latitude,
                         latitudeDelta: 0.005,
                         longitudeDelta: 0.005,
                     }}
-                    focusable
                     onPress={(e) => updateLocation(e.nativeEvent.coordinate)}
-                    // ref={ref => {
-                    //     map.current = ref;
-                    // }}
                     ref={map}
                 >
                     <Marker
                         coordinate={location}
                         // image={{uri: 'custom_pin'}}
                         key={1}
-                    
-
                     />
                 </MapView>
             )}
@@ -175,8 +163,10 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     map: {
-        overflow: "hidden",
         width: "100%",
         height: 500,
     },
 });
+
+
+export default SearchDirectionMap;

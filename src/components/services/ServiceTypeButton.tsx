@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, Image, Text, StyleSheet } from "react-native";
+import { getCalendarContext } from "../../screens/main/home";
 
 const exampleCategory =
   "https://domesticapp-api.herokuapp.com//rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBEZz09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--659a39b7ef13fca9d096fa08113988cbdbc6755a/cat4";
@@ -13,11 +14,14 @@ export interface ServiceTypeButtonProps {
 
 export default function ServiceTypeButton(props: ServiceTypeButtonProps) {
   const navigation = useNavigation<any>();
-
+  const { setcategory_id } = getCalendarContext();
   return (
     <TouchableOpacity
       style={styles.button}
-      onPress={() => navigation.navigate("SelectService", { id: props.id })}
+      onPress={() => {
+        setcategory_id(props.id.toString());
+        navigation.navigate("SelectService", { id: props.id })
+      }}
     >
       <Image style={styles.serviceImg} source={{ uri: props.image }} />
       <Text style={styles.serviceText}>{props.name}</Text>

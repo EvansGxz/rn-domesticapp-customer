@@ -11,6 +11,7 @@ import { httpClient } from "../../../controllers/http-client";
 import { useAuth } from "../../../hooks/use-auth";
 import { useNavigation } from "@react-navigation/native";
 import useFetch from "use-http";
+import { getCalendarContext } from ".";
 
 export default function ServiceDetails(props:any) {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
@@ -22,36 +23,31 @@ export default function ServiceDetails(props:any) {
         food: '1',
         specifyTasks: false
     });
-    // console.log(props?.route?.params);
     
-
-    // console.log(data);
-    
-    
+    const [state] = useAuth();
+    const { category_id, address, start_date, service_time, workday } = getCalendarContext();
     const saveService = async () => {
-        const {working,recurrency,recurrencyData,workingDayType,workingHour} = props?.route?.params;
-  
-        console.log({
-            ...datas,
-            working,recurrency,recurrencyData,workingDayType,workingHour
-        });
-        
-        // console.log(working.date[0]);
-                    
-
-        const response = await httpClient.post(`/order_details/`,{
-            body: {
-                address: "calle 43",
-                start_date: "2022-06-27",
-                service_time: "12:00",
-                discount: "7",
-                workday: "Media",
-                supply_food: "No",
-                category_id: 1,
-                employee_id: 3,
-                customer_id: 2
-            }
-        });
+        try {
+            const formData = new FormData();
+             formData.append('address', address);
+             formData.append('start_date', start_date);
+             formData.append('service_time', service_time);
+             formData.append('workday', workday);
+             formData.append('category_id', category_id);
+             formData.append('employee_id', '1');
+             formData.append('customer_id', state?.user?.data?.user_id);
+            
+            const response = await httpClient.post(`/order_details`,formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+            console.log({response: response.data})
+        } catch (error) {
+            console.log(error);
+            console.log(error.response);
+            console.log(error.response.data);
+        }
 
         // console.log(response);
         
@@ -63,20 +59,13 @@ export default function ServiceDetails(props:any) {
             <BackTitledHeader title="DETALLES" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={[SharedStyles.mainPadding]}>
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Correo de Notificación</Text>
-                <OutlinedInput style={styles.input} />
+                <OutlinedInput style={styles.input} value={state?.user?.data?.email} editable={false} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Tipo de identificación</Text>
-                <_Picker
-                    selectedValue={data.ccNit}
-                    onValueChange={(itemValue: any) => setDatas({ ...data, ccNit: itemValue})}
-                    style={[SharedStyles.card, SharedStyles.mb]}
-                >
-                    <_Picker.Item label="CC" value="CC" />
-                    <_Picker.Item label="NIT" value="NIT" />
-                </_Picker>
+                <OutlinedInput style={styles.input} value={state?.user?.data?.document_type?.toUpperCase()} editable={false} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Celular</Text>
-                <OutlinedInput style={styles.input} />
+                <OutlinedInput style={styles.input} value={state?.user?.data?.phone} editable={false} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
-                <OutlinedInput style={styles.input} />
+                <OutlinedInput style={styles.input} value={state?.user?.data?.document_id} editable={false} />
                 {/*
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
                 <_Picker

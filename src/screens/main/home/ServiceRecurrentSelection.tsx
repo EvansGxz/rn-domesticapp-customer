@@ -6,6 +6,7 @@ import { SharedStyles } from "../../../styles/shared-styles";
 import { Picker } from "@react-native-picker/picker";
 import Button from "../../../components/ui/Button";
 import DateOutlinedButton from "../../../components/ui/DateOutlinedInput";
+import { getCalendarContext } from ".";
 
 export default function ServiceRecurrentSelection() {
     const [recurrency, setSelectedValue] = useState(false);
@@ -15,6 +16,8 @@ export default function ServiceRecurrentSelection() {
     const navigation = useNavigation<any>();
     const route = useRoute();
     const _Picker: any = Picker;
+    
+    const { setfinish_date } = getCalendarContext()
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="RECURRENCIA" />
@@ -45,7 +48,11 @@ export default function ServiceRecurrentSelection() {
                             <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Fecha limite</Text>
                             <DateOutlinedButton
                                 editable={false}
-                                onChangeText={(date) => setRecurrencyData({ ...recurrencyData, date })} 
+                                onChangeText={(date) => {
+                                    const [a, b, c] = date.split('/');
+                                    setfinish_date(`${c}-${b}-${a}`);
+                                    setRecurrencyData({ ...recurrencyData, date })
+                                }} 
                                 value={recurrencyData.date}
                             />
                         </>
