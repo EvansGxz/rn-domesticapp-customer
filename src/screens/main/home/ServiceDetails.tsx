@@ -36,7 +36,7 @@ export default function ServiceDetails(props:any) {
              formData.append('category_id', category_id);
              formData.append('employee_id', '1');
              formData.append('customer_id', state?.user?.data?.user_id);
-            
+            console.log(formData);
             const response = await httpClient.post(`/order_details`,formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
