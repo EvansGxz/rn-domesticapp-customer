@@ -12,13 +12,14 @@ import { COLORS } from "../../../config";
 
 export default function Button(props: ButtonProps) {
     return (
-        <TouchableOpacity onPress={props.onPress} activeOpacity={0.7} style={[style.button, props.style]}>
+        <TouchableOpacity disabled={props.disabled} onPress={props.onPress} activeOpacity={0.7} style={[style.button, props.style]}>
             <Text style={[style.text, props.textStyle]}>{props.children}</Text>
         </TouchableOpacity>
     );
 }
 
 export interface ButtonProps {
+    disabled?: boolean;
     children: any;
     onPress?: () => void;
     style?: StyleProp<ViewStyle>;

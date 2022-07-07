@@ -29,7 +29,7 @@ export default function Welcome() {
     const [country, setCountry] = useState('col');
     const [request, response, promptAsync] = Google.useAuthRequest({
         expoClientId: '209825335616-o96lqfffbrdsspmigjbdb5902h6hgdv4.apps.googleusercontent.com',
-      
+        androidClientId: '209825335616-3n4ab82qqkcr863ddbhgsltev591k13p.apps.googleusercontent.com',
         redirectUri: 'https://auth.expo.io/@marioe92/rn-domesticapp-customer',
     });
     const [accessToken, setAccessToken] = useState<any>();
@@ -151,18 +151,19 @@ export default function Welcome() {
         )
     }
 
+    const _Picker: any = Picker;
     return (
         <SafeAreaView style={style.main}>
             <View style={style.countrySelect}>
-                <Picker
+                <_Picker
                     selectedValue={country}
                     onValueChange={changeCountry}
                     dropdownIconColor="#000"
                 >
                     { CountryOptions.map( o => (
-                        <Picker.Item key={Math.random()} fontFamily="Poppins_400Regular" style={style.countrySelectText} label={o.label} value={o.value} />
+                        <_Picker.Item key={Math.random()} fontFamily="Poppins_400Regular" style={style.countrySelectText} label={o.label} value={o.value} />
                     ) ) }
-                </Picker>
+                </_Picker>
             </View>
             {/* Logo */}
             <Logo width="60%" />

@@ -7,13 +7,13 @@ import UserImage from "./UserImage";
 
 export default function UserInfo() {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
-    console.log("UserInfo = "+data);
+    console.log({ data });
     console.log(loading);
     console.log(error);
     return (
         <View style={styles.container}>
             <View style={styles.directionRow}>
-                <UserImage size={65} />
+                <UserImage size={65} src={data.image_url} />
                 <Text style={styles.textName}>{data.full_name}</Text>
             </View>
             {/*<Text style={styles.servicesCount}>325 Servicios Solicitados</Text>*/}

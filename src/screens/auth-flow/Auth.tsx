@@ -1,12 +1,12 @@
 import { FontAwesome } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Picker } from '@react-native-picker/picker';
 import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { AxiosError } from "axios";
 import * as ImagePicker from 'expo-image-picker';
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
-import { Alert, Animated, Image, LogBox, Platform, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Image, LogBox, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
@@ -16,7 +16,6 @@ import LabeledInput from "../../components/ui/LabeledInput";
 import { AuthContext } from "../../contexts/auth-context";
 import { httpClient } from "../../controllers/http-client";
 import DomIcon from '../../resources/img/ui/dom-app-icon.svg';
-import DropDownPicker from 'react-native-dropdown-picker';
 
 const Tab: any = createMaterialTopTabNavigator();
 
@@ -198,6 +197,7 @@ function RegisterTab() {
         document_type: '',
         document_string: '',
         birth_date: '',
+        phone: '',
         company: '',
         cod_refer: '',
         client_type: '',
@@ -209,7 +209,10 @@ function RegisterTab() {
         password_confirmation: '',
     });
 
+    const [loading, setLoading]= useState(false);
+
     const register = async () => {
+        setLoading(true);
         try {
             const formData = new FormData();
             
@@ -218,6 +221,7 @@ function RegisterTab() {
             formData.append('document_type', data.document_type);
             formData.append('document_string', data.document_string);
             formData.append('birth_date', data.birth_date);
+            formData.append('phone', data.phone);
             formData.append('company', data.company);
             formData.append('cod_refer', data.cod_refer);
             formData.append('client_type', data.client_type);
@@ -239,12 +243,20 @@ function RegisterTab() {
                     'Content-Type': 'multipart/form-data',
                 }
             });
-            await auth.loadSession(resp.data.token, resp.data);
+            const resp2 = await httpClient.patch('/profile', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Token token=${resp.data.token}`
+                }
+            });
+            setLoading(false);
+            await auth.loadSession(resp2.data.token, resp2.data);
         } catch (err) {
+            setLoading(false);
             console.log(err);
             console.log((err as AxiosError).response?.data);
-            // const errors: any = ((err as AxiosError).response?.data as any).errors;
-            // Alert.alert('Error', Object.keys(errors).map((key: string) => errors[key].join(' ')).join(', '));
+            const errors: any = ((err as AxiosError).response?.data as any).errors;
+            Alert.alert('Error', Object.keys(errors).map((key: string) => `[${key}] ` + errors[key].join(' ')).join(', '));
         }
     }
 
@@ -359,7 +371,7 @@ function RegisterTab() {
                                     setOpen={(value: boolean) => setModalOpen({
                                         clientType: false,
                                         docType: value
-                                    })}
+                                    }) as any}
                                     setValue={(value) => onChangeText('document_type', value())}
                                     style={style.picker}
                                     placeholder='Selecione um elemento'
@@ -384,6 +396,22 @@ function RegisterTab() {
                             } 
                             style={style.labelForInput} 
                             label="Número de Documento" 
+                        />
+                        <LabeledInput 
+                            inputProps={
+                                {
+                                    blurOnSubmit: false,
+                                    returnKeyType: 'next',
+                                    keyboardType:'number-pad',
+                                    maxLength: 10,
+                                    onChangeText: (value: string) => onChangeText('phone', value),
+                                    value: data.phone,
+                                    autoCapitalize: "none",
+                                    style: style.inputBlueRounded 
+                                } as any
+                            } 
+                            style={style.labelForInput} 
+                            label="Telefono" 
                         />
                         <LabeledInput 
                             inputProps={
@@ -549,8 +577,8 @@ function RegisterTab() {
                     </_KeyboardAwareScrollView>
                 </View>
                 <View style={style.buttonContainer}>
-                    <Button textStyle={style.btnTextAction} style={style.btnAction} onPress={register}>
-                        Registrarse
+                    <Button disabled={loading} textStyle={style.btnTextAction} style={[style.btnAction, loading && { backgroundColor: '#CCC' }]} onPress={() => loading ? null : register()}>
+                        {loading ? 'Cargando...' : 'Registrarse'}
                     </Button>
                     <Footer style={style.footerColor} />
                 </View>

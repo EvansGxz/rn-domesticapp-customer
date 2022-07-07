@@ -13,39 +13,59 @@ import SearchDirectionMap from "../../../components/maps/SearchDirectionMap";
 import LineORSeparator from "../../../components/ui/LineORSeparator";
 import { BASE_URI, COLORS } from "../../../../config";
 import { httpClient } from "../../../controllers/http-client";
+import { useAuth } from "../../../hooks/use-auth";
 
 
 export default function Directions() {
     const auth = useContext(AuthContext);
-    const { loading, error, data = [] } = useFetch('/address/'+auth.getState().user?.data?.id, {}, []);
-    const idUser = auth.getState()?.user?.data;
+    
+    const [state] = useAuth();
+
+    const { loading, error, data = [] } = useFetch('/address/'+state.user.data.id, {}, []);
     const [datas, setDatas] = useState<any>();
     const [direcciones, setDirecciones] = useState<any>();
 
 
     const getData = async() => {
-        setDirecciones(data)
+        const response = await httpClient.get(`/address/${state.user.data.id}`,{
+            headers: {
+                'Authorization': `Token token=${state.user.data.token}`
+              }
+        })
+
+        setDirecciones(response.data);
     }
     
   
    
     
     const addData = async() => {
-        
-        await httpClient.post(`/address`,{
-            address: datas?.address,
-            customer_id: idUser?.id
-            
-        });
-
-        const response = await httpClient.get(`/address/${idUser.id}`,{
-
-            headers: {
-              'Authorization': idUser.token
-            }
-        })
-
-        console.log(response);
+        try {
+            console.log({
+                user: state.user,
+                address: datas?.address,
+                customer_id: state.user.data.id
+                
+            })
+            await httpClient.post(`/address`,{
+                address: datas?.address,
+                customer_id: state.user.data.id                
+            }, {
+                headers: {
+                    'Authorization': `Token token=${state.user.data.token}`
+                  }
+            });
+    
+            const response = await httpClient.get(`/address/${state.user.data.id}`,{
+                headers: {
+                    'Authorization': `Token token=${state.user.data.token}`
+                  }
+            })
+    
+            setDirecciones(response.data);
+        } catch (error) {
+            console.log(error.response.data);
+        }
         
        
     }
@@ -61,6 +81,9 @@ export default function Directions() {
    
     
     return (
+        <View>
+            <ScrollView>
+        
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Direcciones" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={SharedStyles.mainPadding}>

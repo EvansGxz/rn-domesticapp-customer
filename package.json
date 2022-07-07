@@ -7,7 +7,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "apk": "cd ./android/ && ./gradlew assembleRelease"
+    "apk": "expo prebuild && cd ./android/ && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@expo-google-fonts/montserrat": "^0.2.2",
