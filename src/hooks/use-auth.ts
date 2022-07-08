@@ -113,7 +113,7 @@ export const useAuth = () => {
                             const result = await httpClient.get('/profile',
                                 { headers: { Authorization: await retrieveTokenHeader() } }
                             );
-                            console.log(result);
+                            // console.log(result);
                             dispatch({ type: 'SIGN_IN', user: result });
                         } catch (err) {
                             console.log(err);
@@ -132,7 +132,7 @@ export const useAuth = () => {
 }
 
 const authReducer: React.Reducer<any, any> = (prev, action) => {
-    console.log(action);
+    // console.log(action);
     switch (action.type) {
         case 'SIGN_IN':
             return {

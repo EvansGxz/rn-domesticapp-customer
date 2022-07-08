@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, StyleSheet, Modal } from "react-native";
+import { View, Text, ScrollView, StyleSheet, Modal, Pressable } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { COLORS } from "../../../../config";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
@@ -7,12 +7,20 @@ import Button from "../../../components/ui/Button";
 import { SharedStyles } from "../../../styles/shared-styles";
 import ServiceDetailCard from "../../../components/cards/ServiceDetailCard";
 import UserImage from "../../../components/user/UserImage";
+import {indexOrderDetails} from '../../../services/order-details-services';
+import { useFetch } from "use-http";
+import { AuthContext } from "../../../contexts/auth-context";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CalendarScreen(props: any) {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [isService, setIsService] = useState(true);
 
   const toggleModal = () => setIsModalOpened(!isModalOpened);
+  const auth = React.useContext(AuthContext);
+  const { loading, error, data = {} } = useFetch('/order_details/',{}, []);
+
+
   const status = {
     employee: {
       full_name: "Maria del refugio",
@@ -46,9 +54,9 @@ export default function CalendarScreen(props: any) {
         <Calendar />
         {/* Card */}
         {/* <DayCard /> */}
-        {isService ? (
+        {isService && (
           <>
-            <DayCardService />
+            <DayCardService employee={data?.employee} />
             <View
               style={[SharedStyles.centerContent, SharedStyles.mainPadding]}
             >
@@ -60,7 +68,7 @@ export default function CalendarScreen(props: any) {
               </Button>
             </View>
           </>
-        ) : null}
+        )}
       </ScrollView>
       {/*  <View style={[SharedStyles.centerContent, SharedStyles.mainPadding]}>
         <Button style={SharedStyles.backgroundPrimary}>
@@ -178,39 +186,38 @@ export default function CalendarScreen(props: any) {
   );
 } */
 
-export function DayCardService(props: any) {
-  const status = {
-    employee: {
-      full_name: "Maria del refugio",
-      active: "Activo",
-    },
-  };
+export function DayCardService(props: {} | any) {
+  const navigation = useNavigation<any>();
+  const {employee} = props;
+  
   return (
-    <View style={style.card}>
-      <View style={{ flex: 1, flexDirection: "row" }}>
-        <View style={{ flex: 1 }}>
-          <Text numberOfLines={1} style={style.cardTitle}>
-            Jueves, 12 de Mayo
-          </Text>
+    <Pressable onPress={() => navigation.navigate('Team', {idEmployee: employee.user_id})}>
+      <View style={style.card}>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text numberOfLines={1} style={style.cardTitle}>
+              Jueves, 12 de Mayo
+            </Text>
+          </View>
+          <View>
+            <Text style={style.textT}>11:00-18:00hr</Text>
+            <Text style={{ fontFamily: "Poppins_600SemiBold", fontSize: 10 }}>
+              {employee?.contrato.name}
+            </Text>
+          </View>
         </View>
-        <View>
-          <Text style={style.textT}>11:00-18:00hr</Text>
-          <Text style={{ fontFamily: "Poppins_600SemiBold", fontSize: 10 }}>
-            Jornada Completa
-          </Text>
-        </View>
-      </View>
-      <View style={style.container}>
-        <UserImage size={60} sourceImage />
-        <View style={style.rightSide}>
-          <Text style={style.name}>{status.employee.full_name}</Text>
-          <Text numberOfLines={1}>Limpieza de ropa, Doblado de Ropa</Text>
-          <View style={style.statusContainer}>
-            <Text style={style.statusText}> {3} más</Text>
+        <View style={style.container}>
+          <UserImage size={60} src={employee.image_url} />
+          <View style={style.rightSide}>
+            <Text style={style.name}>{employee?.full_name}</Text>
+            <Text numberOfLines={1}>Limpieza de ropa, Doblado de Ropa</Text>
+            <View style={style.statusContainer}>
+              <Text style={style.statusText}> {3} más</Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
