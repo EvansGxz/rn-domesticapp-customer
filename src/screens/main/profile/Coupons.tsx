@@ -1,18 +1,20 @@
 import React, { useContext, useState } from "react";
-import { View, StyleSheet, ScrollView, Text } from "react-native";
+import { View, StyleSheet, Text, FlatList, Dimensions, StatusBar } from "react-native";
 import useFetch from "use-http";
-import CouponCard from "../../../components/cards/CouponCard";
-import BackTitledHeader from "../../../components/headers/BackTitledHeader";
-import Button from "../../../components/ui/Button";
-import UnderlinedInput from "../../../components/ui/UnderlinedInput";
 import { AuthContext } from "../../../contexts/auth-context";
 import { SharedStyles } from "../../../styles/shared-styles";
 
+// COMPONENTs
+import Loader from "../../../components/Loader";
+import Button from "../../../components/ui/Button";
+import CouponCard from "../../../components/cards/CouponCard";
+import UnderlinedInput from "../../../components/ui/UnderlinedInput";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+
+const {height} = Dimensions.get('screen');
 export default function Coupons() {
     const state = useContext(AuthContext);
-    const {error, data = []} = useFetch(`/cupon_users/${state.getState().user.user_id}`,{},[]);
-    console.log(error);
-    console.log(data);
+    const {loading, error, data = []} = useFetch(`/cupon_users/${state.getState().user.id}`,{},[]);
 
     const [isValid, setIsValid] = useState(false);
     const [cupon, setCupon] = useState("");
@@ -32,46 +34,52 @@ export default function Coupons() {
             setIsValid(false)
         }
     }
-    console.log(cupon);
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Cupones" />
-            <ScrollView contentContainerStyle={styles.container}>
-                <View style={[SharedStyles.card, styles.couponValidation]}>
-                    <UnderlinedInput
-                        style={styles.input}
-                        placeholder="Ingresa tu cupon"
-                        value={cupon}
-                        onChangeText={setCupon}
+            <View style={styles.container}>
+                {loading ? (<Loader />) : error ? (<Text>{error.message}</Text>) : (
+                    <FlatList
+                        data={data}
+                        keyExtractor={(key:any) => key.id}
+                        style={{height: height - (StatusBar.currentHeight as number) * 7.6}}
+                        ListHeaderComponent={() => (
+                            <View style={[SharedStyles.mainScreen, {padding: 15}]}>
+                                <View style={[SharedStyles.card, styles.couponValidation]}>
+                                    <UnderlinedInput
+                                        style={styles.input}
+                                        placeholder="Ingresa tu cupon"
+                                        value={cupon}
+                                        onChangeText={setCupon}
+                                    />
+                                    <Button
+                                        textStyle={SharedStyles.smallButtonText}
+                                        style={SharedStyles.smallButton}
+                                        onPress={validate}
+                                    >
+                                        Validar
+                                    </Button>
+                                </View>
+                                <View style={styles.validation}>
+                                    {
+                                        isPress ? (
+                                            isValid ? (
+                                                <Text style={styles.textValidateTrue}>¡Cupón válido!</Text>
+                                            ):(<Text style={styles.textValidateFalse}>¡Cupón inválido!</Text>)
+                                        ): <View></View>
+                                    }
+                                </View>
+                                <Text style={SharedStyles.h2}>Mis cupones</Text>
+                            </View>
+                        )}
+                        stickyHeaderIndices={[0]}
+                        renderItem={({item}) => {
+                            delete item.customer;
+                            return <CouponCard coupon={item.cupon} />
+                        }}
                     />
-                    <Button
-                        textStyle={SharedStyles.smallButtonText}
-                        style={SharedStyles.smallButton}
-                        onPress={validate}
-                    >
-                        Validar
-                    </Button>
-                </View>
-                <View style={styles.validation}>
-                    {
-                        isPress ? (
-                            isValid ? (
-                                <Text style={styles.textValidateTrue}>¡Cupón válido!</Text>
-                            ):(<Text style={styles.textValidateFalse}>¡Cupón inválido!</Text>)
-                        ): <View></View>
-                    }
-                    </View>
-                <Text style={SharedStyles.h2}>Mis cupones</Text>
-                <View>
-                    <CouponCard />
-                    <CouponCard />
-                    <CouponCard />
-                    <CouponCard />
-                    <CouponCard />
-                    <CouponCard />
-                    <CouponCard />
-                </View>
-            </ScrollView>
+                )}
+            </View>
         </View>
     );
 }
@@ -83,7 +91,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     container: {
-        padding: 25
     },
     input: {
         flex: 1,

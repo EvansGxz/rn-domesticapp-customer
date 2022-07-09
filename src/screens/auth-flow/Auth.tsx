@@ -468,13 +468,13 @@ function RegisterTab() {
                             <DropDownPicker
                                 closeOnBackPressed
                                 open={openModals.clientType}
-                                setOpen={(value: boolean) => setModalOpen({
+                                setOpen={(value: boolean | any) => setModalOpen({
                                     docType: false,
                                     clientType: value
                                 })}
                                 setValue={(value) => onChangeText('client_type', value())}
                                 style={style.picker}
-                                placeholder='Selecione um elemento'
+                                placeholder='Selecione un elemento'
                                 textStyle={style.textPicker}
                                 items={clientTypeOptions}
                                 value={data.client_type}

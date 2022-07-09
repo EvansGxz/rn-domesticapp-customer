@@ -17,6 +17,7 @@ export default function NewsLetter() {
                     initialNumToRender={6}
                     maxToRenderPerBatch={6}
                     updateCellsBatchingPeriod={6}
+                    keyExtractor={(key: any) => key.id}
                     renderItem={({item}) => (<NotificationCard color="primary" notification={item} />)}
                 />
             )}

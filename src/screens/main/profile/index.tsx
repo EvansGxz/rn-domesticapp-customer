@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 // SCREENs
@@ -15,16 +15,16 @@ import AuthorizationAndData from './AuthorizationAndData';
 import SupportChat from '../support/SupportChat';
 
 type RootStackParamList = {
-    Dashboard: undefined;
-    Coupons: undefined;
-    ServiceHistory: undefined;
-    Directions: undefined;
-    Notifications: undefined;
-    SupportChat: undefined;
-    NewsLetter: undefined;
-    TermsAndConditions: undefined;
-    PrivacyPolicy: undefined;
-    AuthorizationAndData: undefined;
+    Dashboard: FunctionComponent;
+    Coupons: FunctionComponent;
+    ServiceHistory: FunctionComponent;
+    Directions: FunctionComponent;
+    Notifications: FunctionComponent;
+    SupportChat: FunctionComponent;
+    NewsLetter: FunctionComponent;
+    TermsAndConditions: FunctionComponent;
+    PrivacyPolicy: FunctionComponent;
+    AuthorizationAndData: FunctionComponent;
 };
 
 const Stack: any = createStackNavigator<RootStackParamList>();

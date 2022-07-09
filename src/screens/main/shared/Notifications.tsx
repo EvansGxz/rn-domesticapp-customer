@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, FlatList } from 'react-native';
+import {View, Text, FlatList, KeyboardAvoidingView } from 'react-native';
 import useFetch from "use-http";
 import NotificationCard from "../../../components/cards/NotificationCard";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
@@ -25,6 +25,7 @@ export default function Notifications() {
                     initialNumToRender={6}
                     maxToRenderPerBatch={6}
                     updateCellsBatchingPeriod={6}
+                    keyExtractor={(key: any) => key.id}
                     renderItem={({item}) => (<NotificationCard color="primary" notification={item} />)}
                 />
             )}

@@ -9,7 +9,7 @@ export default function ServiceStatusCard(props: any) {
   return (
     <>
       <View style={styles.container}>
-        <UserImage size={60} sourceImage />
+        <UserImage size={60} />
         <View style={styles.rightSide}>
           <Text style={styles.name}>{status.full_name}</Text>
           <Text numberOfLines={1}>Limpieza de ropa, Doblado de Ropa</Text>
