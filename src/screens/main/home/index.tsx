@@ -6,6 +6,7 @@ import SelectService from "./SelectService";
 import ServiceCalendar from "./ServiceCalendar";
 import ServiceRecurrentSelection from "./ServiceRecurrentSelection";
 import ServiceDetails from "./ServiceDetails";
+import TodoListo from "./TodoListo";
 import EmployeeProfile from "../profile/EmployeeProfile";
 import SelectEmployee from "./SelectEmployee";
 
@@ -80,6 +81,7 @@ export default function HomeNavigator() {
           component={ServiceRecurrentSelection}
         />
         <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
+        <Stack.Screen name="TodoListo" component={TodoListo} />
         <Stack.Screen name="MeetTheTeam" component={MeetTheTeam} />
       </Stack.Navigator>
     </CalendarProvider>
