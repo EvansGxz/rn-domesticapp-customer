@@ -12,6 +12,7 @@ import { useAuth } from "../../../hooks/use-auth";
 import { useNavigation } from "@react-navigation/native";
 import useFetch from "use-http";
 import { getCalendarContext } from ".";
+import axios from "axios";
 
 export default function ServiceDetails(props:any) {
     const { loading, error, data = {} } = useFetch('/profile', {}, []);
@@ -28,24 +29,32 @@ export default function ServiceDetails(props:any) {
     const { category_id, address, start_date, service_time, workday } = getCalendarContext();
     const saveService = async () => {
         try {
-            const formData = new FormData();
-             formData.append('address', address);
-             formData.append('start_date', start_date);
-             formData.append('service_time', service_time);
-             formData.append('workday', workday);
-             formData.append('category_id', category_id);
-             formData.append('employee_id', '1');
-             formData.append('customer_id', state?.user?.data?.user_id);
-            console.log(formData);
-            const response = await httpClient.post(`/order_details`,formData, {
+            const formData = {
+                category_id: parseInt(category_id),
+                employee_id: 10,
+                customer_id: parseInt(state?.user?.data?.id),
+                discount: '0',
+                active: true,
+                address,
+                start_date,
+                service_time: service_time,
+                workday: "Completo",
+                supply_food: "no"
+            }
+            console.log(formData, state?.user?.data);
+            const response = await httpClient.post(`/order_details`,formData,{
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json',
+                    Authorization: `Token token=${state?.user?.data.token}`
                 }
             });
             console.log({response: response.data})
+            navigation.navigate('TodoListo', { params: response.data })
+            console.log('<<<<<<<================================>>>>>> PASA <<<<<<<================================>>>>>>')
         } catch (error) {
-            console.log(error);
-            console.log(error.response);
+            console.log('<<<<<<<================================>>>>>> ERROR <<<<<<<================================>>>>>>')
+            // console.log(error);
+            // console.log(error.response);
             console.log(error.response.data);
         }
 
