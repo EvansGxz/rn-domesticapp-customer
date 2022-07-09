@@ -21,7 +21,9 @@ export default function NotificationCard(props: NotificationCardProps) {
             <View style={styles.cardTopBody}>
                 <MailSVG style={styles.mailIcon}/>
                 <View style={styles.textContent}>
-                    <Text style={styles.title}>{props.notification.name}</Text>
+                    <Text style={styles.title}>{
+                        props.notification?.title ? props.notification?.title : props.notification?.name
+                    }</Text>
                     <Text style={styles.descriptionText}>
                         {props.notification.body}
                     </Text>

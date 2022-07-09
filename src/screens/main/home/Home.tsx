@@ -21,7 +21,7 @@ export default function Home() {
         <ServiceTypesCatalog />
         <Button
           style={styles.button}
-          onPress={() => nav.navigate("MeetTheTeam")}
+          onPress={() => nav.navigate('Team', {screen: "MeetTheTeam"})}
         >
           Conoce al Equipo
         </Button>
