@@ -12,7 +12,7 @@ import Loader from "../../../components/Loader";
 export default function CalendarScreen(props: any) {
   const state = React.useContext(AuthContext);
   const { loading, error, data = [] } =
-    useFetch('/order_customer/'+state.getState().user.data.id,{}, []);
+    useFetch(`/order_customer/${state.getState().user.id}`,{}, []);
   const dataActive = data.filter((active: boolean) => !!active);
 
   return (
