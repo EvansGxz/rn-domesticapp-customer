@@ -17,7 +17,8 @@ const FlatCard = (props: EmployeDetailProps) => {
   const [isModalOpened, setIsModalOpened] = React.useState(false);
   const toggleModal = () => setIsModalOpened(!isModalOpened);
   const momentLocale = moment(item?.start_date);
-  const start_date = `${momentLocale.format('dddd')}, ${momentLocale.format("DD")} de ${momentLocale.format("MMMM")}`;
+  const start_date = `${momentLocale.format('dddd')}, ${momentLocale.format("DD")} de ${momentLocale.
+    format("MMMM")}`;
 
   return (
     <>

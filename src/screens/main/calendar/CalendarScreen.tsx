@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, ActivityIndicator } from "react-native";
+import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
 import { Calendar } from "react-native-calendars";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -12,7 +12,8 @@ export default function CalendarScreen(props: any) {
   const state = React.useContext(AuthContext);
   const { loading, error, data = [] } =
     useFetch('/order_customer/'+state.getState().user.data.id,{}, []);
-  const dataActive = data.filter((active: boolean) => !!active);
+  // const dataActive = data.filter((active: boolean) => !!active);
+  const dataActive: [] = [];
 
   return (
     <View style={SharedStyles.mainScreen}>
@@ -27,9 +28,10 @@ export default function CalendarScreen(props: any) {
           <ActivityIndicator size="large" color={COLORS.primary} />
         </View>
       ) : error ? (<Text>{error.message}</Text>) : (
+        <>
           <FlatList
             data={dataActive}
-            keyExtractor={key => key.id}
+            keyExtractor={(key: any) => key.id}
             style={
               [SharedStyles.mainScreen,
                 {flex: 1,
@@ -46,12 +48,18 @@ export default function CalendarScreen(props: any) {
                   Seleccionar fechas en el calendario:
                 </Text>
                 <Calendar />
+                {!dataActive.length && (
+                  <View style={style.card}>
+                    <Text style={style.text}>No se han añadido servicios</Text>
+                  </View>
+                )}
               </View>
             )}
             renderItem={({item}): any => (
               <FlatCard item={item} />
             )}
           />
+        </>
         )
       }
       {/*  <View style={[SharedStyles.centerContent, SharedStyles.mainPadding]}>
@@ -71,3 +79,20 @@ export default function CalendarScreen(props: any) {
     </View>
   );
 } */
+
+const style = StyleSheet.create({
+  card: {
+    backgroundColor: COLORS.lightBlue,
+    borderBottomColor: "#0BBBEF",
+    borderBottomWidth: 1,
+    padding: 20,
+    paddingVertical: 40,
+    marginVertical: 30,
+  },
+  text: {
+    fontFamily: "Poppins_600SemiBold",
+    fontSize: 14,
+    textAlign: "center",
+    color: "#787B82",
+  },
+});
