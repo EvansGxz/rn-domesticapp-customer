@@ -7,6 +7,7 @@ import ServiceCalendar from "./ServiceCalendar";
 import ServiceRecurrentSelection from "./ServiceRecurrentSelection";
 import ServiceDetails from "./ServiceDetails";
 import EmployeeProfile from "../profile/EmployeeProfile";
+import SelectEmployee from "./SelectEmployee";
 
 const Stack: any = createNativeStackNavigator();
 
@@ -25,36 +26,45 @@ type TCalendarContext = {
   setaddress: (address: string) => void;
   customer_id: string;
   setcustomer_id: (customer_id: string) => void;
-}
+};
 
-const CalendarContext = createContext<TCalendarContext>({} as any)
+const CalendarContext = createContext<TCalendarContext>({} as any);
 
 const CalendarProvider = (props: any) => {
-  const [category_id, setcategory_id] = useState('');
-  const [workday, setworkday] = useState('');
-  const [start_date, setstart_date] = useState('');
-  const [finish_date, setfinish_date] = useState('');
-  const [service_time, setservice_time] = useState('');
-  const [address, setaddress] = useState('');
-  const [customer_id, setcustomer_id] = useState('');
+  const [category_id, setcategory_id] = useState("");
+  const [workday, setworkday] = useState("");
+  const [start_date, setstart_date] = useState("");
+  const [finish_date, setfinish_date] = useState("");
+  const [service_time, setservice_time] = useState("");
+  const [address, setaddress] = useState("");
+  const [customer_id, setcustomer_id] = useState("");
   return (
-    <CalendarContext.Provider value={{
-      category_id, setcategory_id,
-      workday, setworkday,
-      start_date, setstart_date,
-      service_time, setservice_time,
-      address, setaddress,
-      customer_id, setcustomer_id,
-      finish_date, setfinish_date
-    }}>
+    <CalendarContext.Provider
+      value={{
+        category_id,
+        setcategory_id,
+        workday,
+        setworkday,
+        start_date,
+        setstart_date,
+        service_time,
+        setservice_time,
+        address,
+        setaddress,
+        customer_id,
+        setcustomer_id,
+        finish_date,
+        setfinish_date,
+      }}
+    >
       {props.children}
     </CalendarContext.Provider>
-  )
-}
+  );
+};
 
 export const getCalendarContext = () => {
   return useContext(CalendarContext);
-}
+};
 
 export default function HomeNavigator() {
   return (
@@ -62,6 +72,7 @@ export default function HomeNavigator() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomeScreen" component={Home} />
         <Stack.Screen name="SelectService" component={SelectService} />
+        <Stack.Screen name="SelectEmployee" component={SelectEmployee} />
         <Stack.Screen name="ServiceCalendar" component={ServiceCalendar} />
         <Stack.Screen name="EmployeeProfile" component={EmployeeProfile} />
         <Stack.Screen
