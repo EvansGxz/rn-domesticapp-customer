@@ -7,27 +7,18 @@ import { useFetch } from "use-http";
 import { AuthContext } from "../../../contexts/auth-context";
 import FlatCard from "./FlatCard";
 import { COLORS } from "../../../../config";
+import Loader from "../../../components/Loader";
 
 export default function CalendarScreen(props: any) {
   const state = React.useContext(AuthContext);
   const { loading, error, data = [] } =
     useFetch('/order_customer/'+state.getState().user.data.id,{}, []);
-  // const dataActive = data.filter((active: boolean) => !!active);
-  const dataActive: [] = [];
+  const dataActive = data.filter((active: boolean) => !!active);
 
   return (
     <View style={SharedStyles.mainScreen}>
       <BackTitledHeader title="Mi Calendario" />
-      {loading ? (
-        <View
-          style={{
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-            justifyContent: 'center'}}>
-          <ActivityIndicator size="large" color={COLORS.primary} />
-        </View>
-      ) : error ? (<Text>{error.message}</Text>) : (
+      {loading ? (<Loader />) : error ? (<Text>{error.message}</Text>) : (
         <>
           <FlatList
             data={dataActive}

@@ -3,15 +3,21 @@ import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../config";
 import MailSVG from '../../resources/img/profile-icons/mail-icon.svg';
 import TrashSVG from '../../resources/img/profile-icons/trash-icon.svg';
-
+import { SharedStyles } from "../../styles/shared-styles";
+import moment from "moment";
 export interface NotificationCardProps {
     color: 'primary' | 'secondary';
     notification?: any;
 }
 
 export default function NotificationCard(props: NotificationCardProps) {
+    const momentTransform = moment(props.notification.created_at);
+    const created_at = `${momentTransform.format('L')} ${momentTransform.format('LT')}`;
     return (
-        <View style={[styles.card, { backgroundColor: props.color === 'primary' ? COLORS.lightBlue : COLORS.lightRed}]}>
+        <View style={[
+            SharedStyles.card,
+            styles.card,
+            { backgroundColor: props.color === 'primary' ? COLORS.lightBlue : COLORS.lightRed}]}>
             <View style={styles.cardTopBody}>
                 <MailSVG style={styles.mailIcon}/>
                 <View style={styles.textContent}>
@@ -22,7 +28,7 @@ export default function NotificationCard(props: NotificationCardProps) {
                 </View>
             </View>
             <View style={styles.cardBottomBody}>
-                <Text style={styles.dateText}>{props.notification.created_at}</Text>
+                <Text style={styles.dateText}>{created_at}</Text>
                 {/*<TrashSVG />*/}
             </View>
         </View>
@@ -33,7 +39,8 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: COLORS.lightBlue,
         padding: 15,
-        marginBottom: 2
+        margin: 8,
+        borderRadius: 5,
     },
     cardTopBody: {
         flexDirection: 'row',

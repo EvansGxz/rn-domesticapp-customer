@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { View, StyleSheet, ScrollView, Text } from "react-native";
-import { COLORS } from "../../../../config";
+import useFetch from "use-http";
 import CouponCard from "../../../components/cards/CouponCard";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
 import UnderlinedInput from "../../../components/ui/UnderlinedInput";
+import { AuthContext } from "../../../contexts/auth-context";
 import { SharedStyles } from "../../../styles/shared-styles";
 
 export default function Coupons() {
+    const state = useContext(AuthContext);
+    const {error, data = []} = useFetch(`/cupon_users/${state.getState().user.user_id}`,{},[]);
+    console.log(error);
+    console.log(data);
+
     const [isValid, setIsValid] = useState(false);
     const [cupon, setCupon] = useState("");
     const [isPress, setIsPress] = useState(false);
@@ -46,7 +52,7 @@ export default function Coupons() {
                         Validar
                     </Button>
                 </View>
-                 <View style={styles.validation}>
+                <View style={styles.validation}>
                     {
                         isPress ? (
                             isValid ? (
