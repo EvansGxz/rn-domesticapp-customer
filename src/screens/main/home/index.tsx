@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./Home";
-import MeetTheTeam from "../shared/MeetTheTeam";
+import MeetTheTeam from "../team";
 import SelectService from "./SelectService";
 import ServiceCalendar from "./ServiceCalendar";
 import ServiceRecurrentSelection from "./ServiceRecurrentSelection";
@@ -71,7 +71,7 @@ export default function HomeNavigator() {
         />
         <Stack.Screen name="ServiceDetails" component={ServiceDetails} />
         <Stack.Screen name="TodoListo" component={TodoListo} />
-        <Stack.Screen name="MeetTheTeam" component={MeetTheTeam} />
+        {/* <Stack.Screen name="MeetTheTeam" component={MeetTheTeam} /> */}
       </Stack.Navigator>
     </CalendarProvider>
   );

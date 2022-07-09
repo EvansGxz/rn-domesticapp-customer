@@ -11,7 +11,7 @@ import Group from '../../resources/img/menu/group.svg';
 import Contract from "./profile";
 import Support from "./support";
 import CalendarModule from "./calendar";
-import MeetTheTeam from "./shared/MeetTheTeam";
+import MeetTheTeam from "./team";
 import { COLORS } from "../../../config";
 
 
