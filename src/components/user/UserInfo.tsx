@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import useFetch from "use-http";
 import UserImage from "./UserImage";
-
+import { useAuth } from "../../hooks/use-auth";
+import { AuthContext } from "../../contexts/auth-context";
 
 
 export default function UserInfo() {
-    const { loading, error, data = {} } = useFetch('/profile', {}, []);
-    console.log({ data });
-    console.log(loading);
-    console.log(error);
+    const [data, setData] = React.useState<any>();
+    const auth = useContext(AuthContext);
+
+    const state = auth.getState().user;
+    const getState = () => setData({...state});
+    
+    useEffect(() => {
+        getState();
+        return () => setData({});
+    }, [auth.getState()]);
+
     return (
         <View style={styles.container}>
             <View style={styles.directionRow}>
-                <UserImage size={65} src={data.image_url} />
-                <Text style={styles.textName}>{data.full_name}</Text>
+                <UserImage size={65} src={data?.image_url} />
+                <Text style={styles.textName}>{data?.full_name}</Text>
             </View>
             {/*<Text style={styles.servicesCount}>325 Servicios Solicitados</Text>*/}
         </View>

@@ -8,7 +8,7 @@ import ContractIcon from '../../resources/img/menu/contract.svg';
 import CalendarIcon from '../../resources/img/menu/calendar.svg';
 import SupportIcon from '../../resources/img/menu/support.svg';
 import Group from '../../resources/img/menu/group.svg';
-import UserProfile from "./profile";
+import Contract from "./profile";
 import Support from "./support";
 import CalendarModule from "./calendar";
 import MeetTheTeam from "./shared/MeetTheTeam";
@@ -63,7 +63,7 @@ export default function BottomNavigation() {
                 <Tab.Screen 
                     name="Contract" 
                     options={createTabOptions(ContractIcon)} 
-                    component={UserProfile}
+                    component={Contract}
                 />
             </Tab.Navigator>
         </SafeAreaView>

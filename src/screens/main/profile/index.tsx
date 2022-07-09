@@ -1,6 +1,9 @@
 import React from 'react';
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import UserProfile from './UserProfile';
+import { createStackNavigator } from "@react-navigation/stack";
+
+// SCREENs
+import Profile from '../../shared/Profile';
+import Dashboard from './Dashboard';
 import Coupons from './Coupons';
 import ServiceHistory from './ServiceHistory';
 import Directions from './Directions';
@@ -11,12 +14,26 @@ import PrivacyPolicy from './PrivacyPolicy';
 import AuthorizationAndData from './AuthorizationAndData';
 import SupportChat from '../support/SupportChat';
 
-const Stack: any = createNativeStackNavigator();
+type RootStackParamList = {
+    Dashboard: undefined;
+    Coupons: undefined;
+    ServiceHistory: undefined;
+    Directions: undefined;
+    Notifications: undefined;
+    SupportChat: undefined;
+    NewsLetter: undefined;
+    TermsAndConditions: undefined;
+    PrivacyPolicy: undefined;
+    AuthorizationAndData: undefined;
+};
+
+const Stack: any = createStackNavigator<RootStackParamList>();
 
 export default function HomeNavigator() {
     return (
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="UserProfile" component={UserProfile} />
+        <Stack.Navigator initialRouteName="Dashboard" screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen name="Profile" component={Profile} />
             <Stack.Screen name="Coupons" component={Coupons} />
             <Stack.Screen name="ServiceHistory" component={ServiceHistory} />
             <Stack.Screen name="Directions" component={Directions} />

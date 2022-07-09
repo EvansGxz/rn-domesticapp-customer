@@ -43,7 +43,7 @@ const clientTypeOptions = [
 const IMAGE_CONFIG: ImagePicker.ImagePickerOptions = {
     aspect: [1, 1],
     quality: 0.3,
-  };
+};
 
 const dateFormat = (value: string) => {
     if( value ){
@@ -54,7 +54,7 @@ const dateFormat = (value: string) => {
     return ''
 }
 
-export default function Profile(props: any) {
+export default function Profile({navigation}: any) {
     const [userdata, setData] = useState({
         full_name: '',
         document_type: '',
@@ -81,11 +81,13 @@ export default function Profile(props: any) {
         AsyncStorage.getItem('country').then( resp => {
             setCountry(resp);
         } )
-        console.log({ state: state?.user })
-        if( state?.user?.data ){
-            const {data} = state.user;
-            setPhotoUrl(data.image_url);
-            const {full_name, document_type, document_string, birth_date, phone, company, cod_refer, client_type, region, country, cc_nit, email} = data;
+        // console.log({ state: state?.user })
+        if( state.user ){
+            const {user} = state;
+            setPhotoUrl(user.image_url);
+            const {full_name, document_type, document_string, birth_date, phone, company, cod_refer, client_type, region, country, cc_nit, email} = user;
+
+            // FALTA "document_string", "company", "cc_nit"
             setData({ full_name, document_type, document_string, phone, birth_date: dateFormat(birth_date), company, cod_refer, client_type, region, country, cc_nit, email, password: '', password_confirmation: '' })
         }
     }, [state] ) )
@@ -99,8 +101,6 @@ export default function Profile(props: any) {
         docType: false,
         clientType: false,
     })
-
-    
 
     const handleGetImage = async (takeFromCamera: boolean ) => {
         let permission: ImagePicker.CameraPermissionResponse;
@@ -147,7 +147,6 @@ export default function Profile(props: any) {
         useRef<TextInput>(null),
     ]
     
-
     const editProfile = async () => {
         setLoading(true);
         try {
@@ -177,11 +176,24 @@ export default function Profile(props: any) {
             const resp2 = await httpClient.patch('/profile', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
-                    Authorization: `Token token=${state.user.data.token}`
+                    Authorization: `Token token=${state.user.token}`
                 }
             });
             setLoading(false);
-            Alert.alert('Exito', 'Datos modificado con exito');
+            Alert.alert(
+                'Exito',
+                'Datos modificado con exito',
+                [
+                    {text: 'Continuar haciendo cambios', style: 'cancel', onPress: () => {}},
+                    {
+                    text: 'Salir',
+                    style: 'destructive',
+                    // If the user confirmed, then we dispatch the action we blocked earlier
+                    // This will continue the action that had triggered the removal of the screen
+                    onPress: () => navigation.goBack(),
+                    },
+                ],
+            );
             await auth.loadSession(resp2.data.token, resp2.data);
         } catch (err) {
             setLoading(false);
@@ -191,12 +203,17 @@ export default function Profile(props: any) {
             Alert.alert('Error', Object.keys(errors).map((key: string) => `[${key}] ` + errors[key].join(' ')).join(', '));
         }
     }
+
     return (
     <>
         <SafeAreaView style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Editar Mi Perfil" />
-            <ScrollView style={SharedStyles.fill} contentContainerStyle={[SharedStyles.mainPadding, styles.containerCenter]}>
-                <_KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.inputsContainer}>
+            <ScrollView
+                style={SharedStyles.fill}
+                contentContainerStyle={[SharedStyles.mainPadding, styles.containerCenter]}>
+                <_KeyboardAwareScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.inputsContainer}>
                         <Pressable style={styles.pressableImage} onPress={handleAlertPicture}>
                             {
                                 !photoUrl ?
@@ -240,7 +257,7 @@ export default function Profile(props: any) {
                                     }) as any}
                                     setValue={(value) => onChangeText('document_type', value())}
                                     style={styles.picker}
-                                    placeholder='Selecione um elemento'
+                                    placeholder='Selecione un elemento'
                                     textStyle={styles.textPicker}
                                     items={docTypes.filter( dt => dt.country === country )}
                                     value={userdata.document_type}
@@ -338,7 +355,7 @@ export default function Profile(props: any) {
                                     docType: false,
                                     clientType: value
                                 })}
-                                setValue={(value) => onChangeText('client_type', value())}
+                                setValue={(value: any) => onChangeText('client_type', value)}
                                 style={styles.picker}
                                 placeholder='Selecione um elemento'
                                 textStyle={styles.textPicker}

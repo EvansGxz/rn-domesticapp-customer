@@ -114,7 +114,7 @@ export const useAuth = () => {
                                 { headers: { Authorization: await retrieveTokenHeader() } }
                             );
                             // console.log(result);
-                            dispatch({ type: 'SIGN_IN', user: result });
+                            dispatch({ type: 'SIGN_IN', user: result?.data });
                         } catch (err) {
                             console.log(err);
                             await AsyncStorage.removeItem('token');
