@@ -1,54 +1,48 @@
-import React,{useEffect,useState} from "react";
+import React,{useContext, useEffect,useState} from "react";
 import { useWindowDimensions } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import useFetch from "use-http";
+import { AuthContext } from "../../contexts/auth-context";
 import ServiceTypeButton from "./ServiceTypeButton";
 
 
 
 export default function ServiceTypesCatalog() {
-
-    const { loading, error, data = [] } = useFetch('/categories', {}, []);
+    const state = useContext(AuthContext);
+    const { data = [] } = useFetch('/categories', {}, []);
     const [dataRecort, setDataRecort] = useState<any>({
-        data1:null,
-        data2:null
-    })
-    // console.log(data);
-    // console.log(loading);
-    // console.log(error);
-    
+        carouselOne: null,
+        carouselTwo: null
+    });
+
     useEffect(() => {
         if (data.length > 0) {
-            let medio = Math.round(data.length / 2);
-            let fin =  data.length - 1;
+            const dataCountry = data.filter(
+                (country: any) => state.getState().user.country === country.region);
+            let medio = Math.round(dataCountry.length / 2);
+            let fin =  dataCountry.length - 1;
         
             setDataRecort({
-                data1:data.slice(0, medio),
-                data2:data.slice(medio, fin)
-            })
+                carouselOne: dataCountry.slice(0, medio),
+                carouselTwo: dataCountry.slice(medio, fin)
+            });
             
         }
-      
-    }, [data])
-    
-    // console.log(dataRecort.data1);
-    
+    }, [data]);
     
     return (
         <View style={styles.servicesCatalogContainer}>
             <FlatList
-                data={dataRecort.data1}
+                data={dataRecort.carouselOne}
                 keyExtractor={(item:any) => item?.id.toString()}
                 renderItem={({item}) => {
-                    // console.log(item);
-
                     return (
                         <View style={styles.objetivo}>
-                           <ServiceTypeButton 
-                            key={`category-${item.id}`}
-                            id={item.id}
-                            image={item.image_url}
-                            name={item.category_name}
+                            <ServiceTypeButton 
+                                key={`category-${item.id}`}
+                                id={item.id}
+                                image={item.image_url}
+                                name={item.category_name}
                         />      
                         </View>
                     )
@@ -61,19 +55,19 @@ export default function ServiceTypesCatalog() {
             // numColumns={3}
 
             />
-             <FlatList
-                data={dataRecort.data2}
-                keyExtractor={(item:any) => item?.id.toString()}
+            <FlatList
+                 data={dataRecort.carouselTwo}
+                 keyExtractor={(item:any) => item?.id.toString()}
                 renderItem={({item}) => {
                     // console.log(item);
 
                     return (
                         <View style={styles.objetivo}>
-                           <ServiceTypeButton 
-                            key={`category-${item.id}`}
-                            id={item.id}
-                            image={item.image_url}
-                            name={item.category_name}
+                            <ServiceTypeButton 
+                                key={`category-${item.id}`}
+                                id={item.id}
+                                image={item.image_url}
+                                name={item.category_name}
                         />      
                         </View>
                     )

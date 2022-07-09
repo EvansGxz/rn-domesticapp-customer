@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, ScrollView, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import BackTitledHeader from "../../../components/headers/BackTitledHeader";
-import { SharedStyles } from "../../../styles/shared-styles";
-import OutlinedInput from "../../../components/ui/OutlinedInput";
-import Button from "../../../components/ui/Button";
-import SearchDirectionMap from "../../../components/maps/SearchDirectionMap";
+import { useNavigation } from "@react-navigation/native";
 import Checkbox from 'expo-checkbox';
 import { httpClient } from "../../../controllers/http-client";
-import { useAuth } from "../../../hooks/use-auth";
-import { useNavigation } from "@react-navigation/native";
-import useFetch from "use-http";
 import { getCalendarContext } from ".";
-import axios from "axios";
+import { AuthContext } from "../../../contexts/auth-context";
+import { SharedStyles } from "../../../styles/shared-styles";
+
+// COMPONENTs
+import Button from "../../../components/ui/Button";
+import OutlinedInput from "../../../components/ui/OutlinedInput";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+import SearchDirectionMap from "../../../components/maps/SearchDirectionMap";
 
 export default function ServiceDetails(props:any) {
-    const { loading, error, data = {} } = useFetch('/profile', {}, []);
+    const data = useContext(AuthContext);
+    const state = data.getState().user;
+
+
     const navigation = useNavigation<any>();
     const [isChecked, setChecked] = useState(false);
     const [recurrency, setSelectedValue] = useState(false);
@@ -25,14 +28,13 @@ export default function ServiceDetails(props:any) {
         specifyTasks: false
     });
     
-    const [state] = useAuth();
     const { category_id, address, start_date, service_time, workday } = getCalendarContext();
     const saveService = async () => {
         try {
             const formData = {
                 category_id: parseInt(category_id),
                 employee_id: 10,
-                customer_id: parseInt(state?.user?.data?.id),
+                customer_id: parseInt(state.id),
                 discount: '0',
                 active: true,
                 address,
@@ -41,17 +43,17 @@ export default function ServiceDetails(props:any) {
                 workday: "Completo",
                 supply_food: "no"
             }
-            console.log(formData, state?.user?.data);
+            // console.log('==================>',formData, state);
             const response = await httpClient.post(`/order_details`,formData,{
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: `Token token=${state?.user?.data.token}`
+                    Authorization: `Token token=${state.token}`
                 }
             });
             console.log({response: response.data})
             navigation.navigate('TodoListo', { params: response.data })
             console.log('<<<<<<<================================>>>>>> PASA <<<<<<<================================>>>>>>')
-        } catch (error) {
+        } catch (error: any) {
             console.log('<<<<<<<================================>>>>>> ERROR <<<<<<<================================>>>>>>')
             // console.log(error);
             // console.log(error.response);
@@ -68,13 +70,13 @@ export default function ServiceDetails(props:any) {
             <BackTitledHeader title="DETALLES" />
             <ScrollView style={SharedStyles.fill} contentContainerStyle={[SharedStyles.mainPadding]}>
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Correo de Notificación</Text>
-                <OutlinedInput style={styles.input} value={state?.user?.data?.email} editable={false} />
+                <OutlinedInput style={styles.input} value={state.email} editable={false} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Tipo de identificación</Text>
-                <OutlinedInput style={styles.input} value={state?.user?.data?.document_type?.toUpperCase()} editable={false} />
+                <OutlinedInput style={styles.input} value={state.document_type?.toUpperCase()} editable={false} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Celular</Text>
-                <OutlinedInput style={styles.input} value={state?.user?.data?.phone} editable={false} />
+                <OutlinedInput style={styles.input} value={state.phone} editable={false} />
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
-                <OutlinedInput style={styles.input} value={state?.user?.data?.document_id} editable={false} />
+                <OutlinedInput style={styles.input} value={state.document_id} editable={false} />
                 {/*
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
                 <_Picker
@@ -86,8 +88,8 @@ export default function ServiceDetails(props:any) {
                 </_Picker>*/}
                 <Text style={[SharedStyles.h3, { marginBottom: 10}]}>Especificar labores</Text>
                 <_Picker
-                    selectedValue={data.specifyTasks&&recurrency}
-                    onValueChange={(itemValue: any) => {setDatas({ ...data, specifyTasks: itemValue });  setSelectedValue(itemValue)}}
+                    selectedValue={datas.specifyTasks&&recurrency}
+                    onValueChange={(itemValue: any) => {setDatas({ ...datas, specifyTasks: itemValue });  setSelectedValue(itemValue)}}
                     style={[SharedStyles.card, SharedStyles.mb]}
                 >
                     <_Picker.Item label="No" value={false} />
