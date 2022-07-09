@@ -1,13 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Home from "./home";
 import HomeIcon from '../../resources/img/menu/home.svg';
 import ContractIcon from '../../resources/img/menu/contract.svg';
 import CalendarIcon from '../../resources/img/menu/calendar.svg';
 import SupportIcon from '../../resources/img/menu/support.svg';
-import ConfigIcon from '../../resources/img/menu/config.svg';
 import Group from '../../resources/img/menu/group.svg';
 import UserProfile from "./profile";
 import Support from "./support";
@@ -24,7 +23,7 @@ export default function BottomNavigation() {
     return (
         <SafeAreaView style={style.mainContainer}>
             <Tab.Navigator 
-            screenOptions={({route}) => ({
+            screenOptions={({route}: any) => ({
                 headerShown: false,
                 tabBarItemStyle:{
                     borderRadius:200, 

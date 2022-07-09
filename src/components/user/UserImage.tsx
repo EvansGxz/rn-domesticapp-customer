@@ -9,7 +9,6 @@ export interface UserImageProps {
 }
 
 export default function UserImage(props: UserImageProps) {
-    console.log(props)
     return (
         <ImageBackground
             imageStyle={style.userImageCenter} 
