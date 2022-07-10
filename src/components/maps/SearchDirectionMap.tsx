@@ -2,8 +2,8 @@ import * as Location from "expo-location";
 import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import { useCalendar } from "../../contexts/calendarContext";
 import { apiMapBox } from "../../controllers/http-client";
-import { getCalendarContext } from "../../screens/main/home";
 import OutlinedInput from "../ui/OutlinedInput";
 import ListLocationMap from './ListLocationMap';
 
@@ -38,12 +38,10 @@ const SearchDirectionMap = (props:any) => {
             }
         }
     };
-  
     
 
-    const { setaddress } = getCalendarContext();
-    const selectLocation = async (d:any) => {
-       
+    const { setaddress } = useCalendar();
+    const selectLocation = async (d: any) => {
         console.log(d.place_name);
         setaddress && setaddress(d.place_name);
         setData({
@@ -67,13 +65,8 @@ const SearchDirectionMap = (props:any) => {
             edgePadding: { top: 80, right: 80, bottom: 80, left: 80 },
             animated: true,
         });
-       
         setSearchText(d?.place_name);
         setUbicaciones(null);
-        
-       
-        
-        
     }
 
 

@@ -4,7 +4,6 @@ import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import Checkbox from 'expo-checkbox';
 import { httpClient } from "../../../controllers/http-client";
-import { getCalendarContext } from ".";
 import { AuthContext } from "../../../contexts/auth-context";
 import { SharedStyles } from "../../../styles/shared-styles";
 
@@ -13,6 +12,7 @@ import Button from "../../../components/ui/Button";
 import OutlinedInput from "../../../components/ui/OutlinedInput";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import SearchDirectionMap from "../../../components/maps/SearchDirectionMap";
+import { useCalendar } from "../../../contexts/calendarContext";
 
 export default function ServiceDetails(props:any) {
     const data = useContext(AuthContext);
@@ -28,7 +28,7 @@ export default function ServiceDetails(props:any) {
         specifyTasks: false
     });
     
-    const { category_id, address, start_date, service_time, workday } = getCalendarContext();
+    const { category_id, address, start_date, service_time, workday } = useCalendar();
     const saveService = async () => {
         try {
             const formData = {

@@ -6,7 +6,7 @@ import { SharedStyles } from "../../../styles/shared-styles";
 import { Picker } from "@react-native-picker/picker";
 import Button from "../../../components/ui/Button";
 import DateOutlinedButton from "../../../components/ui/DateOutlinedInput";
-import { getCalendarContext } from ".";
+import { useCalendar } from "../../../contexts/calendarContext";
 
 export default function ServiceRecurrentSelection() {
     const [recurrency, setSelectedValue] = useState(false);
@@ -17,7 +17,7 @@ export default function ServiceRecurrentSelection() {
     const route = useRoute();
     const _Picker: any = Picker;
     
-    const { setfinish_date } = getCalendarContext()
+    const { setfinish_date } = useCalendar();
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="RECURRENCIA" />

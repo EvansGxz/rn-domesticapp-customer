@@ -1,7 +1,7 @@
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import React, { useContext } from "react";
 import { TouchableOpacity, Image, Text, StyleSheet } from "react-native";
-import { getCalendarContext } from "../../screens/main/home";
+import { useCalendar } from "../../contexts/calendarContext";
 export interface ServiceTypeButtonProps {
   id: number;
   image: string;
@@ -10,7 +10,7 @@ export interface ServiceTypeButtonProps {
 
 export default function ServiceTypeButton(props: ServiceTypeButtonProps) {
   const navigation = useNavigation<any>();
-  const { setcategory_id } = getCalendarContext();
+  const { setcategory_id } = useCalendar();
   return (
     <TouchableOpacity
       style={styles.button}

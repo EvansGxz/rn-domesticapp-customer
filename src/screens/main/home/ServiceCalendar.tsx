@@ -4,11 +4,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { Calendar } from "react-native-calendars";
 import DatePicker from 'react-native-date-picker';
-import { getCalendarContext } from ".";
 import { COLORS } from "../../../../config";
+import { useCalendar } from "../../../contexts/calendarContext";
+import { SharedStyles } from "../../../styles/shared-styles";
+
+// COMPONENTs
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
-import { SharedStyles } from "../../../styles/shared-styles";
 
 export default function ServiceCalendar() {
     const [selectedValue, setSelectedValue] = useState<Date>(new Date());
@@ -18,7 +20,7 @@ export default function ServiceCalendar() {
 
     const _DatePicker: any = DatePicker;
 
-    const { setstart_date, setservice_time } = getCalendarContext()
+    const { setstart_date, setservice_time } = useCalendar()
 
     useEffect( () => {
         setservice_time(selectedValue.toISOString().substring(selectedValue.toISOString().indexOf('T') + 1, selectedValue.toISOString().indexOf('T') + 9))

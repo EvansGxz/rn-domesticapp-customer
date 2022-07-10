@@ -1,10 +1,8 @@
 import React,{useContext, useEffect,useState} from "react";
-import { useWindowDimensions } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import useFetch from "use-http";
 import { AuthContext } from "../../contexts/auth-context";
 import ServiceTypeButton from "./ServiceTypeButton";
-
 
 
 export default function ServiceTypesCatalog() {
@@ -56,11 +54,9 @@ export default function ServiceTypesCatalog() {
 
             />
             <FlatList
-                 data={dataRecort.carouselTwo}
-                 keyExtractor={(item:any) => item?.id.toString()}
+                data={dataRecort.carouselTwo}
+                keyExtractor={(item:any) => item?.id.toString()}
                 renderItem={({item}) => {
-                    // console.log(item);
-
                     return (
                         <View style={styles.objetivo}>
                             <ServiceTypeButton 
@@ -73,25 +69,10 @@ export default function ServiceTypesCatalog() {
                     )
                     
                 }}
+                pagingEnabled
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
-                pagingEnabled
-
-            // numColumns={3}
-
             />
-            {/* {
-                data.map(
-                    (category: any) => (
-                        <ServiceTypeButton 
-                            key={`category-${category.id}`}
-                            id={category.id}
-                            image={category.image_url}
-                            name={category.category_name}
-                        />    
-                    )
-                )
-            } */}
         </View>
     );
 }

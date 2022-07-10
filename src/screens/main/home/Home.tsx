@@ -1,11 +1,13 @@
 import React from "react";
-import { StyleSheet, ScrollView, View, FlatList } from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { COLORS } from "../../../../config";
-import ServiceTypesCatalog from "../../../components/services/ServiceTypesCatalog";
+import { useNavigation } from "@react-navigation/native";
+
+// COMPONENTs
 import Button from "../../../components/ui/Button";
 import HomeHero from "../../../components/ui/HomeHero";
 import UserHeader from "../../../components/headers/UserHeader";
-import { useNavigation } from "@react-navigation/native";
+import ServiceTypesCatalog from "../../../components/services/ServiceTypesCatalog";
 
 export default function Home() {
   const nav = useNavigation<any>();
@@ -13,16 +15,11 @@ export default function Home() {
     <ScrollView style={styles.homeContainer}>
       <UserHeader />
       <HomeHero />
-      {/* Center Container */}
       <View style={styles.centerCategories}>
-        {/* <FlatList
-                horizontal={true}
-                /> */}
         <ServiceTypesCatalog />
         <Button
           style={styles.button}
-          onPress={() => nav.navigate('Team', {screen: "MeetTheTeam"})}
-        >
+          onPress={() => nav.navigate('Team', {screen: "MeetTheTeam"})}>
           Conoce al Equipo
         </Button>
       </View>

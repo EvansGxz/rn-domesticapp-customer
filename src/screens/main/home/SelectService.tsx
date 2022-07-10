@@ -6,14 +6,15 @@ import { Picker } from "@react-native-picker/picker";
 import Button from "../../../components/ui/Button";
 import LineORSeparator from "../../../components/ui/LineORSeparator";
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { getCalendarContext } from ".";
+import { useCalendar } from "../../../contexts/calendarContext";
 
 export default function SelectService() {
     const [selectedValue, setSelectedValue] = useState<string>('');
     const navigation = useNavigation<any>();
+
     const route = useRoute();
     const _Picker: any = Picker;
-    const { setworkday } = getCalendarContext();
+    const { setworkday } = useCalendar();
     useFocusEffect( useCallback( () => {
         setworkday("Jornada Completa");
         setSelectedValue("Jornada Completa");
@@ -47,8 +48,7 @@ export default function SelectService() {
                             'ServiceCalendar', 
                             { ...route.params, workingDayType: selectedValue  }
                         )
-                    }
-                >
+                    }>
                     Continuar
                 </Button>
             </View>

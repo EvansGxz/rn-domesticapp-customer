@@ -14,8 +14,6 @@ import CalendarModule from "./calendar";
 import MeetTheTeam from "./team";
 import { COLORS } from "../../../config";
 
-
-
 const Tab: any = createBottomTabNavigator();
 
 export default function BottomNavigation() {
@@ -40,7 +38,7 @@ export default function BottomNavigation() {
             
             >
                 <Tab.Screen 
-                    name="Home" 
+                    name="RootHome" 
                     options={createTabOptions(HomeIcon)} 
                     component={Home} 
                 />
