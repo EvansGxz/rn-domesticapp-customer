@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import HelpCenter from './HelpCenter';
 import SupportChat from './SupportChat';
 import FaqsMenuScreen from './FaqsMenuScreen';
@@ -7,9 +7,18 @@ import FaqsDetail from './FaqsDetail';
 import Notifications from '../shared/Notifications';
 import Reports from './Reports';
 
-const Stack: any = createNativeStackNavigator();
+export type SupportStackParamList = {
+    HelpCenter: undefined;
+    SupportChat: undefined;
+    FaqsMenuScreen: undefined;
+    FaqsDetail: {id: number};
+    Notifications: undefined;
+    Reports: undefined;
+}
 
-export default function HomeNavigator() {
+const Stack = createStackNavigator<SupportStackParamList>();
+
+export default function SupportNavigator() {
     return (
         <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="HelpCenter" component={HelpCenter} />

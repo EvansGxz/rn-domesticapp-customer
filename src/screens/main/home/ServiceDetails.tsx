@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 import { StyleSheet, ScrollView, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import { useNavigation } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
+
 import Checkbox from 'expo-checkbox';
 import { httpClient } from "../../../controllers/http-client";
 import { AuthContext } from "../../../contexts/auth-context";
@@ -14,12 +15,14 @@ import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import SearchDirectionMap from "../../../components/maps/SearchDirectionMap";
 import { useCalendar } from "../../../contexts/calendarContext";
 
-export default function ServiceDetails(props:any) {
+import type {HomeStackParamList} from '.';
+type Props = StackScreenProps<HomeStackParamList, 'ServiceDetails'>;
+
+export default function ServiceDetails({navigation}: Props) {
     const data = useContext(AuthContext);
     const state = data.getState().user;
 
 
-    const navigation = useNavigation<any>();
     const [isChecked, setChecked] = useState(false);
     const [recurrency, setSelectedValue] = useState(false);
     const [datas, setDatas] = useState({
@@ -28,7 +31,7 @@ export default function ServiceDetails(props:any) {
         specifyTasks: false
     });
     
-    const { category_id, address, start_date, service_time, workday } = useCalendar();
+    const { category_id, address, start_date, service_time } = useCalendar();
     const saveService = async () => {
         try {
             const formData = {

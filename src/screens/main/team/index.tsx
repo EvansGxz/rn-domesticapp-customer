@@ -1,9 +1,16 @@
 import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
+
+// SCREENs
 import MeetTheTeam from './MeetTheTeam';
 import MeetTheTeamDetail from './Detail';
 
-const Stack: any = createStackNavigator();
+export type TeamStackParamList = {
+    MeetTheTeam: undefined;
+    MeetTheTeamDetail: {employeeId: number};
+}
+
+const Stack = createStackNavigator<TeamStackParamList>();
 
 export default function TeamNavigator() {
     return (

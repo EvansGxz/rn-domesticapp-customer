@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { COLORS } from "../../../../config";
 import UserImage from "../../../components/user/UserImage";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import moment from 'moment';
 import 'moment/locale/es';
 
@@ -16,11 +16,11 @@ export default function DayCardService(props: {} | any) {
   return (
     <Pressable onPress={() => {
       if(route.name === 'MeetTheTeam') {
-        navigation.navigate('MeetTheTeamDetail', {idEmployee: data?.employee.user_id})
+        navigation.navigate('MeetTheTeamDetail', {employeeId: data?.employee.user_id})
       } else {
         // No me deja usar la funcion anidada <Si se puede corregir>..!
         navigation.navigate('MeetTheTeam');
-        navigation.navigate('MeetTheTeamDetail', {idEmployee: data?.employee.user_id});
+        navigation.navigate('MeetTheTeamDetail', {employeeId: data?.employee.user_id});
       }
     }
     }>

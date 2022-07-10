@@ -1,16 +1,21 @@
-import { useRoute } from "@react-navigation/core";
 import React from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../../config";
-import BackTitledHeader from "../../../components/headers/BackTitledHeader";
-import { FAQS } from "../../../constants/faqs";
-import { SharedStyles } from "../../../styles/shared-styles";
-import Button from "../../../components/ui/Button";
-import * as Linking from 'expo-linking';
 
-export default function FaqsDetail() {
-    const route = useRoute<any>();
-    const id = String(route.params?.id as number);
+import { SharedStyles } from "../../../styles/shared-styles";
+import * as Linking from 'expo-linking';
+import { StackScreenProps } from "@react-navigation/stack";
+import type { SupportStackParamList } from ".";
+
+// COMPONENTs
+import { FAQS } from "../../../constants/faqs";
+import Button from "../../../components/ui/Button";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+
+type Props = StackScreenProps<SupportStackParamList, 'FaqsDetail'>;
+
+export default function FaqsDetail({route}: Props) {
+    const id = String(route.params?.id);
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title={FAQS[id].title} />

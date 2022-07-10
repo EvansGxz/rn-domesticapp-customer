@@ -1,33 +1,37 @@
 import React, { useContext } from 'react';
 import * as Linking from 'expo-linking';
-import { View, StyleSheet, ScrollView, Text } from 'react-native';
-import BackTitledHeader from '../../../components/headers/BackTitledHeader';
-import MenuOptionButton from '../../../components/ui/MenuOptionButton';
-import UserInfo from '../../../components/user/UserInfo';
-import ContractIcon from '../../../resources/img/menu/contract.svg';
-import SupportIcon from '../../../resources/img/menu/support.svg';
-import CouponIcon from '../../../resources/img/profile-icons/coupon.svg';
-import DirectionIcon from '../../../resources/img/profile-icons/direction.svg';
-import NotificationIcon from '../../../resources/img/profile-icons/notification.svg';
-import WorkIcon from '../../../resources/img/profile-icons/work.svg';
-import TermsIcon from '../../../resources/img/profile-icons/terms.svg';
-import PolicyIcon from '../../../resources/img/profile-icons/policy.svg';
-import HistoryIcon from '../../../resources/img/profile-icons/history.svg';
-import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.svg';
-import NewsIcon from '../../../resources/img/profile-icons/newletter.svg';
-import { useNavigation } from '@react-navigation/native';
+import { View, ScrollView, Text } from 'react-native';
+import { NavigationContainerRef, NavigationProp } from '@react-navigation/native';
 import { SharedStyles } from '../../../styles/shared-styles';
 import { AuthContext } from '../../../contexts/auth-context';
 
-export default function UserProfile() {
-    const navigation = useNavigation<any>();
+// COMPONENTs
+import UserInfo from '../../../components/user/UserInfo';
+import MenuOptionButton from '../../../components/ui/MenuOptionButton';
+import BackTitledHeader from '../../../components/headers/BackTitledHeader';
+
+// SVGs
+import SupportIcon from '../../../resources/img/menu/support.svg';
+import ContractIcon from '../../../resources/img/menu/contract.svg';
+import WorkIcon from '../../../resources/img/profile-icons/work.svg';
+import TermsIcon from '../../../resources/img/profile-icons/terms.svg';
+import PolicyIcon from '../../../resources/img/profile-icons/policy.svg';
+import CouponIcon from '../../../resources/img/profile-icons/coupon.svg';
+import NewsIcon from '../../../resources/img/profile-icons/newletter.svg';
+import HistoryIcon from '../../../resources/img/profile-icons/history.svg';
+import DirectionIcon from '../../../resources/img/profile-icons/direction.svg';
+import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.svg';
+import NotificationIcon from '../../../resources/img/profile-icons/notification.svg';
+
+
+export default function UserProfile({navigation}: any) {
     const authContext = useContext(AuthContext);
 
     return (
         <ScrollView style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Mi Perfil" />
             <UserInfo />
-            <View style={styles.menu}>
+            <View style={{padding: 20}}>
                 <MenuOptionButton
                     text="Editar Mi Perfil"
                     icon={ContractIcon}
@@ -96,9 +100,3 @@ export default function UserProfile() {
         </ScrollView>
     );
 }
-
-const styles = StyleSheet.create({
-    menu: {
-        padding: 20
-    }
-});

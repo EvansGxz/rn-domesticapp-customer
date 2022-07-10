@@ -1,15 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import BackButtonSVG from '../../resources/img/ui/back-button.svg';
 import { SharedStyles } from "../../styles/shared-styles";
 
 export interface MenuOptionButtonProps {
     text: string;
     icon: any;
-    onPress?: any;
+    onPress?: () => any;
 }
 
-export default function MenuOptionButton(props: MenuOptionButtonProps) {
+const MenuOptionButton = (props: MenuOptionButtonProps) => { 
     return (
         <>
             <TouchableOpacity
@@ -41,9 +40,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    arrowIcon: {
-        transform: [{'rotate': '180deg'}]
-    },
     buttonText: {
         marginLeft: 10,
         fontSize: 16,
@@ -59,3 +55,5 @@ const styles = StyleSheet.create({
         color: '#0BBBEF',
     }
 });
+
+export default React.memo(MenuOptionButton);

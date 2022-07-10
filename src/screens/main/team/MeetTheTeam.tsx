@@ -1,14 +1,15 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+import { View, Text, FlatList } from "react-native";
 import { SharedStyles } from "../../../styles/shared-styles";
 import { useFetch } from "use-http";
 import { AuthContext } from "../../../contexts/auth-context";
-import FlatCard from "../calendar/FlatCard";
-import { COLORS } from "../../../../config";
-import Loader from "../../../components/Loader";
 
-export default function CalendarScreen(props: any) {
+// COMPONENTs
+import FlatCard from "../calendar/FlatCard";
+import Loader from "../../../components/Loader";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+
+export default function CalendarScreen() {
   const state = React.useContext(AuthContext);
   const { loading, error, data = [] } =
     useFetch(`/order_customer/${state.getState().user.id}`,{}, []);
@@ -38,20 +39,3 @@ export default function CalendarScreen(props: any) {
     </View>
   );
 }
-
-const style = StyleSheet.create({
-  card: {
-    backgroundColor: COLORS.lightBlue,
-    borderBottomColor: "#0BBBEF",
-    borderBottomWidth: 1,
-    padding: 20,
-    paddingVertical: 40,
-    marginVertical: 30,
-  },
-  text: {
-    fontFamily: "Poppins_600SemiBold",
-    fontSize: 14,
-    textAlign: "center",
-    color: "#787B82",
-  },
-});

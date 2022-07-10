@@ -1,18 +1,25 @@
 import React, { useCallback, useState } from "react";
 import { View, Text } from "react-native";
-import BackTitledHeader from "../../../components/headers/BackTitledHeader";
-import { SharedStyles } from "../../../styles/shared-styles";
+
+import { StackScreenProps } from "@react-navigation/stack";
 import { Picker } from "@react-native-picker/picker";
+import { useFocusEffect } from "@react-navigation/native";
+import type {HomeStackParamList} from '.';
+
+// COMPONENTs
 import Button from "../../../components/ui/Button";
 import LineORSeparator from "../../../components/ui/LineORSeparator";
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+
+// UTILs
+import { SharedStyles } from "../../../styles/shared-styles";
 import { useCalendar } from "../../../contexts/calendarContext";
 
-export default function SelectService() {
-    const [selectedValue, setSelectedValue] = useState<string>('');
-    const navigation = useNavigation<any>();
+type Props = StackScreenProps<HomeStackParamList, 'SelectService'>;
 
-    const route = useRoute();
+export default function SelectService({route, navigation}: Props) {
+    const [selectedValue, setSelectedValue] = useState<string>('');
+
     const _Picker: any = Picker;
     const { setworkday } = useCalendar();
     useFocusEffect( useCallback( () => {

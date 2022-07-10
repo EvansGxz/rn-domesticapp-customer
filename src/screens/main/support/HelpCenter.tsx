@@ -9,10 +9,8 @@ import HandSVG from '../../../resources/img/support-icons/hand-icon.svg';
 import NotificationsSVG from '../../../resources/img/profile-icons/notification.svg';
 import BandsSVG from '../../../resources/img/support-icons/bands-icon.svg';
 import LocationSVG from '../../../resources/img/support-icons/location-icon.svg';
-import { useNavigation } from "@react-navigation/native";
 
-export default function HelpCenter() { 
-    const navigation = useNavigation<any>();
+export default function HelpCenter({navigation}: any) { 
 
     return (
         <View style={SharedStyles.mainScreen}>

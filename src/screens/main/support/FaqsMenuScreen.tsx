@@ -1,9 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { ScrollView, View, Text } from "react-native";
-import BackTitledHeader from "../../../components/headers/BackTitledHeader";
-import MenuOption from "../../../components/ui/MenuOption";
 import { SharedStyles } from "../../../styles/shared-styles";
+
+// COMPOONENTs
+import MenuOption from "../../../components/ui/MenuOption";
+import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+
+// SVGs
 import BarsSVG from '../../../resources/img/support-icons/bars.svg';
 import EmployeeSVG from '../../../resources/img/support-icons/employee.svg';
 import ContractSVG from '../../../resources/img/menu/contract.svg';
@@ -11,8 +14,7 @@ import ServicesSVG from '../../../resources/img/support-icons/services.svg';
 import PaymentsSVG from '../../../resources/img/support-icons/payments.svg';
 import CovidSVG from '../../../resources/img/support-icons/covid.svg';
 
-export default function FaqsMenuScreen() {
-    const navigation = useNavigation<any>();
+export default function FaqsMenuScreen({navigation}: any) {
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title="Preguntas Frecuentes" />

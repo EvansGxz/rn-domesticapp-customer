@@ -1,9 +1,11 @@
-import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { StackScreenProps } from "@react-navigation/stack";
 
 import { Text, View } from "react-native";
 import { Calendar } from "react-native-calendars";
 import DatePicker from 'react-native-date-picker';
+import type { HomeStackParamList } from ".";
+// UTILs
 import { COLORS } from "../../../../config";
 import { useCalendar } from "../../../contexts/calendarContext";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -12,15 +14,14 @@ import { SharedStyles } from "../../../styles/shared-styles";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
 
-export default function ServiceCalendar() {
+type Props = StackScreenProps<HomeStackParamList, 'ServiceCalendar'>;
+
+export default function ServiceCalendar({route, navigation}: Props) {
     const [selectedValue, setSelectedValue] = useState<Date>(new Date());
-    const navigation = useNavigation<any>();
-    const route = useRoute();
     const [markedDates, setMarkedDates] = useState<any>();
 
     const _DatePicker: any = DatePicker;
-
-    const { setstart_date, setservice_time } = useCalendar()
+    const { setstart_date, setservice_time } = useCalendar();
 
     useEffect( () => {
         setservice_time(selectedValue.toISOString().substring(selectedValue.toISOString().indexOf('T') + 1, selectedValue.toISOString().indexOf('T') + 9))
@@ -56,12 +57,10 @@ export default function ServiceCalendar() {
                             'ServiceRecurrentSelection',
                             { ...route.params, workingHour: selectedValue, working: markedDates }
                         )
-                    }
-                >
+                    }>
                     Continuar
                 </Button>
             </View>
         </View>
-    
-  );
+    );
 }

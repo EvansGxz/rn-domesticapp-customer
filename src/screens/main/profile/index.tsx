@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 
 // SCREENs
@@ -14,20 +14,21 @@ import PrivacyPolicy from './PrivacyPolicy';
 import AuthorizationAndData from './AuthorizationAndData';
 import SupportChat from '../support/SupportChat';
 
-type RootStackParamList = {
-    Dashboard: FunctionComponent;
-    Coupons: FunctionComponent;
-    ServiceHistory: FunctionComponent;
-    Directions: FunctionComponent;
-    Notifications: FunctionComponent;
-    SupportChat: FunctionComponent;
-    NewsLetter: FunctionComponent;
-    TermsAndConditions: FunctionComponent;
-    PrivacyPolicy: FunctionComponent;
-    AuthorizationAndData: FunctionComponent;
+type ProfileStackParamList = {
+    Dashboard: undefined;
+    Profile: undefined;
+    Coupons: undefined;
+    ServiceHistory: undefined;
+    Directions: undefined;
+    Notifications: undefined;
+    SupportChat: undefined;
+    NewsLetter: undefined;
+    TermsAndConditions: undefined;
+    PrivacyPolicy: undefined;
+    AuthorizationAndData: undefined;
 };
 
-const Stack: any = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<ProfileStackParamList>();
 
 export default function HomeNavigator() {
     return (

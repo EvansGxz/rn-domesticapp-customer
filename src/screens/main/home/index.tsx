@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { DataHTMLAttributes } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./Home";
 import SelectService from "./SelectService";
@@ -9,20 +9,20 @@ import TodoListo from "./TodoListo";
 import EmployeeProfile from "../profile/EmployeeProfile";
 import SelectEmployee from "./SelectEmployee";
 
-type RootStackParamList = {
-  HomeScreen: FunctionComponent;
-  SelectService: FunctionComponent;
-  SelectEmployee: FunctionComponent;
-  ServiceCalendar: FunctionComponent;
-  EmployeeProfile: FunctionComponent;
-  ServiceRecurrentSelection: FunctionComponent;
-  ServiceDetails: FunctionComponent;
-  TodoListo: FunctionComponent;
+export type HomeStackParamList = {
+  HomeScreen: undefined;
+  SelectService: {id: number};
+  SelectEmployee: undefined;
+  ServiceCalendar: {id: number, workingDayType: string};
+  EmployeeProfile: undefined;
+  ServiceRecurrentSelection: {id: number, workingHour: Date | null, working: string};
+  ServiceDetails: {id: number, recurrency: boolean, recurrencyData: {}};
+  TodoListo: {params: any};
 };
 
 import { CalendarProvider } from "../../../contexts/calendarContext";
 
-const Stack: any = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 export default function HomeNavigator() {
   return (

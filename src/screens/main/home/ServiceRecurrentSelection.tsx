@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, ScrollView } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { StackScreenProps } from "@react-navigation/stack";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
 import { Picker } from "@react-native-picker/picker";
@@ -8,13 +8,15 @@ import Button from "../../../components/ui/Button";
 import DateOutlinedButton from "../../../components/ui/DateOutlinedInput";
 import { useCalendar } from "../../../contexts/calendarContext";
 
-export default function ServiceRecurrentSelection() {
+import type {HomeStackParamList} from '.';
+type Props = StackScreenProps<HomeStackParamList, 'ServiceRecurrentSelection'>;
+
+export default function ServiceRecurrentSelection({route, navigation}: Props) {
+    console.log(route);
     const [recurrency, setSelectedValue] = useState(false);
     const [recurrencyData, setRecurrencyData] = useState({
         date: ''
     });
-    const navigation = useNavigation<any>();
-    const route = useRoute();
     const _Picker: any = Picker;
     
     const { setfinish_date } = useCalendar();
