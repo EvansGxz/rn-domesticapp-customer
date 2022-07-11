@@ -10,6 +10,7 @@ import UserHeader from "../../../components/headers/UserHeader";
 import ServiceTypesCatalog from "../../../components/services/ServiceTypesCatalog";
 
 export default function Home() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const nav = useNavigation<any>();
   return (
     <ScrollView style={styles.homeContainer}>

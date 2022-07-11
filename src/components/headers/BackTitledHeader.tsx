@@ -1,6 +1,5 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import BackIcon from '../../resources/img/ui/back-button.svg';
 import { useNavigation } from "@react-navigation/native";
 
 export interface BackTitledHeaderProps {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {createContext, useState, useContext, useMemo} from 'react';
 type TCalendarContext = {
   category_id: string;

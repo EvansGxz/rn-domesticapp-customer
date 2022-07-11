@@ -4,6 +4,7 @@ import { COLORS } from "../../../config";
 import { SharedStyles } from "../../styles/shared-styles";
 import UserImage from "../user/UserImage";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ServiceStatusCard(props: any) {
   const { status } = props;
   return (

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import { Calendar } from "react-native-calendars";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -9,7 +10,7 @@ import FlatCard from "./FlatCard";
 import { COLORS } from "../../../../config";
 import Loader from "../../../components/Loader";
 
-export default function CalendarScreen(props: any) {
+export default function CalendarScreen() {
   const state = React.useContext(AuthContext);
   const { loading, error, data = [] } =
     useFetch(`/order_customer/${state.getState().user.id}`,{}, []);

@@ -9,7 +9,8 @@ import moment from 'moment';
 import 'moment/locale/es';
 
 interface EmployeDetailProps {
-  item: {} | any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  item: any
 }
 
 const FlatCard = (props: EmployeDetailProps) => {

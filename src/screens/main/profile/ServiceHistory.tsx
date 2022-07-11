@@ -1,8 +1,10 @@
 import React from "react";
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { SharedStyles } from "../../../styles/shared-styles";
+
+// COMPONENTs
 import ServiceStatusCard from "../../../components/cards/ServiceStatusCard";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
-import { SharedStyles } from "../../../styles/shared-styles";
 
 export default function ServiceHistory() {
     return (

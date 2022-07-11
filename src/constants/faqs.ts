@@ -1,4 +1,18 @@
-export const FAQS: any = {
+interface ArrayFaqs {
+  id: number;
+  pregunta: string;
+  respuesta: string;
+}
+interface Faqs {
+  [index: number]: {
+    id: number;
+    title: string;
+    legend: string;
+    preguntas: Array<ArrayFaqs>;
+  }
+}
+
+export const FAQS: Faqs = {
     '1': {
         id: 1,
         title: "PQR Servicios",

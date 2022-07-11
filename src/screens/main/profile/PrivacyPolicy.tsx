@@ -1,15 +1,9 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Alert, Platform, PermissionsAndroid} from 'react-native';
+import { ScrollView, View, Text, Alert} from 'react-native';
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
 import { SharedStyles } from "../../../styles/shared-styles";
-import * as Permissions from 'expo';
-import * as Location from 'expo-location';
-import * as MediaLibrary from 'expo-media-library';
-import * as FileSystem from 'expo-file-system';
-import { WebView } from 'react-native-webview';
 import {
-  checkFileIsAvailable,
   downloadFileFromUri,
   openDownloadedFile,
 } from "expo-downloads-manager";
@@ -121,6 +115,7 @@ export default function PrivacyPolicy() {
    const [downloadStatus, setDownloadStatus] = React.useState("NOTSTARTED");
    const [downloadProgress, setDownloadProgress] = React.useState(0);
 
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
    const callback = (downloadProgress: any) => {
     const progress =
       downloadProgress.totalBytesWritten /
@@ -164,6 +159,3 @@ export default function PrivacyPolicy() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-});

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../../config";
@@ -15,14 +16,14 @@ import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 type Props = StackScreenProps<SupportStackParamList, 'FaqsDetail'>;
 
 export default function FaqsDetail({route}: Props) {
-    const id = String(route.params?.id);
+    const id = route.params.id;
     return (
         <View style={SharedStyles.mainScreen}>
             <BackTitledHeader title={FAQS[id].title} />
             <ScrollView style={SharedStyles.mainScreen} contentContainerStyle={SharedStyles.mainPadding}>
                 <Text style={styles.faqsTitle}>{FAQS[id].legend}</Text>
                 {
-                    FAQS[id].preguntas.map((question: any) => (
+                    FAQS[id].preguntas.map((question: number | string | any) => (
                         <Faq
                             key={`question-${question.id}`}
                             question={question.pregunta}

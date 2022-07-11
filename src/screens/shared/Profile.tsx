@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
@@ -184,7 +185,7 @@ export default function Profile({navigation}: any) {
                 'Exito',
                 'Datos modificado con exito',
                 [
-                    {text: 'Continuar haciendo cambios', style: 'cancel', onPress: () => {}},
+                    {text: 'Continuar haciendo cambios', style: 'cancel', onPress: () => false},
                     {
                     text: 'Salir',
                     style: 'destructive',

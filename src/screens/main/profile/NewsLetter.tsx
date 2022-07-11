@@ -1,8 +1,7 @@
-import React, {useContext} from "react";
+import React from "react";
 import { FlatList, View, Text } from 'react-native';
 import { useFetch } from "use-http";
 import { SharedStyles } from "../../../styles/shared-styles";
-import { AuthContext } from "../../../contexts/auth-context";
 
 // COMPONENTs
 import Loader from "../../../components/Loader";
@@ -21,6 +20,7 @@ export default function NewsLetter() {
                     initialNumToRender={6}
                     maxToRenderPerBatch={6}
                     updateCellsBatchingPeriod={6}
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     keyExtractor={(key: any) => key.id}
                     renderItem={({item}) => (<NotificationCard color="primary" notification={item} />)}
                 />

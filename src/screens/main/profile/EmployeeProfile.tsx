@@ -4,13 +4,10 @@ import * as React from "react";
 // import { showHEmployee } from "../../../services/";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { COLORS } from "../../../../config";
-import { useNavigation } from "@react-navigation/native";
 import IconSkill from "../../../resources/img/profile-icons/skill.png";
-import UserImage from "../../../components/user/UserImage";
 import { SharedStyles } from "../../../styles/shared-styles";
 
 function EmployeeProfile() {
-  const navigation = useNavigation<any>();
   // const { user } = useAuth();
   // const [skills, setSkills] = React.useState(null);
   /* React.useEffect(() => {
@@ -31,7 +28,7 @@ function EmployeeProfile() {
 
   // return 5 elements of the array
   // const firstFive = skills?.slice(0, 7);
-
+  const value = true;
   return (
     <>
       <BackTitledHeader title="Perfil del empleado" />
@@ -63,7 +60,7 @@ function EmployeeProfile() {
           ;
         </View>
         <View>
-          {1 > 0 ? (
+          {value ? (
             <View style={styles.stylesFlatList}>
               <TouchableOpacity style={styles.listStyle}>
                 <View style={styles.containerSkills}>

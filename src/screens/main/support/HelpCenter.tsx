@@ -10,6 +10,7 @@ import NotificationsSVG from '../../../resources/img/profile-icons/notification.
 import BandsSVG from '../../../resources/img/support-icons/bands-icon.svg';
 import LocationSVG from '../../../resources/img/support-icons/location-icon.svg';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function HelpCenter({navigation}: any) { 
 
     return (

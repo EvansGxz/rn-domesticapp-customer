@@ -1,5 +1,7 @@
-import React, { DataHTMLAttributes } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+// SCREENs
 import Home from "./Home";
 import SelectService from "./SelectService";
 import ServiceCalendar from "./ServiceCalendar";
@@ -16,7 +18,8 @@ export type HomeStackParamList = {
   ServiceCalendar: {id: number, workingDayType: string};
   EmployeeProfile: undefined;
   ServiceRecurrentSelection: {id: number, workingHour: Date | null, working: string};
-  ServiceDetails: {id: number, recurrency: boolean, recurrencyData: {}};
+  ServiceDetails: {id: number, recurrency: boolean, recurrencyData: object};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TodoListo: {params: any};
 };
 

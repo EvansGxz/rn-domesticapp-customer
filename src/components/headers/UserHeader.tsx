@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { Suspense, useContext, useEffect } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import UserImage from "../user/UserImage";

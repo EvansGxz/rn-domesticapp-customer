@@ -14,6 +14,7 @@ import ServicesSVG from '../../../resources/img/support-icons/services.svg';
 import PaymentsSVG from '../../../resources/img/support-icons/payments.svg';
 import CovidSVG from '../../../resources/img/support-icons/covid.svg';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function FaqsMenuScreen({navigation}: any) {
     return (
         <View style={SharedStyles.mainScreen}>

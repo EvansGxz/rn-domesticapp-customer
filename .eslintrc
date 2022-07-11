@@ -1,0 +1,15 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "files": ["**/*.ts", "**/*.tsx"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ]
+    }
+  ]
+}

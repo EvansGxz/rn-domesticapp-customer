@@ -1,36 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, Image, Text, StyleSheet } from "react-native";
 import { useCalendar } from "../../contexts/calendarContext";
 export interface ServiceTypeButtonProps {
-  id: number;
-  image: string;
-  name: string;
+  category: any
 }
 
-export default function ServiceTypeButton(props: ServiceTypeButtonProps) {
+const ServiceTypeButton = (props: ServiceTypeButtonProps) => {
   const navigation = useNavigation<any>();
   const { setcategory_id } = useCalendar();
+  const { id, category_name, image_url } = props.category;
+
   return (
     <TouchableOpacity
       style={styles.button}
       onPress={() => {
-        setcategory_id(props.id.toString());
-        navigation.navigate("SelectService", { id: props.id })
-      }}
-    >
-      <Image style={styles.serviceImg} source={{ uri: props.image }} />
-      <Text style={styles.serviceText}>{props.name}</Text>
+        setcategory_id(id.toString());
+        navigation.navigate("SelectService", { id: id })
+      }}>
+      <Image style={styles.serviceImg} source={{ uri: image_url }} />
+      <Text style={styles.serviceText}>{category_name}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    // width: "50%",
     alignItems: "center",
     marginVertical: 5,
-    marginHorizontal:10,
+    marginHorizontal: 10,
   },
   serviceImg: {
     width: 60,
@@ -44,3 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export default React.memo(ServiceTypeButton);

@@ -26,7 +26,7 @@ import { COLORS } from "../../../../config";
 type Props = StackScreenProps<TeamStackParamList, 'MeetTheTeamDetail'>
 
 export default function ({route}: Props) {
-  let {employeeId} = route.params;
+  const employeeId = route.params.employeeId;
   const data = useFetch('/employee/'+employeeId, {}, [])[0].data;
   // const reviews = useFetch('/reviews/'+employeeId, {}, [])[0].data;
 

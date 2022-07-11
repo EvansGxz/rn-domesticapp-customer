@@ -4,8 +4,9 @@ import { SharedStyles } from "../../styles/shared-styles";
 import Button from "../ui/Button";
 
 interface CouponProp {
-    coupon?: any | {};
-};
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    coupon?: any;
+}
 
 export default function CouponCard(props: CouponProp) {
     const {coupon} = props;

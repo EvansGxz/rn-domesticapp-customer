@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -6,7 +7,7 @@ import UserImage from "../../../components/user/UserImage";
 import moment from 'moment';
 import 'moment/locale/es';
 
-export default function DayCardService(props: {} | any) {
+export default function DayCardService(props: any) {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const {data} = props;

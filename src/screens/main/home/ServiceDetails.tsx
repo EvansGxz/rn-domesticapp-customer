@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useState } from "react";
 import { StyleSheet, ScrollView, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";

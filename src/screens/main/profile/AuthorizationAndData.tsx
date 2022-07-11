@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
 import { SharedStyles } from "../../../styles/shared-styles";
@@ -25,6 +25,3 @@ export default function AuthorizationAndData() {
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-});
