@@ -1,14 +1,13 @@
-import React, {useContext, useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
-  StyleSheet,
   Text,
   FlatList,
-  Dimensions,
   StatusBar,
+  Dimensions,
+  StyleSheet,
 } from 'react-native';
 import useFetch from 'use-http';
-import {AuthContext} from '../../../contexts/auth-context';
 import {SharedStyles} from '../../../styles/shared-styles';
 
 // COMPONENTs
@@ -17,15 +16,16 @@ import Button from '../../../components/ui/Button';
 import CouponCard from '../../../components/cards/CouponCard';
 import UnderlinedInput from '../../../components/ui/UnderlinedInput';
 import BackTitledHeader from '../../../components/headers/BackTitledHeader';
+import { useAuth } from '../../../hooks/use-auth';
 
 const {height} = Dimensions.get('screen');
 export default function Coupons() {
-  const state = useContext(AuthContext);
+  const {state} = useAuth();
   const {
     loading,
     error,
     data = [],
-  } = useFetch(`/cupon_users/${state.getState().user.id}`, {}, []);
+  } = useFetch(`/cupon_users/${state.user.id}`, {}, []);
 
   const [isValid, setIsValid] = useState(false);
   const [cupon, setCupon] = useState('');

@@ -1,36 +1,48 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { TextStyle } from "react-native";
-import { StyleProp, ViewStyle } from "react-native";
-import { StyleSheet, View, Text, TextInput, TextInputProps } from 'react-native';
+import {
+  View,
+  Text,
+  TextStyle,
+  TextInput,
+  StyleProp,
+  ViewStyle,
+  StyleSheet,
+  TextInputProps,
+} from 'react-native';
+import { COLORS } from "../../../config";
 
 export interface LabeledInputProps {
-    label: string;
-    style?: StyleProp<ViewStyle | TextStyle>;
-    textStyle?: StyleProp<TextStyle>;
-    inputProps?: TextInputProps; 
+  label: string;
+  inputProps?: TextInputProps;
+  textStyle?: StyleProp<TextStyle>;
+  style?: StyleProp<ViewStyle | TextStyle>;
 }
 
-export default function LabeledInput(props: LabeledInputProps) {
-    return (
-        <View style={[style.mainContainer, props.style]}>
-            <Text style={[style.textStyle, props.style]}>{props.label}</Text>  
-            <TextInput {...props.inputProps} style={[style.input, props.inputProps?.style]}  />
-        </View>
-    );
-}
+const LabeledInput = React.forwardRef((props: LabeledInputProps, ref) => (
+  <View style={[style.mainContainer, props.style]}>
+    <Text style={[style.textStyle, props.style]}>{props.label}</Text>
+    <TextInput
+      ref={ref as any}
+      style={style.input}
+      {...props.inputProps}/>
+  </View>
+));
 
 const style = StyleSheet.create({
-    mainContainer: {
-        width: '100%',
-        minHeight: 50,
-    },
-    textStyle: {
-        opacity: 0.4,
-        marginBottom: 5
-    },
-    input: {
-        borderWidth: 0,
-        borderBottomWidth: 1,
-        width: '100%'
-    }
+  mainContainer: {
+    width: '100%',
+    minHeight: 50,
+  },
+  textStyle: {
+    opacity: 0.4,
+  },
+  input: {
+    width: '100%',
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderColor: COLORS.primary
+  }
 });
+
+export default React.memo(LabeledInput);

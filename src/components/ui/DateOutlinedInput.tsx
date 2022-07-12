@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 import { TextInput, Modal, TextInputProps, StyleSheet, View, StyleProp, ViewStyle, TouchableOpacity, Pressable } from "react-native";
 import { COLORS } from "../../../config";
@@ -8,10 +9,11 @@ import { SharedStyles } from "../../styles/shared-styles";
 export interface DateOutlinedInputProps extends TextInputProps {
     inputRef?: any;
     containerStyle?: StyleProp<ViewStyle>;
+    onChangeText: (data: any) => void;
 }
 
 const formatDate = (date: Date) => {
-    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    const day = date.getDate() < 10 ? '0' + (date.getDate() + 1) : (date.getDate() + 1);
     const month = (date.getMonth() + 1) < 10 ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1);
     const year = date.getFullYear();
     return `${day}/${month}/${year}`
@@ -39,8 +41,7 @@ export default function DateOutlinedButton(props: DateOutlinedInputProps) {
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={isModalOpened}
-            >
+                visible={isModalOpened}>
                 <View style={[SharedStyles.fill, SharedStyles.centerContent, { position: 'relative' }]}>
                     <TouchableOpacity onPress={toggleModal} style={[SharedStyles.fill, style.backdrop]}></TouchableOpacity>
                     <Calendar style={[SharedStyles.card, { minWidth: '90%' }]} onDayPress={(date) => {

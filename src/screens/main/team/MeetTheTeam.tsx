@@ -3,17 +3,17 @@ import React from "react";
 import { View, Text, FlatList } from "react-native";
 import { SharedStyles } from "../../../styles/shared-styles";
 import { useFetch } from "use-http";
-import { AuthContext } from "../../../contexts/auth-context";
 
 // COMPONENTs
 import FlatCard from "../calendar/FlatCard";
 import Loader from "../../../components/Loader";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
+import { useAuth } from "../../../hooks/use-auth";
 
 export default function CalendarScreen() {
-  const state = React.useContext(AuthContext);
+  const {state} = useAuth();
   const { loading, error, data = [] } =
-    useFetch(`/order_customer/${state.getState().user.id}`,{}, []);
+    useFetch(`/order_customer/${state.user.id}`,{}, []);
   const dataActive = data.filter((active: boolean) => !!active);
 
   return (

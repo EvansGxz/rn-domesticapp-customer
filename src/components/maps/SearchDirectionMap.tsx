@@ -29,7 +29,7 @@ const SearchDirectionMap = (props: any) => {
     if (searchText.length > 0) {
       try {
         const data = await apiMapBox.get(`/${searchText}.json`);
-
+        console.log(data.data)
         setUbicaciones(data?.data?.features);
       } catch (error) {
         console.log(error);
@@ -94,6 +94,7 @@ const SearchDirectionMap = (props: any) => {
         {/* <Button title="Buscar" onPress={searchUbication} /> */}
         <OutlinedInput
           style={styles.input}
+          value={searchText}
           placeholder="Ingresa dirección a laboral"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onChangeText={(e: any) => {
@@ -120,13 +121,11 @@ const SearchDirectionMap = (props: any) => {
             latitudeDelta: 0.05,
             longitudeDelta: 0.05,
           }}
+          showsUserLocation
+          loadingEnabled
           onPress={e => updateLocation(e.nativeEvent.coordinate)}
           ref={map}>
-          <Marker
-            coordinate={location}
-            // image={{uri: 'custom_pin'}}
-            key={1}
-          />
+          <Marker key={1} coordinate={location} />
         </MapView>
       )}
     </View>
@@ -158,7 +157,7 @@ const styles = StyleSheet.create({
   map: {
     overflow: 'hidden',
     width: '100%',
-    height: 300,
+    height: 500,
   },
 });
 

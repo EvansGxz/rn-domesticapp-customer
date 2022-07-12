@@ -2,6 +2,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {Root} from 'react-native-alert-notification';
 
 // SCREENs
 import Auth from './src/screens/auth-flow/Auth';
@@ -54,11 +55,14 @@ import {
   Montserrat_900Black_Italic,
 } from '@expo-google-fonts/montserrat';
 import { LocaleConfig } from 'react-native-calendars';
-import { useAuth } from './src/hooks/use-auth';
-import { AuthProvider } from './src/contexts/auth-context';
+import { useAuth, AuthProvider } from './src/hooks/use-auth';
 import { Provider } from 'use-http';
 import { BASE_URI } from './config';
 import { retrieveToken } from './src/controllers/tokens';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+
+import Preloader from './src/screens/Preloader';
+import ErrorBoundary from './src/screens/ErrorBoundary';
 
 type RootNavStack = {
   Main: undefined;
@@ -110,7 +114,7 @@ function App() {
     Montserrat_800ExtraBold_Italic,
     Montserrat_900Black_Italic,
   });
-  const [state, functions] = useAuth();
+  const {state} = useAuth();
 
   if (!fontsLoaded || state.loading) return <SplashScreen />
 
@@ -129,38 +133,45 @@ function App() {
           }
         }
       }}>
-      <AuthProvider value={functions}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {
-            state.user ? (
-              !state.user.full_name ? (
-                <Stack.Group>
-                  <Stack.Screen name="Main" component={MainBottomNavigation} />
-                  <Stack.Screen name="OnBoarding" component={OnBoarding} />
-                  <Stack.Screen name="Profile" component={Profile} />
-                </Stack.Group>
-              ) : (
-                <Stack.Screen name="Main" component={MainBottomNavigation} />
-              )
-            ) : (
+      <Preloader />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {
+          state.user ? (
+            !state.user.full_name ? (
               <Stack.Group>
-                <Stack.Screen name="Welcome" component={Welcome} />
-                <Stack.Screen name="Auth" component={Auth} />
-                <Stack.Screen name="Verification" component={Verification} />
+                <Stack.Screen name="OnBoarding" component={OnBoarding} />
+                <Stack.Screen name="Main" component={MainBottomNavigation} />
+                <Stack.Screen name="Profile" component={Profile} />
               </Stack.Group>
+            ) : (
+              <Stack.Screen name="Main" component={MainBottomNavigation} />
             )
-          }
-        </Stack.Navigator>
-      </AuthProvider>
+          ) : (
+            <Stack.Group>
+              <Stack.Screen name="Welcome" component={Welcome} />
+              <Stack.Screen name="Auth" component={Auth} />
+              <Stack.Screen name="Verification" component={Verification} />
+            </Stack.Group>
+          )
+        }
+      </Stack.Navigator>
     </Provider>
   );
 }
 
 export default function ApplicationWrapper() {
   return (
-    <NavigationContainer>
-      <App />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <Root>
+        <AuthProvider>
+          <ErrorBoundary>
+            <NavigationContainer>
+              <App />
+            </NavigationContainer>
+          </ErrorBoundary>
+        </AuthProvider>
+      </Root>
+    </GestureHandlerRootView>
   );
 }
 

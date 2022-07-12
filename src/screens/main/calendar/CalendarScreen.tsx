@@ -5,15 +5,15 @@ import { Calendar } from "react-native-calendars";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
 import { useFetch } from "use-http";
-import { AuthContext } from "../../../contexts/auth-context";
 import FlatCard from "./FlatCard";
 import { COLORS } from "../../../../config";
 import Loader from "../../../components/Loader";
+import { useAuth } from "../../../hooks/use-auth";
 
 export default function CalendarScreen() {
-  const state = React.useContext(AuthContext);
+  const {state} = useAuth();
   const { loading, error, data = [] } =
-    useFetch(`/order_customer/${state.getState().user.id}`,{}, []);
+    useFetch(`/order_customer/${state.user.id}`,{}, []);
   const dataActive = data.filter((active: boolean) => !!active);
 
   return (
@@ -62,15 +62,6 @@ export default function CalendarScreen() {
     </View>
   );
 }
-
-/* export function DayCard() {
-  return (
-    <View style={style.card}>
-      <Text style={style.cardTitle}>Jueves, 11 de Mayo</Text>
-      <Text style={style.text}>No se han añadido servicios</Text>
-    </View>
-  );
-} */
 
 const style = StyleSheet.create({
   card: {

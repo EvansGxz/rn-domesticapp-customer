@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet, View, Text, Button } from 'react-native';
 import useFetch from 'use-http';
 
@@ -12,12 +12,12 @@ import SearchDirectionMap from '../../../components/maps/SearchDirectionMap';
 import { COLORS } from '../../../../config';
 import CheckSVG from '../../../resources/img/ui/check.svg';
 import { SharedStyles } from '../../../styles/shared-styles';
-import { AuthContext } from '../../../contexts/auth-context';
 import { httpClient } from '../../../controllers/http-client';
+import { useAuth } from '../../../hooks/use-auth';
 
 export default function Directions() {
-  const auth = useContext(AuthContext);
-  const user = auth.getState().user;
+  const {state} = useAuth();
+  const user = state.user;
 
   const { loading, error, data = [] } = useFetch(`/address/${user.id}`, {}, []);
   const [datas, setDatas] = useState<any>();
@@ -62,13 +62,6 @@ export default function Directions() {
     }
   };
 
-  // useEffect(() => {
-  //     if (!loading) {
-  //          getData()
-  //     }
-
-  // }, [data])
-
   return (
     <View>
       <ScrollView>
@@ -82,13 +75,11 @@ export default function Directions() {
               <SearchDirectionMap setData={setDatas} data={datas} />
             </View>
             {direcciones &&
-              direcciones.map((item: any) => {
-                return (
-                  <View key={item.id} style={styles.itemAddress}>
-                    <Text>{item.address}</Text>
-                  </View>
-                );
-              })}
+              direcciones.map((item: any) => (
+                <View key={item.id} style={styles.itemAddress}>
+                  <Text>{item.address}</Text>
+                </View>
+              ))}
           </ScrollView>
 
           <View style={styles.btnAdd}>

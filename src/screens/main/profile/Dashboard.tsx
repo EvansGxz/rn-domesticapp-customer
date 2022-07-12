@@ -1,8 +1,7 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import * as Linking from 'expo-linking';
 import {View, ScrollView, Text} from 'react-native';
 import {SharedStyles} from '../../../styles/shared-styles';
-import {AuthContext} from '../../../contexts/auth-context';
 
 // COMPONENTs
 import UserInfo from '../../../components/user/UserInfo';
@@ -21,10 +20,11 @@ import HistoryIcon from '../../../resources/img/profile-icons/history.svg';
 import DirectionIcon from '../../../resources/img/profile-icons/direction.svg';
 import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.svg';
 import NotificationIcon from '../../../resources/img/profile-icons/notification.svg';
+import { useAuth } from '../../../hooks/use-auth';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function UserProfile({navigation}: any) {
-  const authContext = useContext(AuthContext);
+  const {signOut} = useAuth();
 
   return (
     <ScrollView style={SharedStyles.mainScreen}>
@@ -99,7 +99,7 @@ export default function UserProfile({navigation}: any) {
         <MenuOptionButton
           text="Cerrar Sesión"
           icon={NewsIcon}
-          onPress={() => authContext.signOut()}
+          onPress={() => signOut()}
         />
       </View>
     </ScrollView>

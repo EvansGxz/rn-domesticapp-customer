@@ -22,8 +22,7 @@ LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Welcome() {
-  const navigation = useNavigation<any>();
+export default function Welcome({navigation}: any) {
   const auth = useContext(AuthContext);
   const [country, setCountry] = useState('col');
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -81,7 +80,7 @@ export default function Welcome() {
         const response = await fetch(
           `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.type(large)`,
         );
-        const user = await response.json();
+        const user: any = await response.json();
         console.log(user);
         await auth.socialSignIn(
           {social_id: user.id, email: `${user.id}@facebook.com`},
@@ -102,7 +101,7 @@ export default function Welcome() {
   const getDataUserGoogle = async () => {
     setIsLoading(true);
 
-    let userInfoResponse = await fetch(
+    const userInfoResponse = await fetch(
       'https://www.googleapis.com/userinfo/v2/me',
       {
         headers: {Authorization: `Bearer ${accessToken}`},
@@ -136,7 +135,6 @@ export default function Welcome() {
   const CountryOptions = [
     {label: 'Colombia', value: 'col'},
     {label: 'España', value: 'esp'},
-    // { label: "Canadá", value: "can" },
   ];
 
   if (isLoading) {
@@ -191,7 +189,7 @@ export default function Welcome() {
           <Text style={style.registerText}>¿No tienes cuenta?</Text>
           <UnderlinedButton
             textStyle={style.registerText}
-            onPress={() => navigation.navigate('Auth', {Show: 'Register'})}>
+            onPress={() => navigation.navigate('Auth', {screen: 'Register'})}>
             Registrarse
           </UnderlinedButton>
         </View>
@@ -203,11 +201,11 @@ export default function Welcome() {
 
 const style = StyleSheet.create({
   main: {
-    backgroundColor: COLORS.primary,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
     paddingHorizontal: 25,
+    justifyContent: 'space-between',
+    backgroundColor: COLORS.primary,
   },
   countrySelect: {
     backgroundColor: 'rgba(0, 0, 0, 0.2)',

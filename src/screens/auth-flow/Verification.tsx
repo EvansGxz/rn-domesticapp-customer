@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosError } from "axios";
 import React, { useContext, useRef, useState } from "react";
 import { StyleSheet, View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData, Keyboard, Alert } from 'react-native';
