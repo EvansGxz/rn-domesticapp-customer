@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
 import useFetch from "use-http";
-import { AuthContext } from "../../contexts/auth-context";
+import { useAuth } from "../../hooks/use-auth";
 import Loader from "../Loader";
 import ServiceTypeButton from "./ServiceTypeButton";
 
@@ -12,7 +12,7 @@ interface Carousel {
 }
 
 export default function ServiceTypesCatalog() {
-  const state = useContext(AuthContext);
+  const {state} = useAuth()
   const { loading, error, data = [] } = useFetch('/categories', {}, []);
   const [dataRecort, setDataRecort] = useState<Carousel>({
     carouselOne: null,
@@ -22,7 +22,7 @@ export default function ServiceTypesCatalog() {
   useEffect(() => {
     if (data.length > 0) {
       const dataCountry = data.filter(
-        (country: any) => state.getState().user.country === country.region);
+        (country: any) => state.user.country.trimEnd() === country.region);
       const medio = Math.round(dataCountry.length / 2);
       const fin = dataCountry.length - 1;
 

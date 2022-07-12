@@ -136,7 +136,7 @@ export default function Signup() {
     }
   }
 
-  const onChangeText = (name: string, value: string) => setData({ ...data, [name]: value.trim() });
+  const onChangeText = (name: string, value: string) => setData({ ...data, [name]: value });
   const [photoUrl, setPhotoUrl] = useState<string>('');
 
   const handleGetImage = async (takeFromCamera: boolean) => {
