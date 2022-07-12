@@ -105,9 +105,8 @@ export default function ServiceDetails({ navigation }: Props) {
             <>
               <View style={styles.section}>
                 {checkList.map((check: string, index: number) => (
-                  <View style={styles.wrapCheck}>
+                  <View key={index} style={styles.wrapCheck}>
                     <Checkbox
-                      key={index}
                       value={isChecked[index]}
                       style={{...styles.checkbox}}
                       onValueChange={(value) => {

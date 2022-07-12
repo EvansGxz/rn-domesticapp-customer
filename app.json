@@ -21,7 +21,7 @@
     "ios": {
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "AIzaSyBaWHwOWEEcaEM52iG8gE88PqkvE_TvB2w"
+        "googleMapsApiKey": "AIzaSyAmAk3fAEPckqfixDfoWwQ5oElP2B95Tyg"
       },
       "bundleIdentifier": "com.domesticapp",
       "buildNumber": "3"
@@ -34,7 +34,7 @@
       "softwareKeyboardLayoutMode": "pan",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBaWHwOWEEcaEM52iG8gE88PqkvE_TvB2w"
+          "apiKey": "AIzaSyAmAk3fAEPckqfixDfoWwQ5oElP2B95Tyg"
         }
       },
       "package": "com.domesticapp"
