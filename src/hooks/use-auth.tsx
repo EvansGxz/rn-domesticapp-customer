@@ -31,7 +31,7 @@ export const AuthProvider: FunctionComponent = (props: any) => {
   const signIn = async (credentials: any) => {
     try {
       const {data: {token, ...state}} = await httpClient.post('/login', credentials);
-      console.log(token);
+      // console.log(token);
       await saveToken(token);
       dispatch({ type: PayloadActionKind.SIGN_IN, payload: {user: state} });
       dispatch({ type: PayloadActionKind.PRELOADER, payload: {preloader: false} });
@@ -130,101 +130,7 @@ export const AuthProvider: FunctionComponent = (props: any) => {
       signOut,
       getState
     }
-  }, [state])
-
-  // const authFunctions = useMemo(
-  //   () => ({
-  //     signIn: async (credentials: any) => {
-  //       try {
-  //         const {data: {token, ...user}} = await httpClient.post('/login', credentials);
-  //         console.log(token);
-  //         await saveToken(token);
-  //         dispatch({type: 'SIGN_IN', user});
-  //         Alert({msg: 'Has iniciado la sesión exitosamente', type: 'SUCCESS'});
-  //         dispatch({type: 'PRELOADER', payload: false})
-  //       } catch (err) {
-  //         Alert({
-  //           title: 'Error',
-  //           msg : ((err as AxiosError).response?.data as any).errors,
-  //           type: 'DANGER'
-  //         });
-  //       }
-  //     },
-  //     socialSignIn: async (credentials: any, img: string) => {
-  //       try {
-  //         const {
-  //           data: {token, ...user},
-  //         } = await httpClient.post('/login_social', credentials);
-
-  //         await saveToken(token);
-  //         console.log('logged in');
-
-  //         await httpClient.patch(
-  //           '/profile',
-  //           {image_url: img},
-  //           {headers: {Authorization: await retrieveTokenHeader()}},
-  //         );
-
-  //         console.log('image changed');
-
-  //         dispatch({type: 'SIGN_IN', user});
-  //         Alert({msg: 'Has iniciado la sesión exitosamente', type: 'SUCCESS'});
-  //       } catch (err) {
-  //         console.log(err);
-  //         console.log((err as any).message);
-  //         Alert({
-  //           title: 'Error',
-  //           msg: ((err as AxiosError).response?.data as any).errors,
-  //           type: 'DANGER'
-  //         });
-  //       }
-  //     },
-  //     phoneSignIn: async (credentials: any) => {
-  //       try {
-  //         const {
-  //           data: {token, ...user},
-  //         } = await httpClient.post('/login_phone', credentials);
-
-  //         await saveToken(token);
-  //         console.log('logged in');
-
-  //         dispatch({type: 'SIGN_IN', user});
-  //       } catch (err) {
-  //         console.log(err);
-  //         console.log((err as AxiosError).message);
-  //         Alert({
-  //           title: 'Error',
-  //           msg: ((err as AxiosError).response?.data as any).errors,
-  //           type: 'DANGER',
-  //         });
-  //       }
-  //     },
-  //     loadSession: async (token: string, user: any) => {
-  //       await saveToken(token);
-  //       dispatch({type: 'SIGN_IN', user});
-  //       Alert({msg: 'Tus cambios se realizaron con exito', type: 'SUCCESS'});
-  //     },
-  //     signOut: async () => {
-  //       try {
-  //         await httpClient.delete('/logout', {
-  //           headers: {Authorization: await retrieveTokenHeader()},
-  //         });
-
-  //         await deleteToken();
-
-  //         dispatch({type: 'SIGN_OUT'});
-  //       } catch (err) {
-  //         await deleteToken();
-
-  //         console.log(err);
-  //       }
-  //     },
-  //     getState() {
-  //       return user;
-  //     },
-  //   }),
-  //   [user],
-  // );
+  }, [state]);
 
   useEffect(() => {
     console.log('Loading APP.');
@@ -232,7 +138,7 @@ export const AuthProvider: FunctionComponent = (props: any) => {
       console.log('Checking token.');
       retrieveToken().then(async token => {
         try {
-          console.log('Token: ', token);
+          // console.log('Token: ', token);
           if (!token) return dispatch({type: PayloadActionKind.SIGN_OUT});
           const result = await httpClient.get('/profile', {
             headers: {Authorization: await retrieveTokenHeader()},
@@ -243,7 +149,7 @@ export const AuthProvider: FunctionComponent = (props: any) => {
           dispatch({type: PayloadActionKind.SIGN_OUT});
         }
       });
-    }, 1000);
+    }, 500);
   }, []);
 
   return <AuthContext.Provider value={authFunctions} {...props} />;

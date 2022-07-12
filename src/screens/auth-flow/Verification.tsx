@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AxiosError } from "axios";
-import React, { useContext, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { StyleSheet, View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData, Keyboard, Alert } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../../config";
 import Button from "../../components/ui/Button";
 import Footer from "../../components/ui/Footer";
 import OutlinedInput from "../../components/ui/OutlinedInput";
-import { AuthContext } from "../../contexts/auth-context";
 import { httpClient } from "../../controllers/http-client";
+import { useAuth } from "../../hooks/use-auth";
 import PhoneVerificationVector from '../../resources/img/ui/phone-verification.svg';
 
 export default function Verification() {
@@ -79,7 +79,7 @@ function VerificationPhone({ handler }: any) {
 }
 
 function VerificationCode({ phone } : any) {
-    const auth = useContext(AuthContext);
+    const {phoneSignIn} = useAuth();
     const [data, setData] = useState({
         A: '',
         B: '',
@@ -164,7 +164,7 @@ function VerificationCode({ phone } : any) {
             }
         ); 
         console.log(result);
-        await auth.phoneSignIn({ phone });
+        await phoneSignIn({ phone });
     }
 
     return (

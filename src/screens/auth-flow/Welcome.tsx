@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, {useContext, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {StyleSheet, View, Text, LogBox} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Logo from '../../resources/img/ui/dom-app-logo.svg';
@@ -7,15 +7,14 @@ import Button from '../../components/ui/Button';
 import {COLORS} from '../../../config';
 import UnderlinedButton from '../../components/ui/UnderlinedButton';
 import Footer from '../../components/ui/Footer';
-import {useNavigation} from '@react-navigation/native';
 import LineORSeparator from '../../components/ui/LineORSeparator';
 import * as Facebook from 'expo-facebook';
-import {AuthContext} from '../../contexts/auth-context';
 import {Picker} from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import SplashScreen from '../SplashScreen';
+import SplashScreen from '../../layouts/SplashScreen';
+import { useAuth } from '../../hooks/use-auth';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs(); //Ignore all log notifications
@@ -23,7 +22,7 @@ LogBox.ignoreAllLogs(); //Ignore all log notifications
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Welcome({navigation}: any) {
-  const auth = useContext(AuthContext);
+  const {socialSignIn} = useAuth();
   const [country, setCountry] = useState('col');
   const [request, response, promptAsync] = Google.useAuthRequest({
     expoClientId:
@@ -81,8 +80,7 @@ export default function Welcome({navigation}: any) {
           `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.type(large)`,
         );
         const user: any = await response.json();
-        console.log(user);
-        await auth.socialSignIn(
+        await socialSignIn(
           {social_id: user.id, email: `${user.id}@facebook.com`},
           user.picture.data.url,
         );
@@ -114,7 +112,7 @@ export default function Welcome({navigation}: any) {
   };
 
   const googleSocial = async () => {
-    await auth.socialSignIn(
+    await socialSignIn(
       {social_id: userInfo?.id, email: `${userInfo?.email}`},
       userInfo?.picture,
     );

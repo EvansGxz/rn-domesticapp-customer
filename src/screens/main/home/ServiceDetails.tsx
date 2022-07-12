@@ -113,7 +113,7 @@ export default function ServiceDetails({ navigation }: Props) {
                         console.log(value)
                         setChecked({...isChecked, [index]: value})
                       }}
-                      color={isChecked[index] ? '#0BBBEF  ' : undefined} />
+                      color={isChecked[index] ? '#0BBBEF' : undefined} />
                     <Text style={styles.paragraph}>{check}</Text>
                   </View>
                 ))}

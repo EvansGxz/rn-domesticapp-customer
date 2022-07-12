@@ -29,7 +29,7 @@ const SearchDirectionMap = (props: any) => {
     if (searchText.length > 0) {
       try {
         const data = await apiMapBox.get(`/${searchText}.json`);
-        console.log(data.data)
+        // console.log(data.data)
         setUbicaciones(data?.data?.features);
       } catch (error) {
         console.log(error);
@@ -39,7 +39,6 @@ const SearchDirectionMap = (props: any) => {
 
   const {setaddress} = useCalendar();
   const selectLocation = async (d: any) => {
-    console.log(d.place_name);
     setaddress && setaddress(d.place_name);
     setData({
       ...data,

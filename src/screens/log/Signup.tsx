@@ -22,6 +22,8 @@ import LabeledInput from "../../components/ui/LabeledInput";
 
 import { style } from '../auth-flow/style';
 import { useAuth } from '../../hooks/use-auth';
+import { PayloadActionKind } from '../../contexts/authReducer';
+import CustomAlert from '../../controllers/Alert';
 
 const IMAGE_CONFIG: ImagePicker.ImagePickerOptions = {
   aspect: [1, 1],
@@ -53,7 +55,7 @@ interface dataUser {
 }
 
 export default function Signup() {
-  const {loadSession} = useAuth();
+  const {loadSession, dispatch} = useAuth();
   const refMap = [
     useRef<TextInput>(null),
     useRef<TextInput>(null),
@@ -88,25 +90,31 @@ export default function Signup() {
   const [loading, setLoading] = useState(false);
 
   const register = async () => {
+    if (data.full_name === '') return CustomAlert({msg: 'Por favor introduzca un Nombre de usuario', type: 'WARNING'});
+    else if (data.email === '') return CustomAlert({msg: 'Por favor introduzca un correo electronico', type: 'WARNING'});
+    else if (data.country === '') return CustomAlert({msg: 'Por favor introduzca un pais', type: 'WARNING'});
+    else if (data.password === '') return CustomAlert({msg: 'Pro favor introduzca una contraseña', type: 'WARNING'});
+    else if (data.password !== data.password_confirmation) return CustomAlert({msg: 'Las contraseñas no son iguales', type: 'WARNING'});
     setLoading(true);
+    dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: true}});
     try {
       const formData = new FormData();
 
       formData.append('user_type', data.user_type);
-      formData.append('full_name', data.full_name);
+      formData.append('full_name', data.full_name.trimEnd());
       formData.append('document_type', data.document_type);
       formData.append('document_string', data.document_string);
       formData.append('birth_date', data.birth_date);
-      formData.append('phone', data.phone);
-      formData.append('company', data.company);
+      formData.append('phone', data.phone.trimEnd());
+      formData.append('company', data.company.trimEnd());
       formData.append('cod_refer', data.cod_refer);
       formData.append('client_type', data.client_type);
       formData.append('region', data.region);
       formData.append('country', data.country);
       formData.append('cc_nit', data.cc_nit);
-      formData.append('email', data.email);
-      formData.append('password', data.password);
-      formData.append('password_confirmation', data.password_confirmation);
+      formData.append('email', data.email.trim());
+      formData.append('password', data.password.trimEnd());
+      formData.append('password_confirmation', data.password_confirmation.trimEnd());
       if (photoUrl !== '') {
         formData.append('cover', {
           uri: photoUrl,
@@ -127,6 +135,7 @@ export default function Signup() {
       });
       setLoading(false);
       await loadSession(resp2.data.token, resp2.data);
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
     } catch (err) {
       setLoading(false);
       console.log(err);
@@ -198,8 +207,13 @@ export default function Signup() {
     { value: 'Persona', label: 'Persona' },
     { value: 'Empresa', label: 'Empresa' },
   ]
+  const countryOptions = [
+    { value: 'Colombia', label: 'Colombia' },
+    { value: 'España', label: 'España' },
+  ]
   const [openModals, setModalOpen] = useState({
     docType: false,
+    country: false,
     clientType: false,
   })
   return (
@@ -231,7 +245,7 @@ export default function Signup() {
                   returnKeyType: 'next',
                   onChangeText: (value: string) => onChangeText('full_name', value),
                   value: data.full_name,
-                  autoCapitalize: "none",
+                  autoCapitalize: "words",
                   style: style.inputBlueRounded
                 } as any
               }
@@ -246,11 +260,12 @@ export default function Signup() {
                   open={openModals.docType}
                   setOpen={(value) => setModalOpen({
                     clientType: false,
-                    docType: value as any
+                    docType: value as any,
+                    country: false,
                   }) }
                   setValue={(value) => onChangeText('document_type', value())}
                   style={style.picker}
-                  placeholder='Selecione um elemento'
+                  placeholder='Selecione un tipo de documento'
                   textStyle={style.textPicker}
                   items={docTypes.filter(dt => dt.country === country)}
                   value={data.document_type}
@@ -346,7 +361,8 @@ export default function Signup() {
                 open={openModals.clientType}
                 setOpen={(value: boolean | any) => setModalOpen({
                   docType: false,
-                  clientType: value
+                  country: false,
+                  clientType: value,
                 })}
                 setValue={(value) => onChangeText('client_type', value())}
                 style={style.picker}
@@ -372,21 +388,24 @@ export default function Signup() {
               style={style.labelForInput}
               label="Región"
             />
-            <LabeledInput
-              ref={refMap[5]}
-              inputProps={
-                {
-                  onSubmitEditing: () => refMap[6].current?.focus(),
-                  blurOnSubmit: false,
-                  returnKeyType: 'next',
-                  onChangeText: (value: string) => onChangeText('country', value),
-                  autoCapitalize: "words",
-                  style: style.inputBlueRounded
-                }
-              }
-              style={style.labelForInput}
-              label="Pais"
-            />
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[style.pickerLabel, style.labelForInput]}>Pais</Text>
+              <DropDownPicker
+                closeOnBackPressed
+                open={openModals.country}
+                setOpen={(value: boolean | any) => setModalOpen({
+                  country: value,
+                  docType: false,
+                  clientType: false
+                })}
+                setValue={(value) => onChangeText('country', value())}
+                style={style.picker}
+                placeholder='Selecione un pais'
+                textStyle={style.textPicker}
+                items={countryOptions}
+                value={data.country}
+              />
+            </View>
             <LabeledInput
               ref={refMap[6]}
               inputProps={

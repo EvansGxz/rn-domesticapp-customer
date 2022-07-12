@@ -3,12 +3,13 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {Root} from 'react-native-alert-notification';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 // SCREENs
 import Auth from './src/screens/auth-flow/Auth';
 import Profile from './src/screens/shared/Profile';
 import Welcome from './src/screens/auth-flow/Welcome';
-import SplashScreen from './src/screens/SplashScreen';
+import SplashScreen from './src/layouts/SplashScreen';
 import OnBoarding from './src/screens/auth-flow/OnBoarding';
 import Verification from './src/screens/auth-flow/Verification';
 import MainBottomNavigation from './src/screens/main/BottomNavigation';
@@ -61,8 +62,9 @@ import { BASE_URI } from './config';
 import { retrieveToken } from './src/controllers/tokens';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import Preloader from './src/screens/Preloader';
-import ErrorBoundary from './src/screens/ErrorBoundary';
+import Preloader from './src/layouts/Preloader';
+import ErrorBoundary from './src/layouts/ErrorBoundary';
+import NetInfo from './src/layouts/NetInfo';
 
 type RootNavStack = {
   Main: undefined;
@@ -115,10 +117,11 @@ function App() {
     Montserrat_900Black_Italic,
   });
   const {state} = useAuth();
+  const netInfo = useNetInfo()
 
   if (!fontsLoaded || state.loading) return <SplashScreen />
 
-  return (
+  return netInfo.isConnected ? (
     <Provider
       url={BASE_URI}
       options={{
@@ -156,7 +159,7 @@ function App() {
         }
       </Stack.Navigator>
     </Provider>
-  );
+  ) : (<NetInfo />);
 }
 
 export default function ApplicationWrapper() {

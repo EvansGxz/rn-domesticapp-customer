@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { AxiosError } from "axios";
 import * as ImagePicker from 'expo-image-picker';
-import React, { useCallback, useContext, useRef, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Text,
   View,
@@ -32,11 +32,10 @@ import BackTitledHeader from "../../../src/components/headers/BackTitledHeader";
 // UTILs
 import CustomAlert from "../../controllers/Alert";
 import { useAuth } from "../../hooks/use-auth";
-import { AuthContext } from "../../contexts/auth-context";
 import { SharedStyles } from "../../styles/shared-styles";
 import { httpClient } from "../../controllers/http-client";
 import { PayloadActionKind } from "../../contexts/authReducer";
-
+import moment from "moment";
 export interface DateOutlinedInputProps extends TextInputProps {
   inputRef?: any;
   containerStyle?: StyleProp<ViewStyle>;
@@ -91,8 +90,7 @@ export default function Profile() {
     password: '',
     password_confirmation: '',
   });
-  const auth = useContext(AuthContext);
-  const {state, dispatch} = useAuth();
+  const {state, dispatch, loadSession} = useAuth();
 
   const onChangeText = (name: string, value: string) => setData({ ...userdata, [name]: value });
 
@@ -103,13 +101,13 @@ export default function Profile() {
     })
     if (state.user) {
       const { user } = state;
-      console.log(user);
       setPhotoUrl(user.image_url);
       const { full_name, document_type, document_string, birth_date, phone, company, cod_refer, client_type, region, country, cc_nit, email } = user;
 
       // FALTA "document_string", "company", "cc_nit"
-      setData({ full_name, document_type, document_string, phone, birth_date: dateFormat(birth_date), company, cod_refer, client_type, region, country, cc_nit, email, password: '', password_confirmation: '' })
+      setData({ full_name, document_type, document_string, phone, birth_date: moment(birth_date).format('L'), company, cod_refer, client_type, region, country, cc_nit, email, password: '', password_confirmation: '' })
     }
+    // console.log(userdata)
   }, [state]))
   const [photoUrl, setPhotoUrl] = useState('');
 
@@ -120,7 +118,13 @@ export default function Profile() {
   const [openModals, setModalOpen] = useState({
     docType: false,
     clientType: false,
-  })
+    country: false,
+  });
+
+  const countryOptions = [
+    { value: 'Colombia', label: 'Colombia' },
+    { value: 'España', label: 'España' },
+  ]
 
   const handleGetImage = async (takeFromCamera: boolean) => {
     let permission: ImagePicker.CameraPermissionResponse;
@@ -205,8 +209,8 @@ export default function Profile() {
         }
       });
       setLoading(false);
+      await loadSession(resp2.data.token, resp2.data);
       dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
-      await auth.loadSession(resp2.data.token, resp2.data);
     } catch (err) {
       setLoading(false);
       console.log(err);
@@ -268,8 +272,9 @@ export default function Profile() {
               <DropDownPicker
                 open={openModals.docType}
                 setOpen={(value: boolean) => setModalOpen({
+                  docType: value,
                   clientType: false,
-                  docType: value
+                  country: false,
                 }) as any}
                 setValue={(value) => onChangeText('document_type', value())}
                 style={styles.picker}
@@ -369,8 +374,9 @@ export default function Profile() {
               closeOnBackPressed
               open={openModals.clientType}
               setOpen={(value: boolean) => setModalOpen({
+                clientType: value,
                 docType: false,
-                clientType: value
+                country: false,
               })}
               setValue={(value: any) => onChangeText('client_type', value)}
               style={styles.picker}
@@ -396,7 +402,25 @@ export default function Profile() {
             style={styles.labelForInput}
             label="Región"
           />
-          <LabeledInput
+          <View style={{ marginBottom: 10 }}>
+            <Text style={[styles.pickerLabel, styles.labelForInput]}>Pais</Text>
+            <DropDownPicker
+              closeOnBackPressed
+              open={openModals.country}
+              setOpen={(value: boolean | any) => setModalOpen({
+                country: value,
+                docType: false,
+                clientType: false
+              })}
+              setValue={(value) => onChangeText('country', value())}
+              style={styles.picker}
+              placeholder='Selecione un pais'
+              textStyle={styles.textPicker}
+              items={countryOptions}
+              value={userdata.country}
+            />
+          </View>
+          {/* <LabeledInput
             ref={refMap[5]}
             inputProps={
               {
@@ -411,7 +435,7 @@ export default function Profile() {
             }
             style={styles.labelForInput}
             label="Pais"
-          />
+          /> */}
           <LabeledInput
             ref={refMap[6]}
             inputProps={

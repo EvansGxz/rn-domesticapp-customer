@@ -4,3 +4,10 @@ export interface AuthState {
   loading?: boolean;
   user?: any | null;
 }
+
+export interface MenuOptionProps {
+  text: string;
+  icon?: any;
+  size: number;
+  onPress?: () => void;
+}
