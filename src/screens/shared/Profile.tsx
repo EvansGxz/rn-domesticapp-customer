@@ -101,9 +101,9 @@ export default function Profile() {
     AsyncStorage.getItem('country').then(resp => {
       setCountry(resp);
     })
-    // console.log({ state: state?.user })
     if (state.user) {
       const { user } = state;
+      console.log(user);
       setPhotoUrl(user.image_url);
       const { full_name, document_type, document_string, birth_date, phone, company, cod_refer, client_type, region, country, cc_nit, email } = user;
 
@@ -212,6 +212,7 @@ export default function Profile() {
       console.log(err);
       console.log((err as AxiosError).response?.data);
       const errors: any = ((err as AxiosError).response?.data as any).errors;
+      console.log(errors);
       CustomAlert({
         title: 'Error',
         msg: Object.keys(errors).map((key: string) => `[${key}] ` + errors[key].join(' ')).join(', '),
@@ -300,14 +301,15 @@ export default function Profile() {
             inputProps={
               {
                 onSubmitEditing: () => refMap[2].current?.focus(),
+                maxLength: 10,
                 blurOnSubmit: false,
                 returnKeyType: 'next',
                 keyboardType: 'number-pad',
-                maxLength: 10,
                 onChangeText: (value: string) => onChangeText('birth_date', dateFormat(value)),
                 value: userdata.birth_date,
                 autoCapitalize: "none",
-                style: styles.inputBlueRounded
+                style: styles.inputBlueRounded,
+                placeholder: 'DD/MM/AAAA'
               }
             }
             style={styles.labelForInput}
