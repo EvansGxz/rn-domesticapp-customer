@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, Dimensions } from "react-native";
+import { View, StyleSheet, Image } from "react-native";
 // import DashImg from "../../resources/img/ui/dashboard-img.png";
 
 export default function HomeHero() {

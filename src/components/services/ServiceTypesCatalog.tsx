@@ -83,32 +83,3 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
 });
-
-
-// const d = {
-//     "body": "Auxiliares y cargadores para bodegas y establecimientos empresariales ",
-//     "category_name": "Aux. Bodega Empresas",
-//     "id": 39,
-//     "image": Object {
-//       "name": "image",
-//       "record": Object {
-//         "body": "Auxiliares y cargadores para bodegas y establecimientos empresariales ",
-//         "category_name": "Aux. Bodega Empresas",
-//         "created_at": "2022-07-01T21:51:39.501Z",
-//         "id": 39,
-//         "price_col_complete": "94500.0",
-//         "price_col_half": "68500.0",
-//         "price_spain": "16.5",
-//         "region": "España",
-//         "sector_id": 2,
-//         "updated_at": "2022-07-01T21:51:39.516Z",
-//       },
-//     },
-//     "image_url": "https://domesticapp.herokuapp.com//rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBQQT09IiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--980bb8c2d3110d31f7e819b73ce9c4aec18f0771/Aux.%20Bodega%20Empresas.png",
-//     "price_col_complete": "94500.0",
-//     "price_col_half": "68500.0",
-//     "price_spain": "16.5",
-//     "region": "España",
-//     "sector": "Empresarial",
-// }
-

@@ -18,13 +18,13 @@ import { useCalendar } from "../../../contexts/calendarContext";
 import type { HomeStackParamList } from '.';
 import { useAuth } from "../../../hooks/use-auth";
 import { COLORS } from "../../../../config";
+import { PayloadActionKind } from "../../../contexts/authReducer";
 type Props = StackScreenProps<HomeStackParamList, 'ServiceDetails'>;
 
-export default function ServiceDetails({ navigation }: Props) {
-  const {state} = useAuth();
+export default function ServiceDetails({ route, navigation }: Props) {
+  const {state, dispatch} = useAuth();
 
-
-  const [isChecked, setChecked] = useState<boolean[]>([false,]);
+  const [isChecked, setChecked] = useState<boolean[]>([false]);
   const [recurrency, setSelectedValue] = useState(false);
   const [datas, setDatas] = useState({
     ccNit: 'CC',
@@ -35,6 +35,7 @@ export default function ServiceDetails({ navigation }: Props) {
   const checkList = ["Trapear", "Lavar", "Tarea", "Barrer", "Cocinar"];
   const { category_id, address, start_date, service_time } = useCalendar();
   const saveService = async () => {
+    dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: true}});
     try {
       const formData = {
         category_id: parseInt(category_id),
@@ -44,19 +45,21 @@ export default function ServiceDetails({ navigation }: Props) {
         active: true,
         address,
         start_date,
+        // qoute: route.params.quote, CITAS
         service_time: service_time,
         workday: "Completo",
         supply_food: "no"
       }
-      // console.log('==================>',formData, state);
+      // console.log('==================>',formData);
       const response = await httpClient.post(`/order_details`, formData, {
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Token token=${state.user.token}`
+          Authorization: `Token token=${state.user .token}`
         }
       });
-      console.log({ response: response.data })
-      navigation.navigate('TodoListo', { params: response.data })
+      console.log({ response: response.data });
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
+      navigation.navigate('TodoListo', { params: response.data });
       console.log('<<<<<<<================================>>>>>> PASA <<<<<<<================================>>>>>>')
     } catch (error: any) {
       console.log('<<<<<<<================================>>>>>> ERROR <<<<<<<================================>>>>>>')

@@ -1,39 +1,48 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, View, Text, LogBox} from 'react-native';
+import {StyleSheet, View, Text} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Logo from '../../resources/img/ui/dom-app-logo.svg';
-import Button from '../../components/ui/Button';
+import {Picker} from '@react-native-picker/picker';
+
+// LOGIN
+import * as WebBrowser from 'expo-web-browser';
+import * as GoogleAuth from 'expo-auth-session/providers/google';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LoginManager, AccessToken, Profile} from 'react-native-fbsdk-next';
+
+// COMPONENTs
 import {COLORS} from '../../../config';
-import UnderlinedButton from '../../components/ui/UnderlinedButton';
+import Button from '../../components/ui/Button';
 import Footer from '../../components/ui/Footer';
 import LineORSeparator from '../../components/ui/LineORSeparator';
-import * as Facebook from 'expo-facebook';
-import {Picker} from '@react-native-picker/picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Google from 'expo-auth-session/providers/google';
-import * as WebBrowser from 'expo-web-browser';
+import UnderlinedButton from '../../components/ui/UnderlinedButton';
+
 import SplashScreen from '../../layouts/SplashScreen';
 import { useAuth } from '../../hooks/use-auth';
+import Alert from '../../controllers/Alert';
 
-LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-LogBox.ignoreAllLogs(); //Ignore all log notifications
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+// LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 WebBrowser.maybeCompleteAuthSession();
+
+// PRIVATE
+const urlGoogleUserInfo = 'https://www.googleapis.com/userinfo/v2/me';
+const redirectUri = 'https://auth.expo.io/@yoydev/rn-domesticapp-customer';
+const expoClientId = '202772080707-pir2muoheagfmst9m97vbrqli726tjmg.apps.googleusercontent.com';
+const androidClientId = '202772080707-icq35munmop9h0egbj9aepktk33ote8n.apps.googleusercontent.com';
 
 export default function Welcome({navigation}: any) {
   const {socialSignIn} = useAuth();
   const [country, setCountry] = useState('col');
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    expoClientId:
-      '209825335616-o96lqfffbrdsspmigjbdb5902h6hgdv4.apps.googleusercontent.com',
-    androidClientId:
-      '209825335616-3n4ab82qqkcr863ddbhgsltev591k13p.apps.googleusercontent.com',
-    redirectUri: 'https://auth.expo.io/@marioe92/rn-domesticapp-customer',
-  });
-  const [accessToken, setAccessToken] = useState<any>();
   const [userInfo, setUserInfo] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const [accessToken, setAccessToken] = useState<any>();
+
+  const [request, response, promptAsync] =
+    GoogleAuth.useAuthRequest({ expoClientId, androidClientId, redirectUri});
+
 
   const getCountry = () => {
     AsyncStorage.getItem('country').then(value => {
@@ -56,54 +65,53 @@ export default function Welcome({navigation}: any) {
       setAccessToken(response?.authentication?.accessToken);
     }
   }, [response]);
-
   useEffect(() => {
     if (accessToken) {
       getDataUserGoogle();
     }
   }, [accessToken]);
-
   const facebookLogin = async () => {
     try {
       console.log('Initialize facebook');
-      await Facebook.initializeAsync({
-        appId: '551206009914007',
-      });
-      console.log('Login with read permissions');
-      const {type, token} = (await Facebook.logInWithReadPermissionsAsync({
-        permissions: ['public_profile'],
-      })) as any;
-      console.log(type);
-      if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
-        const response = await fetch(
-          `https://graph.facebook.com/me?access_token=${token}&fields=id,name,email,picture.type(large)`,
-        );
-        const user: any = await response.json();
-        await socialSignIn(
-          {social_id: user.id, email: `${user.id}@facebook.com`},
-          user.picture.data.url,
-        );
+      // await LoginManager..initializeAsync({appId});
+
+      const result = await LoginManager.logInWithPermissions(['public_profile']);
+      if (result.isCancelled) {
+        Alert({msg: 'Has cancelado el inicio de sesión con Facebook', type: 'WARNING' });
       } else {
-        // type === 'cancel'
+        Profile.getCurrentProfile().then(currenProfile => {
+          if (currenProfile) {
+            console.log(currenProfile);
+          }
+          AccessToken.getCurrentAccessToken().then(token => {
+            console.log(token?.accessToken.toString());
+            fetch(`https://graph.facebook.com/me?access_token=${token?.accessToken}&fields=id,name,email,picture.type(large)`,
+              ).then((data: any) => {
+                console.log(data);
+                socialSignIn({
+                  social_id: data?.userID,
+                  email: `${data?.userID}@facebook.com`},
+                  data?.imageURL
+                );
+              }).catch(e => console.log(e));
+          });
+        });
       }
     } catch ({message}) {
-      alert(`Facebook Login Error: ${message}`);
+      console.log(message)
+      Alert({msg: `Facebook Login Error: ${message}`, type: 'DANGER' });
     }
   };
 
   const google_login_ButtonClick = async () => {
-    promptAsync({useProxy: true});
+    promptAsync({showInRecents: true,useProxy: true});
   };
 
   const getDataUserGoogle = async () => {
     setIsLoading(true);
 
     const userInfoResponse = await fetch(
-      'https://www.googleapis.com/userinfo/v2/me',
-      {
-        headers: {Authorization: `Bearer ${accessToken}`},
-      },
+      urlGoogleUserInfo, {headers: {Authorization: `Bearer ${accessToken}`}},
     );
 
     userInfoResponse.json().then(data => {
@@ -135,9 +143,7 @@ export default function Welcome({navigation}: any) {
     {label: 'España', value: 'esp'},
   ];
 
-  if (isLoading) {
-    return <SplashScreen />;
-  }
+  if (isLoading) return <SplashScreen />;
 
   const _Picker: any = Picker;
   return (

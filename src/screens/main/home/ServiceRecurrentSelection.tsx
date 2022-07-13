@@ -10,42 +10,41 @@ import DateOutlinedButton from "../../../components/ui/DateOutlinedInput";
 import { useCalendar } from "../../../contexts/calendarContext";
 
 import type { HomeStackParamList } from '.';
-type Props = StackScreenProps<HomeStackParamList, 'ServiceRecurrentSelection'>;
+type Props = StackScreenProps<HomeStackParamList, 'ServiceRecurrentSelection', 'ServiceDetails'>;
 
 export default function ServiceRecurrentSelection({ route, navigation }: Props) {
-  const [recurrency, setSelectedValue] = useState(false);
-  const [recurrencyData, setRecurrencyData] = useState({
-    date: ''
-  });
   const _Picker: any = Picker;
 
+  const [repeatQuote, setRepeatQuote] = useState<boolean>(false);
+  const [quote, setQuote] = useState<string>('diario');
+  const [recurrencyDate, setRecurrencyDate] = useState({date: ''});
+
   const { setfinish_date } = useCalendar();
+
   return (
     <View style={SharedStyles.mainScreen}>
       <BackTitledHeader title="RECURRENCIA" />
       <ScrollView style={SharedStyles.fill} contentContainerStyle={{ paddingHorizontal: 35, paddingTop: 20 }}>
         <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Repetir cita</Text>
         <_Picker
-          selectedValue={recurrency}
-          onValueChange={(itemValue: any) => setSelectedValue(itemValue)}
-          style={[SharedStyles.card, SharedStyles.mb]}
-        >
+          selectedValue={repeatQuote}
+          onValueChange={(itemValue: boolean) => setRepeatQuote(itemValue)}
+          style={[SharedStyles.card, SharedStyles.mb]}>
           <_Picker.Item label="No" value={false} />
           <_Picker.Item label="Sí" value={true} />
         </_Picker>
         {
-          recurrency && (
+          repeatQuote && (
             <>
               <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Frecuencia</Text>
               <_Picker
-                selectedValue={recurrency}
-                onValueChange={(itemValue: any) => setSelectedValue(itemValue)}
-                style={[SharedStyles.card, SharedStyles.mb]}
-              >
-                <_Picker.Item label="Diario" value="0" />
-                <_Picker.Item label="Semanal" value="1" />
-                <_Picker.Item label="Quincenal" value="2" />
-                <_Picker.Item label="Mensual" value="3" />
+                selectedValue={quote}
+                onValueChange={(itemValue: any) => setQuote(itemValue)}
+                style={[SharedStyles.card, SharedStyles.mb]}>
+                <_Picker.Item label="Diario" value="diario" />
+                <_Picker.Item label="Semanal" value="semanal" />
+                <_Picker.Item label="Quincenal" value="quincenal" />
+                <_Picker.Item label="Mensual" value="mensual" />
               </_Picker>
               <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Fecha limite</Text>
               <DateOutlinedButton
@@ -53,9 +52,9 @@ export default function ServiceRecurrentSelection({ route, navigation }: Props) 
                 onChangeText={(date) => {
                   const [a, b, c] = date.split('/');
                   setfinish_date(`${c}-${b}-${a}`);
-                  setRecurrencyData({ ...recurrencyData, date })
+                  setRecurrencyDate({ ...recurrencyDate, date })
                 }}
-                value={recurrencyData.date}
+                value={recurrencyDate.date}
               />
             </>
           )
@@ -67,7 +66,7 @@ export default function ServiceRecurrentSelection({ route, navigation }: Props) 
           onPress={
             () => navigation.navigate(
               'ServiceDetails',
-              { ...route.params, recurrency, recurrencyData }
+              { ...route.params, quote, recurrencyDate }
             )
           }
         >

@@ -18,7 +18,7 @@ export type HomeStackParamList = {
   ServiceCalendar: {id: number, workingDayType: string};
   EmployeeProfile: undefined;
   ServiceRecurrentSelection: {id: number, workingHour: Date | null, working: string};
-  ServiceDetails: {id: number, recurrency: boolean, recurrencyData: object};
+  ServiceDetails: {id: number, quote: string, recurrencyDate: object};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TodoListo: {params: any};
 };

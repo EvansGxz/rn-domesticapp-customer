@@ -7,7 +7,6 @@ import { useNetInfo } from '@react-native-community/netinfo';
 
 // SCREENs
 import Auth from './src/screens/auth-flow/Auth';
-import Profile from './src/screens/shared/Profile';
 import Welcome from './src/screens/auth-flow/Welcome';
 import SplashScreen from './src/layouts/SplashScreen';
 import OnBoarding from './src/screens/auth-flow/OnBoarding';
@@ -140,14 +139,10 @@ function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {
           state.user ? (
-            !state.user.full_name ? (
-              <Stack.Group>
-                <Stack.Screen name="OnBoarding" component={OnBoarding} />
-                <Stack.Screen name="Main" component={MainBottomNavigation} />
-                <Stack.Screen name="Profile" component={Profile} />
-              </Stack.Group>
-            ) : (
+            state.user.full_name ? (
               <Stack.Screen name="Main" component={MainBottomNavigation} />
+              ) : (
+              <Stack.Screen name="OnBoarding" component={OnBoarding} />
             )
           ) : (
             <Stack.Group>

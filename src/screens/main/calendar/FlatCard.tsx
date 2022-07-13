@@ -100,29 +100,22 @@ const FlatCard = (props: EmployeDetailProps) => {
             </View>
           </View>
 
-
           <View
             style={[
               SharedStyles.centerContent,
               SharedStyles.mainPadding,
               { width: "90%" },
-            ]}
-          >
-            <Button style={[SharedStyles.backgroundPrimary]}>
-              Ver Dirección en el Mapa
-            </Button>
+            ]}>
           </View>
           <View
             style={[
               SharedStyles.centerContent,
               SharedStyles.mainPadding,
               { width: "90%" },
-            ]}
-          >
+            ]}>
             <Button
               style={[SharedStyles.backgroundPrimary]}
-              onPress={toggleModal}
-            >
+              onPress={toggleModal}>
               Regresar a Calendario
             </Button>
           </View>

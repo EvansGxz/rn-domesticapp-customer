@@ -45,7 +45,7 @@ export const AuthProvider: FunctionComponent = (props: any) => {
     }
   }
 
-  const socialSignIn = async (credentials: any, img: string) => {
+  const socialSignIn = async (credentials: any | object, img: any | string) => {
     try {
       const {
         data: {token, ...state},
