@@ -2,6 +2,7 @@
 export interface AuthState {
   preloader?: boolean;
   loading?: boolean;
+  onboarding?: boolean;
   user?: any | null;
 }
 

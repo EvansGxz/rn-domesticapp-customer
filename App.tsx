@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {Root} from 'react-native-alert-notification';
+import { Root } from 'react-native-alert-notification';
 import { useNetInfo } from '@react-native-community/netinfo';
 
 // SCREENs
@@ -115,8 +115,8 @@ function App() {
     Montserrat_800ExtraBold_Italic,
     Montserrat_900Black_Italic,
   });
-  const {state} = useAuth();
-  const netInfo = useNetInfo()
+  const { state } = useAuth();
+  const netInfo = useNetInfo();
 
   if (!fontsLoaded || state.loading) return <SplashScreen />
 
@@ -139,10 +139,10 @@ function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {
           state.user ? (
-            state.user.full_name ? (
-              <Stack.Screen name="Main" component={MainBottomNavigation} />
-              ) : (
+            state.onboarding ? (
               <Stack.Screen name="OnBoarding" component={OnBoarding} />
+            ) : (
+              <Stack.Screen name="Main" component={MainBottomNavigation} />
             )
           ) : (
             <Stack.Group>
@@ -159,7 +159,7 @@ function App() {
 
 export default function ApplicationWrapper() {
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <Root>
         <AuthProvider>
           <ErrorBoundary>

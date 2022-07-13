@@ -73,7 +73,6 @@ export default function Welcome({navigation}: any) {
   const facebookLogin = async () => {
     try {
       console.log('Initialize facebook');
-      // await LoginManager..initializeAsync({appId});
 
       const result = await LoginManager.logInWithPermissions(['public_profile']);
       if (result.isCancelled) {
@@ -81,20 +80,25 @@ export default function Welcome({navigation}: any) {
       } else {
         Profile.getCurrentProfile().then(currenProfile => {
           if (currenProfile) {
-            console.log(currenProfile);
+            socialSignIn({
+              social_id: currenProfile.userID,
+              email: currenProfile?.email ? currenProfile?.email : `${currenProfile?.userID}@facebook.com`
+            }, {full_name: currenProfile?.name, image_url: currenProfile?.imageURL});
+          } else  {
+            AccessToken.getCurrentAccessToken().then(token => {
+              // console.log(token?.accessToken.toString());
+              fetch(`https://graph.facebook.com/me?access_token=${token?.accessToken}&fields=id,name,email,picture.type(large)`,
+                ).then((dataJson) => {
+                  dataJson.json().then(data => {
+                    socialSignIn({
+                        social_id: data?.id,
+                        email: data?.email ? data?.email : `${data?.id}@facebook.com`
+                      }, {full_name: data?.name, image_url: data?.picture?.data?.url}
+                    );
+                  });
+                }).catch(e => console.log(e));
+            });
           }
-          AccessToken.getCurrentAccessToken().then(token => {
-            console.log(token?.accessToken.toString());
-            fetch(`https://graph.facebook.com/me?access_token=${token?.accessToken}&fields=id,name,email,picture.type(large)`,
-              ).then((data: any) => {
-                console.log(data);
-                socialSignIn({
-                  social_id: data?.userID,
-                  email: `${data?.userID}@facebook.com`},
-                  data?.imageURL
-                );
-              }).catch(e => console.log(e));
-          });
         });
       }
     } catch ({message}) {

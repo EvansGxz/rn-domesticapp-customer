@@ -7,16 +7,30 @@ import Onboarding1SVG from '../../resources/img/ui/onboarding-1.svg';
 import Onboarding2SVG from '../../resources/img/ui/onboarding-2.svg';
 import Onboarding3SVG from '../../resources/img/ui/onboarding-3.svg';
 import { SharedStyles } from '../../styles/shared-styles';
-import { useNavigation } from '@react-navigation/core';
 import Button from '../../components/ui/Button';
 import Footer from '../../components/ui/Footer';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '../../hooks/use-auth';
+import { PayloadActionKind } from '../../contexts/authReducer';
+
 export default function OnBoarding() {
+  const {dispatch} = useAuth();
   const [currentPage, setCurrentPage] = useState(0);
   const pager = useRef<PagerView>();
-  const navigation = useNavigation<any>();
 
   const next = () => pager.current?.setPage(currentPage + 1);
+
+  const skipOnboarding = async () => {
+    try {
+      await AsyncStorage.setItem('@viewedOnboarding', 'true');
+    } catch (error) {
+      console.error('Error @viewedOnboarding: ', error);
+    } finally {
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: true}});
+      dispatch({type: PayloadActionKind.ONBOARDING, payload: {onboarding: false}});
+    }
+  };
 
   return (
     <SafeAreaView style={SharedStyles.mainScreen}>
@@ -65,9 +79,7 @@ export default function OnBoarding() {
             </Text>
             <Button
               style={[SharedStyles.backgroundPrimary, style.button]}
-              onPress={() => navigation.navigate('Main', {
-                screen: 'Contract',
-              })}>
+              onPress={skipOnboarding}>
               Estoy listo
             </Button>
           </View>
