@@ -77,7 +77,7 @@ export default function Profile() {
   const [userdata, setData] = useState({
     full_name: '',
     document_type: '',
-    document_string: '',
+    document_id: '',
     birth_date: '',
     phone: '',
     company: '',
@@ -85,7 +85,6 @@ export default function Profile() {
     client_type: '',
     region: '',
     country: '',
-    cc_nit: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -96,19 +95,17 @@ export default function Profile() {
 
   const [country, setCountry] = useState<string | null>(null);
   useFocusEffect(useCallback(() => {
-    AsyncStorage.getItem('country').then(resp => {
-      setCountry(resp);
-    })
+    AsyncStorage.getItem('country').then(resp => setCountry(resp));
+
     if (state.user) {
       const { user } = state;
+      console.log(user);
+      delete user.cover;
       setPhotoUrl(user.image_url);
-      const { full_name, document_type, document_string, birth_date, phone, company, cod_refer, client_type, region, country, cc_nit, email } = user;
-
-      // FALTA "document_string", "company", "cc_nit"
-      setData({ full_name, document_type, document_string, phone, birth_date: moment(birth_date).format('L'), company, cod_refer, client_type, region, country, cc_nit, email, password: '', password_confirmation: '' })
+      setData({...user, birth_date: user.birth_date === null ? '' : moment(user.birth_date).format('L')});
     }
-    // console.log(userdata)
-  }, [state]))
+  }, [state]));
+
   const [photoUrl, setPhotoUrl] = useState('');
 
   const [loading, setLoading] = useState(false);
@@ -169,10 +166,7 @@ export default function Profile() {
     useRef<TextInput>(null),
     useRef<TextInput>(null),
     useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
+    useRef<TextInput>(null)
   ]
 
   const editProfile = async () => {
@@ -180,18 +174,17 @@ export default function Profile() {
     dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: true}});
     try {
       const formData = new FormData();
+      const dataUser = {phone: userdata.phone};
 
       formData.append('full_name', userdata.full_name);
       formData.append('document_type', userdata.document_type);
-      formData.append('document_string', userdata.document_string);
+      formData.append('document_id', userdata.document_id);
       formData.append('birth_date', userdata.birth_date);
-      formData.append('phone', userdata.phone);
       formData.append('company', userdata.company);
       formData.append('cod_refer', userdata.cod_refer);
       formData.append('client_type', userdata.client_type);
       formData.append('region', userdata.region);
       formData.append('country', userdata.country);
-      formData.append('cc_nit', userdata.cc_nit);
       formData.append('email', userdata.email);
       formData.append('password', userdata.password);
       formData.append('password_confirmation', userdata.password_confirmation);
@@ -202,6 +195,10 @@ export default function Profile() {
           name: `coverimage.jpg`,
         } as any);
       }
+
+      await httpClient.patch(`/user_update/${state.user.user_id}`, dataUser, {
+        headers: {Authorization: `Token token=${state.user.token}`}
+      });
       const resp2 = await httpClient.patch('/profile', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -213,13 +210,11 @@ export default function Profile() {
       dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
     } catch (err) {
       setLoading(false);
-      console.log(err);
-      console.log((err as AxiosError).response?.data);
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
       const errors: any = ((err as AxiosError).response?.data as any).errors;
-      console.log(errors);
       CustomAlert({
         title: 'Error',
-        msg: Object.keys(errors).map((key: string) => `[${key}] ` + errors[key].join(' ')).join(', '),
+        msg: errors,
         type: 'DANGER'
       })
     }
@@ -271,12 +266,12 @@ export default function Profile() {
               <Text style={[styles.pickerLabel, styles.labelForInput]}>Tipo de Documento</Text>
               <DropDownPicker
                 open={openModals.docType}
-                setOpen={(value: boolean) => setModalOpen({
+                setOpen={(value: any) => setModalOpen({
                   docType: value,
                   clientType: false,
                   country: false,
                 }) as any}
-                setValue={(value) => onChangeText('document_type', value())}
+                setValue={(value: any) => onChangeText('document_type', value())}
                 style={styles.picker}
                 placeholder='Selecione un elemento'
                 textStyle={styles.textPicker}
@@ -292,8 +287,8 @@ export default function Profile() {
                 onSubmitEditing: () => refMap[1].current?.focus(),
                 blurOnSubmit: false,
                 returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('document_string', value),
-                value: userdata.document_string,
+                onChangeText: (value: string) => onChangeText('document_id', value),
+                value: userdata.document_id,
                 autoCapitalize: "none",
                 style: styles.inputBlueRounded
               }
@@ -321,8 +316,10 @@ export default function Profile() {
             label="Fecha de Nacimiento"
           />
           <LabeledInput
+            ref={refMap[2]}
             inputProps={
               {
+                onSubmitEditing: () => refMap[3].current?.focus(),
                 blurOnSubmit: false,
                 returnKeyType: 'next',
                 keyboardType: 'number-pad',
@@ -335,22 +332,6 @@ export default function Profile() {
             }
             style={styles.labelForInput}
             label="Telefono"
-          />
-          <LabeledInput
-            ref={refMap[2]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[3].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('company', value),
-                value: userdata.company,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
-              }
-            }
-            style={styles.labelForInput}
-            label="Compañía"
           />
           <LabeledInput
             ref={refMap[3]}
@@ -373,7 +354,7 @@ export default function Profile() {
             <DropDownPicker
               closeOnBackPressed
               open={openModals.clientType}
-              setOpen={(value: boolean) => setModalOpen({
+              setOpen={(value: any) => setModalOpen({
                 clientType: value,
                 docType: false,
                 country: false,
@@ -412,7 +393,7 @@ export default function Profile() {
                 docType: false,
                 clientType: false
               })}
-              setValue={(value) => onChangeText('country', value())}
+              setValue={(value: any) => onChangeText('country', value())}
               style={styles.picker}
               placeholder='Selecione un pais'
               textStyle={styles.textPicker}
@@ -420,43 +401,11 @@ export default function Profile() {
               value={userdata.country}
             />
           </View>
-          {/* <LabeledInput
+          <LabeledInput
             ref={refMap[5]}
             inputProps={
               {
                 onSubmitEditing: () => refMap[6].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('country', value),
-                value: userdata.country,
-                autoCapitalize: "words",
-                style: styles.inputBlueRounded
-              }
-            }
-            style={styles.labelForInput}
-            label="Pais"
-          /> */}
-          <LabeledInput
-            ref={refMap[6]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[7].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('cc_nit', value),
-                value: userdata.cc_nit,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
-              }
-            }
-            style={styles.labelForInput}
-            label="CC / NIT"
-          />
-          <LabeledInput
-            ref={refMap[7]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[8].current?.focus(),
                 blurOnSubmit: false,
                 returnKeyType: 'next',
                 onChangeText: (value: string) => onChangeText('email', value),
@@ -469,10 +418,10 @@ export default function Profile() {
             label="Correo Electrónico"
           />
           <LabeledInput
-            ref={refMap[8]}
+            ref={refMap[6]}
             inputProps={
               {
-                onSubmitEditing: () => refMap[9].current?.focus(),
+                onSubmitEditing: () => refMap[7].current?.focus(),
                 blurOnSubmit: false,
                 returnKeyType: 'next',
                 onChangeText: (value: string) => onChangeText('password', value),
@@ -485,7 +434,7 @@ export default function Profile() {
             label="Contraseña"
           />
           <LabeledInput
-            ref={refMap[9]}
+            ref={refMap[7]}
             inputProps={
               {
                 onChangeText: (value: string) => onChangeText('password_confirmation', value),
@@ -509,8 +458,19 @@ export default function Profile() {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   containerCenter: {
+  },
+  heading: {
+    color: COLORS.primary,
+    fontSize: 27,
+    textAlign: 'center',
+  },
+  subHeading: {
+    paddingVertical: 10,
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.background,
   },
   container: {
     flexDirection: 'row',

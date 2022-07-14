@@ -9,7 +9,6 @@ import type { HomeStackParamList } from '.';
 
 // COMPONENTs
 import Button from "../../../components/ui/Button";
-import LineORSeparator from "../../../components/ui/LineORSeparator";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 
 // UTILs
@@ -45,10 +44,10 @@ export default function SelectService({ route, navigation }: Props) {
         </_Picker>
       </View>
       <View style={[SharedStyles.mainPadding, SharedStyles.centerContent]}>
-        <Button style={SharedStyles.backgroundPrimary}>
+        {/* <Button style={SharedStyles.backgroundPrimary}>
           Seleccionar empleado
         </Button>
-        <LineORSeparator />
+        <LineORSeparator /> */}
         <Button
           style={SharedStyles.backgroundPrimary}
           onPress={

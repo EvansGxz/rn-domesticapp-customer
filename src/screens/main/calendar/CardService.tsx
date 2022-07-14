@@ -7,9 +7,20 @@ import UserImage from "../../../components/user/UserImage";
 import moment from 'moment';
 import 'moment/locale/es';
 
+import type { TeamStackParamList } from '../team/index'
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { HomeStackParamList } from "../home";
+
+type ServiceScreenNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<HomeStackParamList, 'HomeScreen'>,
+  StackNavigationProp<TeamStackParamList, 'MeetTheTeamDetail'>
+>;
+
 export default function DayCardService(props: any) {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<ServiceScreenNavigationProp>();
   const route = useRoute<any>();
+
   const {data} = props;
   const momentLocale = moment(data?.start_date);
   const start_date = `${momentLocale.format('dddd')}, ${momentLocale.format("DD")} de ${momentLocale.format("MMMM")}`;
@@ -20,7 +31,7 @@ export default function DayCardService(props: any) {
         navigation.navigate('MeetTheTeamDetail', {employeeId: data?.employee.user_id})
       } else {
         // No me deja usar la funcion anidada <Si se puede corregir>..!
-        navigation.navigate('MeetTheTeam');
+        // navigation.navigate('MeetTheTeam');
         navigation.navigate('MeetTheTeamDetail', {employeeId: data?.employee.user_id});
       }
     }

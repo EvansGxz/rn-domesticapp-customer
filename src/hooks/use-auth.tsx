@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosError} from 'axios';
 import {useEffect, useMemo, useReducer} from 'react';
@@ -19,14 +19,19 @@ import { AuthContext } from '../contexts/auth-context';
 import { authReducer, PayloadActionKind } from '../contexts/authReducer';
 
 const initialState: AuthState = {
-  preloader: false,
+  user: null,
   loading: true,
-  user: null
+  preloader: false,
+  onboarding: true,
+}
+
+interface SocialSignIn {
+  full_name: string;
+  image_url: string;
 }
 
 export const AuthProvider: FunctionComponent = (props: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-
 
   const signIn = async (credentials: any) => {
     try {
@@ -35,7 +40,7 @@ export const AuthProvider: FunctionComponent = (props: any) => {
       await saveToken(token);
       dispatch({ type: PayloadActionKind.SIGN_IN, payload: {user: state} });
       dispatch({ type: PayloadActionKind.PRELOADER, payload: {preloader: false} });
-      Alert({msg: 'Has iniciado la sesión exitosamente', type: 'SUCCESS'});
+      Alert({msg: 'Has iniciado sesión exitosamente', type: 'SUCCESS'});
     } catch (err) {
       Alert({
         title: 'Error',
@@ -45,28 +50,33 @@ export const AuthProvider: FunctionComponent = (props: any) => {
     }
   }
 
-  const socialSignIn = async (credentials: any | object, img: any | string) => {
+  const socialSignIn = async (credentials: any, dataUser: SocialSignIn) => {
     try {
-      const {
-        data: {token, ...state},
-      } = await httpClient.post('/login_social', credentials);
+      const {data: {token}} = await httpClient.post('/login_social', credentials);
 
       await saveToken(token);
-      console.log('logged in');
 
-      await httpClient.patch(
+      const formData = new FormData();
+      formData.append('full_name', dataUser.full_name);
+      if (dataUser.image_url !== '') {
+        formData.append('cover', {
+          uri: dataUser.image_url,
+          type: 'image/jpeg',
+          name: `coverimage.jpg`,
+        } as any);
+      }
+
+      const response = await httpClient.patch(
         '/profile',
-        {image_url: img},
-        {headers: {Authorization: await retrieveTokenHeader()}},
+        formData,
+        {headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: await retrieveTokenHeader()
+        }},
       );
-
-      console.log('image changed');
-
-      dispatch({type: PayloadActionKind.SIGN_IN, payload: {user: state}});
-      Alert({msg: 'Has iniciado la sesión exitosamente', type: 'SUCCESS'});
+      dispatch({type: PayloadActionKind.SIGN_IN, payload: {user: response.data}});
+      Alert({msg: 'Has iniciado sesión exitosamente', type: 'SUCCESS'});
     } catch (err) {
-      console.log(err);
-      console.log((err as any).message);
       Alert({
         title: 'Error',
         msg: ((err as AxiosError).response?.data as any).errors,
@@ -119,16 +129,37 @@ export const AuthProvider: FunctionComponent = (props: any) => {
   }
   const getState = () => state;
 
+  const checkOnboarding = async () => {
+    try {
+      const _store = await AsyncStorage.getItem('@viewedOnboarding');
+      if (_store === null) {
+        dispatch({type: PayloadActionKind.ONBOARDING, payload: {onboarding: false}})
+      }
+    } catch (error) {
+      console.error('Error @checkOnboarding', error);
+    } finally {
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}})
+    }
+  };
+
+  useEffect(() => {
+    // AsyncStorage.removeItem('@viewedOnboarding');
+    checkOnboarding();
+    if (state.onboarding && state.preloader === false) {
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
+    }
+  }, [state.onboarding, state.loading]);
+
   const authFunctions = useMemo(() => {
     return {
       state,
-      dispatch,
       signIn,
-      socialSignIn,
+      signOut,
+      getState,
+      dispatch,
       phoneSignIn,
       loadSession,
-      signOut,
-      getState
+      socialSignIn,
     }
   }, [state]);
 

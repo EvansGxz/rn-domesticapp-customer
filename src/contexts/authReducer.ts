@@ -5,6 +5,7 @@ export enum PayloadActionKind {
   LOADING = 'LOADING',
   SIGN_OUT = 'SIGN_OUT',
   PRELOADER = 'PRELOADER',
+  ONBOARDING = 'ONBOARDING',
 }
 
 export type AuthAction = | { type: PayloadActionKind; payload: AuthState; } | { type: PayloadActionKind; }
@@ -20,6 +21,8 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
       return { ...state, loading: true };
     case PayloadActionKind.PRELOADER:
       return { ...state, preloader: payload.preloader };
+    case PayloadActionKind.ONBOARDING:
+      return { ...state, onboarding: payload.onboarding };
     default:
       return state;
   }

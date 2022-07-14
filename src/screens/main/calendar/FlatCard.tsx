@@ -106,13 +106,6 @@ const FlatCard = (props: EmployeDetailProps) => {
               SharedStyles.mainPadding,
               { width: "90%" },
             ]}>
-          </View>
-          <View
-            style={[
-              SharedStyles.centerContent,
-              SharedStyles.mainPadding,
-              { width: "90%" },
-            ]}>
             <Button
               style={[SharedStyles.backgroundPrimary]}
               onPress={toggleModal}>
