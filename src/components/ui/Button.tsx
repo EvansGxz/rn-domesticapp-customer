@@ -6,31 +6,51 @@ import {
   ViewStyle,
   TextStyle,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { COLORS } from "../../../config";
 
 export default function Button(props: ButtonProps) {
   return (
-    <TouchableOpacity disabled={props.disabled} onPress={props.onPress} activeOpacity={0.7} style={[style.button, props.style]}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={props.onPress}
+      disabled={props.disabled}
+      style={[style.button, props.style]}>
+        {props.starIcon && (
+          <View style={style.starIcon}>
+            {props.starIcon}
+          </View>
+        )}
       <Text style={[style.text, props.textStyle]}>{props.children}</Text>
+      {props.endIcon}
     </TouchableOpacity>
   );
 }
 
 export interface ButtonProps {
   disabled?: boolean;
-  children: any;
   onPress?: () => void;
+  endIcon?: JSX.Element;
+  starIcon?: JSX.Element;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  children?: JSX.Element | JSX.Element[] | string;
 }
 
 const style = StyleSheet.create({
   button: {
+    flexDirection: 'row',
+    justifyContent:'center',
+    alignItems: 'center',
     backgroundColor: COLORS.secondary,
     width: '100%',
     padding: 10,
     borderRadius: 10,
+  },
+  starIcon: {
+    position: 'absolute',
+    left: '8%'
   },
   text: {
     color: '#fff',

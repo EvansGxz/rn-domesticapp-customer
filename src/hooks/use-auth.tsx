@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosError} from 'axios';
 import {useEffect, useMemo, useReducer} from 'react';
@@ -14,7 +14,7 @@ import {
 import Alert from '../controllers/Alert';
 
 // CONTEXTs And REDUCERs
-import { AuthState } from '../interfaces/interfaces';
+import { AuthState, SocialSignIn } from '../interfaces/interfaces';
 import { AuthContext } from '../contexts/auth-context';
 import { authReducer, PayloadActionKind } from '../contexts/authReducer';
 
@@ -25,10 +25,6 @@ const initialState: AuthState = {
   onboarding: true,
 }
 
-interface SocialSignIn {
-  full_name: string;
-  image_url: string;
-}
 
 export const AuthProvider: FunctionComponent = (props: any) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
@@ -55,7 +51,6 @@ export const AuthProvider: FunctionComponent = (props: any) => {
       const {data: {token}} = await httpClient.post('/login_social', credentials);
 
       await saveToken(token);
-
       const formData = new FormData();
       formData.append('full_name', dataUser.full_name);
       if (dataUser.image_url !== '') {

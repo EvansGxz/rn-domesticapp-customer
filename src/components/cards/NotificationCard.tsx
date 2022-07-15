@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { COLORS } from "../../../config";
 import MailSVG from '../../resources/img/profile-icons/mail-icon.svg';
-import TrashSVG from '../../resources/img/profile-icons/trash-icon.svg';
 import { SharedStyles } from "../../styles/shared-styles";
 import moment from "moment";
 export interface NotificationCardProps {

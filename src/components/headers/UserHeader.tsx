@@ -15,19 +15,18 @@ export default function UserHeader() {
   return (
     <View style={style.headerContainer}>
       <UserImage src={data?.image_url} />
-      <View style={{width: "73%"}}>
+      <View style={{flex: 1}}>
         <Text style={style.mainText}>
-          Hola, <Text style={style.boldText}>{data?.full_name}</Text>!
+          Hola, <Text style={style.boldText} numberOfLines={1}>{data?.full_name}</Text>!
         </Text>
         <Text style={style.textEmail} numberOfLines={1}>
           {data?.email}
         </Text>
       </View>
-      <View style={{ alignItems: "flex-end", width: "15%" }}>
+      <View style={{ alignItems: "flex-end" }}>
         <TouchableOpacity
           style={{ margin: 10 }}
-          onPress={() => navigation.navigate("Contract")}
-        >
+          onPress={() => navigation.navigate("Contract")}>
           <MenuIcon />
         </TouchableOpacity>
       </View>
@@ -37,13 +36,12 @@ export default function UserHeader() {
 
 const style = StyleSheet.create({
   headerContainer: {
-    width: "100%",
-    backgroundColor: "#fff",
     zIndex: 1,
-    height: 70,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
+    backgroundColor: "#fff",
     shadowOffset: {
       width: 0,
       height: 1,
@@ -54,8 +52,8 @@ const style = StyleSheet.create({
     padding: 20,
   },
   mainText: {
+    flex: 1,
     fontSize: 20,
-    marginBottom: -5,
   },
   boldText: {
     fontWeight: "bold",

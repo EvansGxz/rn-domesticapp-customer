@@ -3,6 +3,7 @@ import { TextInput, TextInputProps, StyleSheet } from "react-native";
 import { COLORS } from "../../../config";
 
 export interface OutlinedInputProps extends TextInputProps {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     inputRef?: any;
 }
 

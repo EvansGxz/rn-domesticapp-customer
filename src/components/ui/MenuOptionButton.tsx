@@ -4,8 +4,9 @@ import { SharedStyles } from "../../styles/shared-styles";
 
 export interface MenuOptionButtonProps {
     text: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon: any;
-    onPress?: () => any;
+    onPress?: () => void;
 }
 
 const MenuOptionButton = (props: MenuOptionButtonProps) => { 

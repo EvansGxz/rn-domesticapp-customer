@@ -10,6 +10,7 @@ import ListLocationMap from './ListLocationMap';
 
 const SearchDirectionMap = (props: any) => {
   const [location, setLocation] = useState<object | any>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [errorMsg, setErrorMsg] = useState<string>('');
   const [searchText, setSearchText] = useState<string>('');
   const [ubicaciones, setUbicaciones] = useState<object | null>();

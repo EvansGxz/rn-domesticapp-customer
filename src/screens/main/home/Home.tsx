@@ -34,28 +34,30 @@ export default function Home({ navigate }: ServiceScreenNavigationProp) {
   }, []);
 
   return (
-    <ScrollView style={styles.homeContainer}>
-      {state.user?.client_type ? (
-        <>
-          <UserHeader />
-          <HomeHero />
-          <View style={styles.centerCategories}>
-            <ServiceTypesCatalog />
-            <Button
-              style={styles.button}
-              onPress={() => navigate('MeetTheTeam')}>
-              Conoce al Equipo
-            </Button>
-          </View>
-        </>
-      ) : (
-        <ModalUI isOpen={isModalOpened}>
-          <View style={[styles.cardModal, { width: "90%" }]}>
-            <ModalProfile setIsOpen={setIsModalOpened} />
-          </View>
-        </ModalUI>
-      )}
-    </ScrollView>
+    <>
+      {state.user?.client_type && <UserHeader />}
+      <ScrollView style={styles.homeContainer}>
+        {state.user?.client_type ? (
+          <>
+            <HomeHero />
+            <View style={styles.centerCategories}>
+              <ServiceTypesCatalog />
+              <Button
+                style={styles.button}
+                onPress={() => navigate('MeetTheTeam')}>
+                Conoce al Equipo
+              </Button>
+            </View>
+          </>
+        ) : (
+          <ModalUI isOpen={isModalOpened}>
+            <View style={[styles.cardModal, { width: "90%" }]}>
+              <ModalProfile setIsOpen={setIsModalOpened} />
+            </View>
+          </ModalUI>
+        )}
+      </ScrollView>
+    </>
   );
 }
 
@@ -66,10 +68,10 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   cardModal: {
-    backgroundColor: COLORS.lightBlue,
     padding: 20,
-    marginVertical: 15,
     borderRadius: 5,
+    marginVertical: 15,
+    backgroundColor: COLORS.lightBlue,
   },
   centerCategories: {
     alignItems: "center",
@@ -77,8 +79,9 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   button: {
-    width: "85%",
+    width: "90%",
     padding: 20,
+    marginTop: 10,
     backgroundColor: COLORS.primary,
   },
 });

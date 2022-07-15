@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {Dispatch} from 'react';
-import {AuthState} from '../interfaces/interfaces';
+import { AuthState, SocialSignIn } from '../interfaces/interfaces';
 import type {AuthAction} from './authReducer';
 
 type AuthContextProps = {
@@ -10,7 +10,7 @@ type AuthContextProps = {
   signOut: () => Promise<void>;
   loadSession: (token: string, user: any) => Promise<void>;
   phoneSignIn: (credentials: any) => Promise<void>;
-  socialSignIn: (credentials: any) => Promise<void>;
+  socialSignIn: (credentials: any, dataUSer: SocialSignIn) => Promise<void>;
   signIn: (credentials: any) => Promise<void>;
 };
 

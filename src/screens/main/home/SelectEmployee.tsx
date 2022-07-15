@@ -5,12 +5,6 @@ import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import UserImage from "../../../components/user/UserImage";
 
 export default function SelectEmployee() {
-  const employee = [
-    {
-      id: 1,
-      name: "Liliana Berrio Saldabarriga",
-    },
-  ];
   return (
     <View style={[SharedStyles.mainScreen]}>
       <BackTitledHeader title="Selecciona un empleado" />

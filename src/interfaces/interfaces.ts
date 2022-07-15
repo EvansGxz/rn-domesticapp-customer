@@ -6,6 +6,11 @@ export interface AuthState {
   user?: any | null;
 }
 
+export interface SocialSignIn {
+  full_name: string | any;
+  image_url: string | any;
+}
+
 export interface MenuOptionProps {
   text: string;
   icon?: any;

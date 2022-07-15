@@ -40,7 +40,7 @@ interface dataUser {
   user_type: string;
   full_name: string;
   document_type: string;
-  document_string: string;
+  document_id: string;
   birth_date: string;
   phone: string;
   company: string;
@@ -65,15 +65,14 @@ export default function Signup() {
     useRef<TextInput>(null),
     useRef<TextInput>(null),
     useRef<TextInput>(null),
-    useRef<TextInput>(null),
-    useRef<TextInput>(null),
+    useRef<TextInput>(null)
   ]
 
   const [data, setData] = useState<dataUser>({
     user_type: 'customer',
     full_name: '',
     document_type: '',
-    document_string: '',
+    document_id: '',
     birth_date: '',
     phone: '',
     company: '',
@@ -103,7 +102,7 @@ export default function Signup() {
       formData.append('user_type', data.user_type);
       formData.append('full_name', data.full_name.trimEnd());
       formData.append('document_type', data.document_type);
-      formData.append('document_string', data.document_string);
+      formData.append('document_id', data.document_id);
       formData.append('birth_date', data.birth_date);
       formData.append('phone', data.phone.trimEnd());
       formData.append('company', data.company.trimEnd());
@@ -258,12 +257,12 @@ export default function Signup() {
                 <Text style={[style.pickerLabel, style.labelForInput]}>Tipo de Documento</Text>
                 <DropDownPicker
                   open={openModals.docType}
-                  setOpen={(value) => setModalOpen({
+                  setOpen={(value: any) => setModalOpen({
                     clientType: false,
-                    docType: value as any,
+                    docType: value,
                     country: false,
                   }) }
-                  setValue={(value) => onChangeText('document_type', value())}
+                  setValue={(value: any) => onChangeText('document_type', value())}
                   style={style.picker}
                   placeholder='Selecione un tipo de documento'
                   textStyle={style.textPicker}
@@ -279,8 +278,8 @@ export default function Signup() {
                   onSubmitEditing: () => refMap[1].current?.focus(),
                   blurOnSubmit: false,
                   returnKeyType: 'next',
-                  onChangeText: (value: string) => onChangeText('document_string', value),
-                  value: data.document_string,
+                  onChangeText: (value: string) => onChangeText('document_id', value),
+                  value: data.document_id,
                   autoCapitalize: "none",
                   style: style.inputBlueRounded
                 }
@@ -309,14 +308,15 @@ export default function Signup() {
               inputProps={
                 {
                   onSubmitEditing: () => refMap[2].current?.focus(),
+                  maxLength: 10,
                   blurOnSubmit: false,
                   returnKeyType: 'next',
-                  keyboardType: 'number-pad',
-                  maxLength: 10,
-                  onChangeText: (value: string) => onChangeText('birth_date', dateFormat(value)),
                   value: data.birth_date,
                   autoCapitalize: "none",
-                  style: style.inputBlueRounded
+                  placeholder: 'DD/MM/AAAA',
+                  keyboardType: 'number-pad',
+                  style: style.inputBlueRounded,
+                  onChangeText: (value: string) => onChangeText('birth_date', dateFormat(value)),
                 }
               }
               style={style.labelForInput}
@@ -364,7 +364,7 @@ export default function Signup() {
                   country: false,
                   clientType: value,
                 })}
-                setValue={(value) => onChangeText('client_type', value())}
+                setValue={(value: any) => onChangeText('client_type', value())}
                 style={style.picker}
                 placeholder='Selecione un elemento'
                 textStyle={style.textPicker}
@@ -393,12 +393,12 @@ export default function Signup() {
               <DropDownPicker
                 closeOnBackPressed
                 open={openModals.country}
-                setOpen={(value: boolean | any) => setModalOpen({
+                setOpen={(value: any) => setModalOpen({
                   country: value,
                   docType: false,
                   clientType: false
                 })}
-                setValue={(value) => onChangeText('country', value())}
+                setValue={(value: any) => onChangeText('country', value())}
                 style={style.picker}
                 placeholder='Selecione un pais'
                 textStyle={style.textPicker}
@@ -413,22 +413,6 @@ export default function Signup() {
                   onSubmitEditing: () => refMap[7].current?.focus(),
                   blurOnSubmit: false,
                   returnKeyType: 'next',
-                  onChangeText: (value: string) => onChangeText('cc_nit', value),
-                  value: data.cc_nit,
-                  autoCapitalize: "none",
-                  style: style.inputBlueRounded
-                }
-              }
-              style={style.labelForInput}
-              label="CC / NIT"
-            />
-            <LabeledInput
-              ref={refMap[7]}
-              inputProps={
-                {
-                  onSubmitEditing: () => refMap[8].current?.focus(),
-                  blurOnSubmit: false,
-                  returnKeyType: 'next',
                   onChangeText: (value: string) => onChangeText('email', value),
                   value: data.email,
                   autoCapitalize: "none",
@@ -439,10 +423,10 @@ export default function Signup() {
               label="Correo Electrónico"
             />
             <LabeledInput
-              ref={refMap[8]}
+              ref={refMap[7]}
               inputProps={
                 {
-                  onSubmitEditing: () => refMap[9].current?.focus(),
+                  onSubmitEditing: () => refMap[8].current?.focus(),
                   blurOnSubmit: false,
                   returnKeyType: 'next',
                   onChangeText: (value: string) => onChangeText('password', value),
@@ -455,7 +439,7 @@ export default function Signup() {
               label="Contraseña"
             />
             <LabeledInput
-              ref={refMap[9]}
+              ref={refMap[8]}
               inputProps={
                 {
                   onChangeText: (value: string) => onChangeText('password_confirmation', value),

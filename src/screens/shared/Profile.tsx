@@ -10,12 +10,13 @@ import {
   View,
   Image,
   Alert,
+  Animated,
   Pressable,
   TextInput,
   ViewStyle,
   StyleProp,
   StyleSheet,
-  ScrollView,
+  Dimensions,
   SafeAreaView,
   TextInputProps,
 } from 'react-native';
@@ -73,6 +74,8 @@ const dateFormat = (value: string) => {
   return ''
 }
 
+
+const {width} = Dimensions.get('screen');
 export default function Profile() {
   const [userdata, setData] = useState({
     full_name: '',
@@ -99,7 +102,6 @@ export default function Profile() {
 
     if (state.user) {
       const { user } = state;
-      console.log(user);
       delete user.cover;
       setPhotoUrl(user.image_url);
       setData({...user, birth_date: user.birth_date === null ? '' : moment(user.birth_date).format('L')});
@@ -220,31 +222,61 @@ export default function Profile() {
     }
   }
 
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const translateX = scrollY.interpolate({
+    inputRange: [0, width / 3],
+    outputRange: [0, width / 3],
+    extrapolate: 'clamp'
+  });
+
+  const translateY = scrollY.interpolate({
+    inputRange: [0, width / 5],
+    outputRange: [0, -width / 3.5],
+    extrapolate: 'clamp'
+  });
+
+  const scale = scrollY.interpolate({
+    inputRange: [0, 50],
+    outputRange: [1, 0.4],
+    extrapolate: 'clamp'
+  });
+
   return (
     <SafeAreaView style={SharedStyles.mainScreen}>
-      <BackTitledHeader title="Editar Mi Perfil" />
-      <ScrollView
+      <Animated.ScrollView
+        stickyHeaderIndices={[0]}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: true}
+        )}
         style={SharedStyles.fill}
         contentContainerStyle={[SharedStyles.mainPadding, styles.containerCenter]}>
+        <>
+          <BackTitledHeader title="Editar Mi Perfil" />
+          <Animated.View style={{transform: [{translateX}, {translateY}, {scale}]}}>
+            <Pressable style={styles.pressableImage} onPress={handleAlertPicture}>
+              {
+                !photoUrl ? (
+                  <View style={styles.imagePlaceholder}>
+                    <_FontAwesome name="camera" style={styles.iconCamera} />
+                    <Text style={styles.textAddImage}>Agregar Imagen</Text>
+                  </View>
+                ) : (
+                  <>
+                    <Image source={{ uri: photoUrl }} style={styles.imagePhoto} />
+                    <Pressable style={styles.buttonErase} onPress={() => setPhotoUrl('')}>
+                      <_FontAwesome name="close" style={styles.iconErase} />
+                    </Pressable>
+                  </>
+                )
+              }
+            </Pressable>
+          </Animated.View>
+        </>
         <_KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.inputsContainer}>
-          <Pressable style={styles.pressableImage} onPress={handleAlertPicture}>
-            {
-              !photoUrl ?
-                <View style={styles.imagePlaceholder}>
-                  <_FontAwesome name="camera" style={styles.iconCamera} />
-                  <Text style={styles.textAddImage}>Agregar Imagen</Text>
-                </View>
-                :
-                <View>
-                  <Image source={{ uri: photoUrl }} style={styles.imagePhoto} />
-                  <Pressable style={styles.buttonErase} onPress={() => setPhotoUrl('')}>
-                    <_FontAwesome name="close" style={styles.iconErase} />
-                  </Pressable>
-                </View>
-            }
-          </Pressable>
           <LabeledInput
             inputProps={
               {
@@ -452,7 +484,7 @@ export default function Profile() {
           disabled={loading}
           style={[SharedStyles.backgroundPrimary, loading && { backgroundColor: '#CCC' }]}
           onPress={() => !loading && editProfile()}>{loading ? 'Cargando...' : 'Continuar'}</Button>
-      </ScrollView>
+      </Animated.ScrollView>
       <Footer style={{color: COLORS.primary, textAlign: 'center'}} />
     </SafeAreaView>
   );
@@ -522,9 +554,8 @@ export const styles = StyleSheet.create({
     color: '#787B82',
   },
   pressableImage: {
+    zIndex: 1000,
     marginBottom: 20,
-    height: 144,
-    width: 144,
     alignSelf: "center",
   },
   imagePlaceholder: {

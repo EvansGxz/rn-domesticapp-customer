@@ -21,7 +21,7 @@ import { COLORS } from "../../../../config";
 import { PayloadActionKind } from "../../../contexts/authReducer";
 type Props = StackScreenProps<HomeStackParamList, 'ServiceDetails'>;
 
-export default function ServiceDetails({ route, navigation }: Props) {
+export default function ServiceDetails({ navigation }: Props) {
   const {state, dispatch} = useAuth();
 
   const [isChecked, setChecked] = useState<boolean[]>([false]);

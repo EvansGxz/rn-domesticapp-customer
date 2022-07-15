@@ -16,7 +16,7 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '50%',
+        width: '90%',
         opacity: 0.6,
     },
     separatorText: {
