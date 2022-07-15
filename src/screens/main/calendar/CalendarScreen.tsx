@@ -52,13 +52,7 @@ export default function CalendarScreen() {
             )}
           />
         </>
-        )
-      }
-      {/*  <View style={[SharedStyles.centerContent, SharedStyles.mainPadding]}>
-        <Button style={SharedStyles.backgroundPrimary}>
-          Ir a Proximo Servicio
-        </Button>
-      </View> */}
+      )}
     </View>
   );
 }

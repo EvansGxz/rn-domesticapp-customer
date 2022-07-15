@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, LogBox} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Logo from '../../resources/img/ui/dom-app-logo.svg';
 import {Picker} from '@react-native-picker/picker';
@@ -8,7 +8,6 @@ import Svg, {Path, G} from 'react-native-svg';
 
 // LOGIN
 import * as WebBrowser from 'expo-web-browser';
-// import * as GoogleAuth from 'expo-auth-session/providers/google';
 import { GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,12 +20,11 @@ import Footer from '../../components/ui/Footer';
 import LineORSeparator from '../../components/ui/LineORSeparator';
 import UnderlinedButton from '../../components/ui/UnderlinedButton';
 
-import SplashScreen from '../../layouts/SplashScreen';
 import { useAuth } from '../../hooks/use-auth';
 import Alert from '../../controllers/Alert';
 
-// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-// LogBox.ignoreAllLogs(); //Ignore all log notifications
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -75,7 +73,6 @@ const IconFacebook = () => (
 export default function Welcome({navigation}: any) {
   const {socialSignIn} = useAuth();
   const [country, setCountry] = useState<string>('col');
-  const [isLoading, setIsLoading] = useState(false);
 
   const getCountry = () => {
     AsyncStorage.getItem('country').then(value => {
@@ -91,7 +88,6 @@ export default function Welcome({navigation}: any) {
   useEffect(() => {
     getCountry();
     GoogleSignin.configure();
-    setIsLoading(false);
   }, []);
 
   const facebookLogin = async () => {
@@ -164,8 +160,6 @@ export default function Welcome({navigation}: any) {
     {label: 'Colombia', value: 'col'},
     {label: 'España', value: 'esp'},
   ];
-
-  if (isLoading) return <SplashScreen />;
 
   const _Picker: any = Picker;
   return (

@@ -159,23 +159,19 @@ export const AuthProvider: FunctionComponent = (props: any) => {
   }, [state]);
 
   useEffect(() => {
-    console.log('Loading APP.');
-    setTimeout(() => {
-      console.log('Checking token.');
-      retrieveToken().then(async token => {
-        try {
-          // console.log('Token: ', token);
-          if (!token) return dispatch({type: PayloadActionKind.SIGN_OUT});
-          const result = await httpClient.get('/profile', {
-            headers: {Authorization: await retrieveTokenHeader()},
-          });
-          dispatch({type: PayloadActionKind.SIGN_IN, payload: {user: result?.data}});
-        } catch (err) {
-          await AsyncStorage.removeItem('token');
-          dispatch({type: PayloadActionKind.SIGN_OUT});
-        }
-      });
-    }, 500);
+    retrieveToken().then(async token => {
+      try {
+        // console.log('Token: ', token);
+        if (!token) return dispatch({type: PayloadActionKind.SIGN_OUT});
+        const result = await httpClient.get('/profile', {
+          headers: {Authorization: await retrieveTokenHeader()},
+        });
+        dispatch({type: PayloadActionKind.SIGN_IN, payload: {user: result?.data}});
+      } catch (err) {
+        await AsyncStorage.removeItem('token');
+        dispatch({type: PayloadActionKind.SIGN_OUT});
+      }
+    });
   }, []);
 
   return <AuthContext.Provider value={authFunctions} {...props} />;

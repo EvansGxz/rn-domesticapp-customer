@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps
+} from "@react-navigation/material-top-tabs";
 import { Animated, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import DomIcon from '../../resources/img/ui/dom-app-icon.svg';
@@ -9,7 +12,6 @@ import { style } from "./style";
 // SCREENs
 import Signin from '../log/Signin';
 import Signup from '../log/Signup';
-
 
 type TabLogParamList = {
   Login: undefined;

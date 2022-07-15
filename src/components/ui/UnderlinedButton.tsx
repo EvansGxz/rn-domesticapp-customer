@@ -10,7 +10,7 @@ export default function UnderlinedButton(props: UnderlinedButtonProps) {
 }
 
 export interface UnderlinedButtonProps {
-    children: JSX.Element | JSX.Element[];
+    children: JSX.Element | JSX.Element[] | string;
     onPress?: () => void;
     textStyle?: StyleProp<TextStyle>;
 }
