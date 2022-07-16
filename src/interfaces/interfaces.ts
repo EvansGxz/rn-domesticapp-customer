@@ -6,6 +6,12 @@ export interface AuthState {
   user?: any | null;
 }
 
+export interface ServiceType {
+  id: string;
+  category_name: string;
+  image_url: string;
+}
+
 export interface SocialSignIn {
   full_name: string | any;
   image_url: string | any;

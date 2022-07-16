@@ -20,7 +20,7 @@ import MeetTheTeam from "./team";
 
 import { COLORS } from "../../../config";
 
-type RootTabParamList = {
+export type RootTabParamList = {
     RootHome: undefined;
     Team: undefined;
     Calendar: undefined;

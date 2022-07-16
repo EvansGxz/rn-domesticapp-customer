@@ -10,7 +10,6 @@ import Loader from '../../../components/Loader';
 
 export default function Notifications() {
   const {loading, error, data = []} = useFetch('/notifications/', {}, []);
-
   // const pdfComponent = () => {
   //    <WebView
   //     source={{

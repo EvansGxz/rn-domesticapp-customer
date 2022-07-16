@@ -33,7 +33,7 @@ export default function ServiceDetails({ navigation }: Props) {
   });
 
   const checkList = ["Trapear", "Lavar", "Tarea", "Barrer", "Cocinar"];
-  const { category_id, address, start_date, service_time } = useCalendar();
+  const { category_id, start_date, service_time, workday, finish_date, address } = useCalendar();
   const saveService = async () => {
     dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: true}});
     try {
@@ -42,12 +42,11 @@ export default function ServiceDetails({ navigation }: Props) {
         employee_id: 10,
         customer_id: parseInt(state.user.id),
         discount: '0',
-        active: true,
         address,
         start_date,
-        // qoute: route.params.quote, CITAS
-        service_time: service_time,
-        workday: "Completo",
+        workday,
+        finish_date,
+        service_time,
         supply_food: "no"
       }
       // console.log('==================>',formData);
@@ -57,14 +56,12 @@ export default function ServiceDetails({ navigation }: Props) {
           Authorization: `Token token=${state.user .token}`
         }
       });
-      console.log({ response: response.data });
       dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
       navigation.navigate('TodoListo', { params: response.data });
       console.log('<<<<<<<================================>>>>>> PASA <<<<<<<================================>>>>>>')
     } catch (error: any) {
+      dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
       console.log('<<<<<<<================================>>>>>> ERROR <<<<<<<================================>>>>>>')
-      // console.log(error);
-      // console.log(error.response);
       console.log(error.response.data);
     }
 
@@ -85,15 +82,6 @@ export default function ServiceDetails({ navigation }: Props) {
         <OutlinedInput style={styles.input} value={state.user.phone} editable={false} />
         <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>No. De documento</Text>
         <OutlinedInput style={styles.input} value={state.user.document_id} editable={false} />
-        {/*
-                <Text style={[SharedStyles.h3, { marginBottom: 10}]}>No. De documento</Text>
-                <_Picker
-                    selectedValue={data.ccNit}
-                    onValueChange={(itemValue: any) => setData({ ...data, food: itemValue })}
-                    style={[SharedStyles.card, SharedStyles.mb]}
-                >
-                    <_Picker.Item label="Opción 1" value="1" />
-                </_Picker>*/}
         <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Especificar labores</Text>
         <_Picker
           selectedValue={datas.specifyTasks && recurrency}

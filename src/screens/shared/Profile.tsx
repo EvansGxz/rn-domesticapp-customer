@@ -227,7 +227,7 @@ export default function Profile() {
   const translateX = scrollY.interpolate({
     inputRange: [0, width / 3],
     outputRange: [0, width / 3],
-    extrapolate: 'clamp'
+    extrapolateRight: 'clamp'
   });
 
   const translateY = scrollY.interpolate({
@@ -250,8 +250,7 @@ export default function Profile() {
           [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {useNativeDriver: true}
         )}
-        style={SharedStyles.fill}
-        contentContainerStyle={[SharedStyles.mainPadding, styles.containerCenter]}>
+        style={SharedStyles.fill}>
         <>
           <BackTitledHeader title="Editar Mi Perfil" />
           <Animated.View style={{transform: [{translateX}, {translateY}, {scale}]}}>
@@ -274,225 +273,227 @@ export default function Profile() {
             </Pressable>
           </Animated.View>
         </>
-        <_KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.inputsContainer}>
-          <LabeledInput
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[0].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('full_name', value),
-                value: userdata.full_name,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
-              } as any
+        <View style={SharedStyles.mainPadding}>
+          <_KeyboardAwareScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.inputsContainer}>
+            <LabeledInput
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[0].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  onChangeText: (value: string) => onChangeText('full_name', value),
+                  value: userdata.full_name,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded
+                } as any
+              }
+              style={styles.labelForInput}
+              label="Nombre Completo / Empresa"
+            />
+            {
+              country?.length &&
+              <View style={{ marginBottom: 10, zIndex: 10 }}>
+                <Text style={[styles.pickerLabel, styles.labelForInput]}>Tipo de Documento</Text>
+                <DropDownPicker
+                  open={openModals.docType}
+                  setOpen={(value: any) => setModalOpen({
+                    docType: value,
+                    clientType: false,
+                    country: false,
+                  }) as any}
+                  setValue={(value: any) => onChangeText('document_type', value())}
+                  style={styles.picker}
+                  placeholder='Selecione un elemento'
+                  textStyle={styles.textPicker}
+                  items={docTypes.filter(dt => dt.country === country)}
+                  value={userdata.document_type}
+                />
+              </View>
             }
-            style={styles.labelForInput}
-            label="Nombre Completo / Empresa"
-          />
-          {
-            country?.length &&
-            <View style={{ marginBottom: 10, zIndex: 10 }}>
-              <Text style={[styles.pickerLabel, styles.labelForInput]}>Tipo de Documento</Text>
+            <LabeledInput
+              ref={refMap[0]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[1].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  onChangeText: (value: string) => onChangeText('document_id', value),
+                  value: userdata.document_id,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded
+                }
+              }
+              style={styles.labelForInput}
+              label="Número de Documento"
+            />
+            <LabeledInput
+              ref={refMap[1]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[2].current?.focus(),
+                  maxLength: 10,
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  keyboardType: 'number-pad',
+                  onChangeText: (value: string) => onChangeText('birth_date', dateFormat(value)),
+                  value: userdata.birth_date,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded,
+                  placeholder: 'DD/MM/AAAA'
+                }
+              }
+              style={styles.labelForInput}
+              label="Fecha de Nacimiento"
+            />
+            <LabeledInput
+              ref={refMap[2]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[3].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  keyboardType: 'number-pad',
+                  maxLength: 10,
+                  onChangeText: (value: string) => onChangeText('phone', value),
+                  value: userdata.phone,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded
+                }
+              }
+              style={styles.labelForInput}
+              label="Telefono"
+            />
+            <LabeledInput
+              ref={refMap[3]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[4].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  onChangeText: (value: string) => onChangeText('cod_refer', value),
+                  value: userdata.cod_refer,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded
+                }
+              }
+              style={styles.labelForInput}
+              label="Código Referido"
+            />
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.pickerLabel, styles.labelForInput]}>Tipo de Cliente</Text>
               <DropDownPicker
-                open={openModals.docType}
+                closeOnBackPressed
+                open={openModals.clientType}
                 setOpen={(value: any) => setModalOpen({
-                  docType: value,
-                  clientType: false,
+                  clientType: value,
+                  docType: false,
                   country: false,
-                }) as any}
-                setValue={(value: any) => onChangeText('document_type', value())}
+                })}
+                setValue={(value: any) => onChangeText('client_type', value)}
                 style={styles.picker}
-                placeholder='Selecione un elemento'
+                placeholder='Selecione um elemento'
                 textStyle={styles.textPicker}
-                items={docTypes.filter(dt => dt.country === country)}
-                value={userdata.document_type}
+                items={clientTypeOptions}
+                value={userdata.client_type}
               />
             </View>
-          }
-          <LabeledInput
-            ref={refMap[0]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[1].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('document_id', value),
-                value: userdata.document_id,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
+            <LabeledInput
+              ref={refMap[4]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[5].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  onChangeText: (value: string) => onChangeText('region', value),
+                  value: userdata.region,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded
+                }
               }
-            }
-            style={styles.labelForInput}
-            label="Número de Documento"
-          />
-          <LabeledInput
-            ref={refMap[1]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[2].current?.focus(),
-                maxLength: 10,
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                keyboardType: 'number-pad',
-                onChangeText: (value: string) => onChangeText('birth_date', dateFormat(value)),
-                value: userdata.birth_date,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded,
-                placeholder: 'DD/MM/AAAA'
-              }
-            }
-            style={styles.labelForInput}
-            label="Fecha de Nacimiento"
-          />
-          <LabeledInput
-            ref={refMap[2]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[3].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                keyboardType: 'number-pad',
-                maxLength: 10,
-                onChangeText: (value: string) => onChangeText('phone', value),
-                value: userdata.phone,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
-              }
-            }
-            style={styles.labelForInput}
-            label="Telefono"
-          />
-          <LabeledInput
-            ref={refMap[3]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[4].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('cod_refer', value),
-                value: userdata.cod_refer,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
-              }
-            }
-            style={styles.labelForInput}
-            label="Código Referido"
-          />
-          <View style={{ marginBottom: 10 }}>
-            <Text style={[styles.pickerLabel, styles.labelForInput]}>Tipo de Cliente</Text>
-            <DropDownPicker
-              closeOnBackPressed
-              open={openModals.clientType}
-              setOpen={(value: any) => setModalOpen({
-                clientType: value,
-                docType: false,
-                country: false,
-              })}
-              setValue={(value: any) => onChangeText('client_type', value)}
-              style={styles.picker}
-              placeholder='Selecione um elemento'
-              textStyle={styles.textPicker}
-              items={clientTypeOptions}
-              value={userdata.client_type}
+              style={styles.labelForInput}
+              label="Región"
             />
-          </View>
-          <LabeledInput
-            ref={refMap[4]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[5].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('region', value),
-                value: userdata.region,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
+            <View style={{ marginBottom: 10 }}>
+              <Text style={[styles.pickerLabel, styles.labelForInput]}>Pais</Text>
+              <DropDownPicker
+                closeOnBackPressed
+                open={openModals.country}
+                setOpen={(value: boolean | any) => setModalOpen({
+                  country: value,
+                  docType: false,
+                  clientType: false
+                })}
+                setValue={(value: any) => onChangeText('country', value())}
+                style={styles.picker}
+                placeholder='Selecione un pais'
+                textStyle={styles.textPicker}
+                items={countryOptions}
+                value={userdata.country}
+              />
+            </View>
+            <LabeledInput
+              ref={refMap[5]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[6].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  onChangeText: (value: string) => onChangeText('email', value),
+                  value: userdata.email,
+                  autoCapitalize: "none",
+                  style: styles.inputBlueRounded
+                }
               }
-            }
-            style={styles.labelForInput}
-            label="Región"
-          />
-          <View style={{ marginBottom: 10 }}>
-            <Text style={[styles.pickerLabel, styles.labelForInput]}>Pais</Text>
-            <DropDownPicker
-              closeOnBackPressed
-              open={openModals.country}
-              setOpen={(value: boolean | any) => setModalOpen({
-                country: value,
-                docType: false,
-                clientType: false
-              })}
-              setValue={(value: any) => onChangeText('country', value())}
-              style={styles.picker}
-              placeholder='Selecione un pais'
-              textStyle={styles.textPicker}
-              items={countryOptions}
-              value={userdata.country}
+              style={styles.labelForInput}
+              label="Correo Electrónico"
             />
-          </View>
-          <LabeledInput
-            ref={refMap[5]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[6].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('email', value),
-                value: userdata.email,
-                autoCapitalize: "none",
-                style: styles.inputBlueRounded
+            <LabeledInput
+              ref={refMap[6]}
+              inputProps={
+                {
+                  onSubmitEditing: () => refMap[7].current?.focus(),
+                  blurOnSubmit: false,
+                  returnKeyType: 'next',
+                  onChangeText: (value: string) => onChangeText('password', value),
+                  value: userdata.password,
+                  secureTextEntry: true,
+                  style: styles.inputBlueRounded
+                }
               }
-            }
-            style={styles.labelForInput}
-            label="Correo Electrónico"
-          />
-          <LabeledInput
-            ref={refMap[6]}
-            inputProps={
-              {
-                onSubmitEditing: () => refMap[7].current?.focus(),
-                blurOnSubmit: false,
-                returnKeyType: 'next',
-                onChangeText: (value: string) => onChangeText('password', value),
-                value: userdata.password,
-                secureTextEntry: true,
-                style: styles.inputBlueRounded
+              style={styles.labelForInput}
+              label="Contraseña"
+            />
+            <LabeledInput
+              ref={refMap[7]}
+              inputProps={
+                {
+                  onChangeText: (value: string) => onChangeText('password_confirmation', value),
+                  value: userdata.password_confirmation,
+                  secureTextEntry: true,
+                  style: styles.inputBlueRounded
+                }
               }
-            }
-            style={styles.labelForInput}
-            label="Contraseña"
-          />
-          <LabeledInput
-            ref={refMap[7]}
-            inputProps={
-              {
-                onChangeText: (value: string) => onChangeText('password_confirmation', value),
-                value: userdata.password_confirmation,
-                secureTextEntry: true,
-                style: styles.inputBlueRounded
-              }
-            }
-            style={styles.labelForInput}
-            label="Confirma tu contraseña"
-          />
-          <View style={styles.extraSpace} />
-        </_KeyboardAwareScrollView>
-        <Button
-          disabled={loading}
-          style={[SharedStyles.backgroundPrimary, loading && { backgroundColor: '#CCC' }]}
-          onPress={() => !loading && editProfile()}>{loading ? 'Cargando...' : 'Continuar'}</Button>
+              style={styles.labelForInput}
+              label="Confirma tu contraseña"
+            />
+            <View style={styles.extraSpace} />
+          </_KeyboardAwareScrollView>
+          <Button
+            disabled={loading}
+            onPress={() => !loading && editProfile()}
+            style={[SharedStyles.backgroundPrimary, loading && { backgroundColor: '#CCC' }]}>
+              {loading ? 'Cargando...' : 'Continuar'}
+            </Button>
+          <Footer style={{color: COLORS.primary, textAlign: 'center'}} />
+        </View>
       </Animated.ScrollView>
-      <Footer style={{color: COLORS.primary, textAlign: 'center'}} />
     </SafeAreaView>
   );
 }
 
 export const styles = StyleSheet.create({
-  containerCenter: {
-  },
   heading: {
     color: COLORS.primary,
     fontSize: 27,

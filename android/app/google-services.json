@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "309751438481",
+    "project_id": "app-domesticapp",
+    "storage_bucket": "app-domesticapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:309751438481:android:b74d475d52d098d5fe3330",
+        "android_client_info": {
+          "package_name": "com.domesticapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "309751438481-3ot4salg72lpvnolghrq1ac9hdlon463.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzR9DaMgoN5Fn32m33eIooa5b0pil1KSM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "309751438481-3ot4salg72lpvnolghrq1ac9hdlon463.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

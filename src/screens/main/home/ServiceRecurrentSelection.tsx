@@ -12,7 +12,7 @@ import { useCalendar } from "../../../contexts/calendarContext";
 import type { HomeStackParamList } from '.';
 type Props = StackScreenProps<HomeStackParamList, 'ServiceRecurrentSelection', 'ServiceDetails'>;
 
-export default function ServiceRecurrentSelection({ route, navigation }: Props) {
+export default function ServiceRecurrentSelection({ navigation }: Props) {
   const _Picker: any = Picker;
 
   const [repeatQuote, setRepeatQuote] = useState<boolean>(false);
@@ -20,7 +20,6 @@ export default function ServiceRecurrentSelection({ route, navigation }: Props) 
   const [recurrencyDate, setRecurrencyDate] = useState({date: ''});
 
   const { setfinish_date } = useCalendar();
-
   return (
     <View style={SharedStyles.mainScreen}>
       <BackTitledHeader title="RECURRENCIA" />
@@ -63,13 +62,7 @@ export default function ServiceRecurrentSelection({ route, navigation }: Props) 
       <View style={[SharedStyles.mainPadding, SharedStyles.centerContent]}>
         <Button
           style={SharedStyles.backgroundPrimary}
-          onPress={
-            () => navigation.navigate(
-              'ServiceDetails',
-              { ...route.params, quote, recurrencyDate }
-            )
-          }
-        >
+          onPress={() => navigation.navigate('ServiceDetails')}>
           Continuar
         </Button>
       </View>

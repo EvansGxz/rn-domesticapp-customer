@@ -1,0 +1,9 @@
+<resources>
+  <string name="app_name">rn-domesticapp-customer</string>
+  <string name="expo_splash_screen_resize_mode" translatable="false">cover</string>
+  <string name="expo_splash_screen_status_bar_translucent" translatable="false">false</string>
+  <string name="expo_system_ui_user_interface_style" translatable="false">light</string>
+  <string name="facebook_app_id">795407164961156</string>
+  <string name="fb_login_protocol_scheme">fb795407164961156</string>
+  <string name="facebook_client_token">d9da88cd68a09e5328910e63f23c7522</string>
+</resources>

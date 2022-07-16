@@ -13,12 +13,12 @@ import SelectEmployee from "./SelectEmployee";
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
-  SelectService: {id: number};
   SelectEmployee: undefined;
-  ServiceCalendar: {id: number, workingDayType: string};
+  SelectService: undefined;
+  ServiceCalendar: undefined;
   EmployeeProfile: undefined;
-  ServiceRecurrentSelection: {id: number, workingHour: Date | null, working: string};
-  ServiceDetails: {id: number, quote: string, recurrencyDate: object};
+  ServiceRecurrentSelection: undefined;
+  ServiceDetails: undefined;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TodoListo: {params: any};
 };

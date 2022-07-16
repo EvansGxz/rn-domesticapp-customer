@@ -14,7 +14,7 @@ import PrivacyPolicy from './PrivacyPolicy';
 import AuthorizationAndData from './AuthorizationAndData';
 import SupportChat from '../support/SupportChat';
 
-type ProfileStackParamList = {
+export type ProfileStackParamList = {
     Dashboard: undefined;
     Profile: undefined;
     Coupons: undefined;

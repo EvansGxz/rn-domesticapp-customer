@@ -20,10 +20,16 @@ import HistoryIcon from '../../../resources/img/profile-icons/history.svg';
 import DirectionIcon from '../../../resources/img/profile-icons/direction.svg';
 import FingerprintIcon from '../../../resources/img/profile-icons/fingerprint.svg';
 import NotificationIcon from '../../../resources/img/profile-icons/notification.svg';
-import { useAuth } from '../../../hooks/use-auth';
+import Logout from '../../../resources/img/profile-icons/logout.svg';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function UserProfile({navigation}: any) {
+import { useAuth } from '../../../hooks/use-auth';
+import { StackScreenProps } from '@react-navigation/stack';
+
+import type { ProfileStackParamList } from '.';
+
+type Props = StackScreenProps<ProfileStackParamList>;
+
+export default function UserProfile({navigation}: Props) {
   const {signOut} = useAuth();
 
   return (
@@ -98,8 +104,9 @@ export default function UserProfile({navigation}: any) {
           />
           <Text style={SharedStyles.h2}>Otros</Text>
           <MenuOptionButton
+            line
+            icon={Logout}
             text="Cerrar Sesión"
-            icon={NewsIcon}
             onPress={() => signOut()}
           />
         </View>

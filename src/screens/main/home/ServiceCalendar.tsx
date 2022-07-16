@@ -15,18 +15,32 @@ import { SharedStyles } from "../../../styles/shared-styles";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
 
-type Props = StackScreenProps<HomeStackParamList, 'ServiceCalendar', 'ServiceRecurrentSelection'>;
+import moment from 'moment';
 
-export default function ServiceCalendar({ route, navigation }: Props) {
-  const [selectedValue, setSelectedValue] = useState<Date>(new Date());
-  const [markedDates, setMarkedDates] = useState<any>();
+type Props = StackScreenProps<HomeStackParamList, 'ServiceRecurrentSelection'>;
 
+export default function ServiceCalendar({ navigation }: Props) {
   const _DatePicker: any = DatePicker;
+  const [markedDates, setMarkedDates] = useState<any>();
+  const [serviceDates, setServiceDates] = useState<Date | string>(new Date());
   const { setstart_date, setservice_time } = useCalendar();
 
   useEffect(() => {
-    setservice_time(selectedValue.toISOString().substring(selectedValue.toISOString().indexOf('T') + 1, selectedValue.toISOString().indexOf('T') + 9))
-  }, [selectedValue]);
+    setservice_time(moment(serviceDates).format('hh:mm a'))
+  },[]);
+
+  useEffect(() => {
+    const newDate = moment().format('L');
+    let replace = newDate.replace('/','-');
+    replace = replace.replace('/','-');
+    setstart_date(replace)
+  },[]);
+
+  useEffect(() => {
+    if (serviceDates) {
+      setservice_time(moment(serviceDates).format('hh:mm a'));
+    }
+  }, [serviceDates]);
 
   useEffect(() => {
     if (markedDates) {
@@ -41,25 +55,24 @@ export default function ServiceCalendar({ route, navigation }: Props) {
         <Calendar
           markingType="dot"
           style={SharedStyles.mb}
+          markedDates={markedDates}
           onDayPress={day => {
             setMarkedDates({ date: [day.dateString], [day.dateString]: { selectedColor: COLORS.primary, selected: true } })
           }}
-          markedDates={markedDates}
         />
         <Text style={[SharedStyles.h3, { marginBottom: 10 }]}>Hora de inicio</Text>
         <View style={{ height: 50, overflow: 'hidden', justifyContent: 'center', alignItems: 'center' }}>
-          <_DatePicker androidVariant='iosClone' dividerHeight={0} mode='time' date={selectedValue} onDateChange={setSelectedValue} />
+          <_DatePicker
+            mode='time'
+            date={serviceDates}
+            textColor={COLORS.primary}
+            onDateChange={(date: Date) => setServiceDates(date)} />
         </View>
       </View>
       <View style={SharedStyles.mainPadding}>
         <Button
           style={SharedStyles.backgroundPrimary}
-          onPress={
-            () => navigation.navigate(
-              'ServiceRecurrentSelection',
-              { ...route.params, workingHour: selectedValue, working: markedDates }
-            )
-          }>
+          onPress={() => navigation.navigate('ServiceRecurrentSelection')}>
           Continuar
         </Button>
       </View>

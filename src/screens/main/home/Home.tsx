@@ -7,22 +7,16 @@ import Button from "../../../components/ui/Button";
 import HomeHero from "../../../components/ui/HomeHero";
 import UserHeader from "../../../components/headers/UserHeader";
 import ServiceTypesCatalog from "../../../components/services/ServiceTypesCatalog";
-import type { HomeStackParamList } from ".";
-import type { TeamStackParamList } from "../team/index";
-import type { StackNavigationProp } from "@react-navigation/stack";
-import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { RootTabParamList } from '../BottomNavigation';
+import type { StackScreenProps } from "@react-navigation/stack";
 
 import { useAuth } from "../../../hooks/use-auth";
-
-type ServiceScreenNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<HomeStackParamList, 'HomeScreen'>,
-  StackNavigationProp<TeamStackParamList, 'MeetTheTeamDetail'>
->;
-
 import ModalUI from "../../../components/ui/ModalUI";
 import ModalProfile from "./ModalProfile";
 
-export default function Home({ navigate }: ServiceScreenNavigationProp) {
+type Props = StackScreenProps<RootTabParamList, 'Team'>;
+
+export default function Home({ navigation }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { state } = useAuth();
   const [isModalOpened, setIsModalOpened] = React.useState<boolean>(false);
@@ -44,7 +38,7 @@ export default function Home({ navigate }: ServiceScreenNavigationProp) {
               <ServiceTypesCatalog />
               <Button
                 style={styles.button}
-                onPress={() => navigate('MeetTheTeam')}>
+                onPress={() => navigation.navigate('Team')}>
                 Conoce al Equipo
               </Button>
             </View>

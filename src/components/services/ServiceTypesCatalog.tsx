@@ -1,36 +1,55 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import { View, StyleSheet, FlatList, Text } from "react-native";
-import useFetch from "use-http";
-import { COLORS } from "../../../config";
-import { useAuth } from "../../hooks/use-auth";
-import Loader from "../Loader";
-import ServiceTypeButton from "./ServiceTypeButton";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { View, StyleSheet, Text, Animated } from 'react-native';
+import useFetch from 'use-http';
+import { COLORS } from '../../../config';
+import { useAuth } from '../../hooks/use-auth';
+import ServiceTypeButton from './ServiceTypeButton';
+import Loader from '../Loader';
 
 interface CarouselProps {
   Otros: [] | any;
   Hogares: [] | any;
-  Hoteleros: [] | any;
+  Hotelero: [] | any;
   Comercial: [] | any;
   Empresarial: [] | any;
 }
 export default function ServiceTypesCatalog() {
-  const {state} = useAuth()
+  const {state} = useAuth();
   const { loading, error, data = [] } = useFetch('/categories', {}, []);
   const [dataRecort, setDataRecort] = useState<CarouselProps | any>({
     Otros: null,
     Hogares: null,
-    Hoteleros: null,
+    Hotelero: null,
     Comercial: null,
     Empresarial: null,
   });
 
-  const sector = ['Hogares', 'Empresarial', 'Comercial', 'Hoteleros', 'Otros'];
+  const translateLeftX = useRef(new Animated.Value(-100)).current;
+  const translateRightX = useRef(new Animated.Value(100)).current;
+
+  const sector = ['Hogares', 'Empresarial', 'Comercial', 'Hotelero', 'Otros'];
   const carousel1: any[] = [];
   const carousel2: any[] = [];
   const carousel3: any[] = [];
   const carousel4: any[] = [];
   const carousel5: any[] = [];
+
+  useFocusEffect(useCallback(() => {
+    Animated.parallel([
+      Animated.timing(translateLeftX, {
+        toValue: 0,
+        duration: 3000,
+        useNativeDriver: true
+      }),
+      Animated.timing(translateRightX, {
+        toValue: 0,
+        duration: 3000,
+        useNativeDriver: true
+      }),
+    ]).start();
+  }, []));
 
   useEffect(() => {
     if (data.length > 0) {
@@ -59,7 +78,7 @@ export default function ServiceTypesCatalog() {
         Hogares: carousel1,
         Empresarial: carousel2,
         Comercial: carousel3,
-        Hoteleros: carousel4,
+        Hotelero: carousel4,
         Otros: carousel5
       });
     }
@@ -69,12 +88,12 @@ export default function ServiceTypesCatalog() {
     <View style={styles.servicesCatalogContainer}>
       {loading ? (<Loader />) : error ? (<Text>{error.message}</Text>) : (
         <>
-          {Object.keys(dataRecort).map(sector => (
+          {Object.keys(dataRecort).map((sector, index) => (
             <View key={sector}>
               {dataRecort[sector]?.length > 0 && (
                 <Text style={styles.heading}>{sector}</Text>
               )}
-              <FlatList
+              <Animated.FlatList
                 bounces={false}
                 horizontal={true}
                 initialNumToRender={5}
@@ -84,6 +103,7 @@ export default function ServiceTypesCatalog() {
                 keyExtractor={(item: any) => item?.id}
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => <ServiceTypeButton category={item} />}
+                style={{transform: [{translateX: index === 0 ? translateLeftX : translateRightX}]}}
             />
             </View>
           ))}

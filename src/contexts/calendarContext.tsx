@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {createContext, useState, useContext, useMemo} from 'react';
 type TCalendarContext = {
   category_id: string;
@@ -9,7 +8,7 @@ type TCalendarContext = {
   setstart_date: (start_date: string) => void;
   finish_date: string;
   setfinish_date: (finish_date: string) => void;
-  service_time: string;
+  service_time: string | Date;
   setservice_time: (service_time: string) => void;
   address: string;
   setaddress: (address: string) => void;
@@ -17,16 +16,20 @@ type TCalendarContext = {
   setcustomer_id: (customer_id: string) => void;
 };
 
-const CalendarContext = createContext<TCalendarContext>({} as any);
+const CalendarContext = createContext<TCalendarContext>({} as TCalendarContext);
 
-export const CalendarProvider = (props: any) => {
-  const [category_id, setcategory_id] = useState("");
-  const [workday, setworkday] = useState("");
-  const [start_date, setstart_date] = useState("");
-  const [finish_date, setfinish_date] = useState("");
-  const [service_time, setservice_time] = useState("");
-  const [address, setaddress] = useState("");
-  const [customer_id, setcustomer_id] = useState("");
+interface CalendarProps {
+  children: JSX.Element | JSX.Element[];
+}
+
+export const CalendarProvider = (props: CalendarProps) => {
+  const [category_id, setcategory_id] = useState<string>("");
+  const [workday, setworkday] = useState<string>("");
+  const [finish_date, setfinish_date] = useState<string>("");
+  const [start_date, setstart_date] = useState<string>('');
+  const [service_time, setservice_time] = useState<Date | string>(new Date());
+  const [address, setaddress] = useState<string>("");
+  const [customer_id, setcustomer_id] = useState<string>("");
 
   const value = useMemo(() => {
     return {
