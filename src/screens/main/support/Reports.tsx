@@ -16,12 +16,14 @@ import Alert from "../../../controllers/Alert";
 import { useAuth } from "../../../hooks/use-auth";
 import { httpClient } from "../../../controllers/http-client";
 import { PayloadActionKind } from "../../../contexts/authReducer";
+import {useNavigation} from '@react-navigation/native';
 
 
 export default function Reports() {
   const {state, dispatch} = useAuth();
   const [description, setDescription] = useState<string>('');
   const [file, setFile] = useState<any>();
+  const navigation = useNavigation<any>();
 
   const payload = async () => {
     if (description === '') return Alert({msg: 'Por favor comentanos tu situación', type: 'WARNING'});
@@ -82,8 +84,21 @@ export default function Reports() {
         <Text style={[SharedStyles.p, SharedStyles.mb]}>
           Adjunta una imagen o video del percance, así como una descripción de la eventualidad.
         </Text>
-        <Button style={[SharedStyles.backgroundPrimary, SharedStyles.mb, SharedStyles.pd]}>Ver Poliza de Seguros</Button>
-        <Button style={[SharedStyles.backgroundPrimary, SharedStyles.mb, SharedStyles.pd]}>Ver Seguridad Laboral Empleados</Button>
+        <Button
+          style={[
+            SharedStyles.backgroundPrimary,
+            SharedStyles.mb,
+            SharedStyles.pd]}
+            onPress={() => {
+              navigation.navigate('SeePolicyMain');
+            }}>Ver Poliza de Seguros</Button>
+        <Button 
+          onPress={() => {
+            navigation.navigate('SeeJobSecurity');
+          }}
+          style={[SharedStyles.backgroundPrimary, SharedStyles.mb, SharedStyles.pd]}>
+          Ver Seguridad Laboral Empleados
+        </Button>
         <Text style={SharedStyles.h2}>Descripción:</Text>
         <TextArea
           onChangeText={v => setDescription(v)}
