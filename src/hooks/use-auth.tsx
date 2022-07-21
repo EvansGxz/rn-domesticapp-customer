@@ -23,6 +23,7 @@ const initialState: AuthState = {
   loading: true,
   preloader: false,
   onboarding: true,
+  location: {latitude: 0, longitude: 0},
 }
 
 

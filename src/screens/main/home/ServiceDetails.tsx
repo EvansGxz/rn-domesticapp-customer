@@ -62,7 +62,7 @@ export default function ServiceDetails({ navigation }: Props) {
     } catch (error: any) {
       dispatch({type: PayloadActionKind.PRELOADER, payload: {preloader: false}});
       console.log('<<<<<<<================================>>>>>> ERROR <<<<<<<================================>>>>>>')
-      console.log(error.response.data);
+      console.log(error.response);
     }
 
     // console.log(response);

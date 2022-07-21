@@ -3,12 +3,15 @@ import { AuthState } from "../interfaces/interfaces";
 export enum PayloadActionKind {
   SIGN_IN = 'SIGN_IN',
   LOADING = 'LOADING',
+  LOCATION = 'LOCATION',
   SIGN_OUT = 'SIGN_OUT',
   PRELOADER = 'PRELOADER',
   ONBOARDING = 'ONBOARDING',
 }
 
-export type AuthAction = | { type: PayloadActionKind; payload: AuthState; } | { type: PayloadActionKind; }
+export type AuthAction = |
+  { type: PayloadActionKind; payload: AuthState; } |
+  { type: PayloadActionKind; }
 
 export const authReducer = (state: AuthState, action: AuthAction): AuthState => {
   const { type, payload } = action;
@@ -23,6 +26,8 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
       return { ...state, preloader: payload.preloader };
     case PayloadActionKind.ONBOARDING:
       return { ...state, onboarding: payload.onboarding };
+    case PayloadActionKind.LOCATION:
+      return { ...state, location: payload.location };
     default:
       return state;
   }

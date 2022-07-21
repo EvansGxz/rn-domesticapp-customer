@@ -4,6 +4,12 @@ export interface AuthState {
   loading?: boolean;
   onboarding?: boolean;
   user?: any | null;
+  location?: LocationUser;
+}
+
+export interface LocationUser {
+  longitude: number;
+  latitude: number;
 }
 
 export interface ServiceType {
