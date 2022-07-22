@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import {
   View,
@@ -14,9 +15,9 @@ import { TeamStackParamList } from ".";
 // COMPONENTs
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import Button from "../../../components/ui/Button";
+import Loader from "../../../components/Loader";
 
 // SVGs
-import SvgShield from '../../../resources/img/ui/shield.svg';
 import StarFill from '../../../resources/img/ui/star-fill.svg';
 
 // STYLEs
@@ -26,9 +27,11 @@ import { COLORS } from "../../../../config";
 type Props = StackScreenProps<TeamStackParamList, 'MeetTheTeamDetail'>
 
 export default function ({route}: Props) {
-  const employeeId = route.params.employeeId;
-  const data = useFetch('/employee/'+employeeId, {}, [])[0].data;
+  const {id, employeeId} = route.params;
+  const data = useFetch(`/employee/${employeeId}`, {}, [])[0].data;
   // const reviews = useFetch('/reviews/'+employeeId, {}, [])[0].data;
+  const {loading, error, data: habilityEmployee = [] } =
+    useFetch(`/hability_employees/${id}`, {}, []);
 
   return (
     <View style={SharedStyles.mainScreen}>
@@ -53,40 +56,44 @@ export default function ({route}: Props) {
           </View>
           <Text style={[SharedStyles.h2, {marginBottom: 10}]}>Aptitudes</Text>
           <View style={[SharedStyles.card, {padding: 0, marginBottom: 30}]}>
-            <View
-              style={[
-                styles.row,
-                {margin: 10, marginBottom: 20, alignItems: 'flex-start'}]}>
-              <SvgShield />
-              <Text
-                style={[
-                  SharedStyles.h3, {
-                    color: COLORS.colorUserName,
-                    padding: 10,
-                  }]}>
-                  Aprendiendo lo básico
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.row,
-                {margin: 10, marginBottom: 20, alignItems: 'flex-start'}]}>
-              <SvgShield />
-              <Text
-                style={[SharedStyles.h3, {color: COLORS.colorUserName, padding: 10}]}>
-                  Obtén Mejores Reseñas
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.row,
-                {margin: 10, marginBottom: 10, alignItems: 'flex-start'}]}>
-              <SvgShield />
-              <Text
-                style={[SharedStyles.h3, {color: COLORS.colorUserName, padding: 10}]}>
-                  Tipo de Servicios
-              </Text>
-            </View>
+            {loading ? (<Loader />) : error ? (<Text>{error.message}</Text>) : (
+              habilityEmployee?.length > 0 ? (
+                habilityEmployee?.map((hability: any, index: number) => (
+                  <View
+                    key={index}
+                    style={[
+                      styles.row,
+                      {margin: 10, marginBottom: 20, alignItems: 'flex-start'}]}>
+                    <Image source={{uri: hability.icon}} style={{height: 50, width: 50}} />
+                    <View style={{flex: 1}}>
+                      <Text
+                        style={[
+                          SharedStyles.h3, {
+                            color: COLORS.colorUserName,
+                            paddingHorizontal: 10,
+                          }]}>
+                          {hability.hability}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        style={[
+                          SharedStyles.h3, {
+                            color: COLORS.colorUserName,
+                            paddingHorizontal: 10,
+                          }]}>
+                          {hability.body}
+                      </Text>
+                    </View>
+                  </View>
+                ))
+              ) : (
+                <Text style={{
+                  ...SharedStyles.p,
+                  fontSize: 13,
+                  padding: 10,
+                }}>Sin aptitudes</Text>
+              )
+            )}
             <Button
               style={{
                 backgroundColor: COLORS.primary,

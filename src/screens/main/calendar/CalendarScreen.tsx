@@ -5,7 +5,7 @@ import { Calendar } from "react-native-calendars";
 import BackTitledHeader from "../../../components/headers/BackTitledHeader";
 import { SharedStyles } from "../../../styles/shared-styles";
 import { useFetch } from "use-http";
-import FlatCard from "./FlatCard";
+import ServicesCard from "../../../components/cards/ServicesCard";
 import { COLORS } from "../../../../config";
 import Loader from "../../../components/Loader";
 import { useAuth } from "../../../hooks/use-auth";
@@ -24,11 +24,12 @@ export default function CalendarScreen() {
           <FlatList
             data={dataActive}
             keyExtractor={(key: any) => key.id}
+            initialNumToRender={6}
+            maxToRenderPerBatch={6}
+            updateCellsBatchingPeriod={6}
             style={
               [SharedStyles.mainScreen,
-                {flex: 1,
-                padding: 10,
-                paddingHorizontal: 15}
+                {padding: 10, paddingHorizontal: 15}
               ]}
             ListHeaderComponent={() => (
               <View style={SharedStyles.mainScreen}>
@@ -47,9 +48,7 @@ export default function CalendarScreen() {
                 )}
               </View>
             )}
-            renderItem={({item}): any => (
-              <FlatCard item={item} />
-            )}
+            renderItem={({item}): any => <ServicesCard item={item} />}
           />
         </>
       )}

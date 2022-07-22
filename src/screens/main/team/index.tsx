@@ -7,7 +7,7 @@ import MeetTheTeamDetail from './Detail';
 
 export type TeamStackParamList = {
     MeetTheTeam: undefined;
-    MeetTheTeamDetail: {employeeId: number};
+    MeetTheTeamDetail: {employeeId?: string | number, id?: string | number};
 }
 
 const Stack = createStackNavigator<TeamStackParamList>();

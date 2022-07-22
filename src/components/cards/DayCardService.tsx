@@ -2,15 +2,15 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { COLORS } from "../../../../config";
-import UserImage from "../../../components/user/UserImage";
+import { COLORS } from "../../../config";
+import UserImage from "..//user/UserImage";
 import moment from 'moment';
 import 'moment/locale/es';
 
-import type { TeamStackParamList } from '../team/index'
+import type { TeamStackParamList } from '../../screens/main/team'
 import type { CompositeNavigationProp } from '@react-navigation/native';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import type { HomeStackParamList } from "../home";
+import type { HomeStackParamList } from "../../screens/main/home";
 
 type ServiceScreenNavigationProp = CompositeNavigationProp<
   StackNavigationProp<HomeStackParamList, 'HomeScreen'>,
@@ -27,14 +27,12 @@ export default function DayCardService(props: any) {
   
   return (
     <Pressable onPress={() => {
-      if(route.name === 'MeetTheTeam') {
-        navigation.navigate('MeetTheTeamDetail', {employeeId: data?.employee.user_id})
-      } else {
-        // No me deja usar la funcion anidada <Si se puede corregir>..!
-        // navigation.navigate('MeetTheTeam');
-        navigation.navigate('MeetTheTeamDetail', {employeeId: data?.employee.user_id});
+        navigation.navigate(
+          'MeetTheTeamDetail', {
+            employeeId: data?.employee.user_id,
+            id: data?.employee.id
+          });
       }
-    }
     }>
       <View style={style.card}>
         <View style={{ flex: 1, flexDirection: "row", alignItems: 'center' }}>
